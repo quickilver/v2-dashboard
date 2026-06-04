@@ -1,0 +1,44 @@
+@use 'variables' as *;
+
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    z-index: 1000;
+
+    .confirm-dialog {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 20px);
+        background-color: #ffffff;
+        border-radius: 8px;
+        max-width: 400px;
+        width: calc(100% - 20px);
+        margin: 10px;
+
+        .confirm-title {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 20px;
+            border-bottom: 1px solid $grey-light-2;
+        }
+
+        .confirm-description {
+            padding: 20px;
+            min-height: 60px;
+        }
+
+        .confirm-actions {
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+    }
+}

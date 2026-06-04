@@ -1,0 +1,23 @@
+<nav class="sidebar-nav">
+  <ul class="nav-list">
+    @for (item of navigation; track item.route) {
+      <li class="nav-item">
+        <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
+          {{ item.title }}
+        </a>
+        
+        @if (item.children && item.children.length > 0) {
+          <ul class="sub-nav-list">
+            @for (child of item.children; track child.route) {
+              <li class="sub-nav-item">
+                <a [routerLink]="child.route" routerLinkActive="active" class="sub-nav-link">
+                  {{ child.title }}
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+</nav>

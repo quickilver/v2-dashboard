@@ -1,0 +1,12 @@
+@if (confirmService.isShow()) {
+    <div class="confirm-overlay">
+        <div class="confirm-dialog">
+            <div class="confirm-title">{{ confirmService.title() }}</div>
+            <div class="confirm-description">{{ confirmService.description() }}</div>
+            <div class="confirm-actions">
+                <button class="btn-cancel" (click)="onCancel()">{{ confirmService.cancelLabel() }}</button>
+                <button class="btn-confirm" (click)="onConfirm()">{{ confirmService.confirmLabel() }}</button>
+            </div>
+        </div>
+    </div>
+}

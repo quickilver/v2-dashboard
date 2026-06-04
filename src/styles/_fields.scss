@@ -1,0 +1,67 @@
+@use './variables' as *;
+
+.field-container,
+.wyswig-container {
+    display: flex;
+    flex-direction: column;
+
+    .label-field {
+        font-size: 14px;
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+
+    .input-field {
+        background: $input-background-color;
+        border: 1px solid $input-border-color;
+        padding: 8px 12px;
+        border-radius: $input-radius;
+        outline: none;
+        transition: .3s ease-in-out;
+    }
+
+    .wyswig-field {
+        border: 1px solid $input-border-color;
+        border-radius: $input-radius;
+        overflow: hidden;
+
+        .toolbar {
+            display: flex;
+            gap: 0.25rem;
+            padding: 6px;
+            border-bottom: 1px solid $input-border-color;
+            align-items: center;
+        }
+
+        .editor {
+            padding: 8px 12px;
+        }
+    }
+}
+
+button {
+    display: flex;
+    align-items: center;
+    outline: none;
+    background: #ffffff;
+    border: 1px solid $input-border-color;
+    border-radius: $input-radius;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+
+
+    &:hover {
+        background: $grey-light-2;
+    }
+
+    &.primary {
+        background: $primary-color;
+        border-color: $primary-dark-color;
+        color: #ffffff;
+
+        &:hover{
+            background: $primary-dark-color;
+        }
+    }
+}

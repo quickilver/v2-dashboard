@@ -1,0 +1,69 @@
+@use 'variables' as *;
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .title {
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+.listing {
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 20px;
+    box-shadow: $shadow;
+
+    .filters {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+
+        .filter-list {
+            width: 100%;
+            gap: 20px;
+            display: flex;
+            justify-content: space-between;
+
+            .filter-actions {
+                display: flex;
+                gap: 10px;
+            }
+        }
+    }
+
+    .table {
+        width: 100%;
+        border-spacing: 0;
+
+        td, th {
+            border: none;
+            padding: 15px;
+        }
+
+        thead {
+            text-align: left;
+            background: $grey-light;
+            border-bottom: none;
+            border-radius: 10px;
+        }
+
+        tbody {
+            td {
+                border-bottom: 1px solid $grey-light;
+            }
+        }
+    }
+}
+

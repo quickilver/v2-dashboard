@@ -1,0 +1,12 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <input
+        type="text"
+        class="input-field"
+        [placeholder]="placeholder()"
+        [value]="value()"
+        (input)="handleInput($event)"
+    />
+</div>
