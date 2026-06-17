@@ -1,6 +1,7 @@
 @use 'styles/variables' as *;
 @use 'styles/fields' as *;
 @use 'styles/listing' as *;
+@use 'styles/editor' as *;
 
 @font-face {
     font-family: 'Manrope';
@@ -8,6 +9,11 @@
     font-weight: 200;
     font-style: normal;
     font-display: swap;
+}
+
+body.popup-open {
+    overflow: hidden;
+    padding-right: var(--scrollbar-width, 0px);
 }
 
 @font-face {
@@ -59,10 +65,15 @@
 }
 
 * {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Manrope',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -85,4 +96,58 @@ html, body {
     height: 1em;
     color: currentColor;
     display: inline-block;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+
+    &.top-line {
+        > div {
+            border-bottom: 5px solid transparent !important;
+
+            &.is-active {
+                border-top-color: $primary-color !important;
+            }
+
+            &:hover {
+                border-top-color: $grey-light-2;
+            }
+        }
+    }
+
+    > div {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        height: 50px;
+        border-bottom: 5px solid transparent;
+        border-top: 5px solid transparent;
+        cursor: pointer;
+
+        .tag {
+            display: block;
+            padding: 4px 6px;
+            color: #ffffff;
+            border-radius: 4px;
+                background: $primary-color;
+        }
+
+        &.is-active {
+            border-bottom-color: $primary-color;
+        }
+
+        &:hover {
+            border-bottom-color: $grey-light-2;
+        }
+    }
+}
+
+.popup-body {
+    .tabs {
+        padding: 0 20px;
+        background: linear-gradient(to top, rgba(255, 255, 255, .4), rgba(255, 255, 255, 1));
+        position: sticky;
+        top: 0;
+    }
 }

@@ -1,0 +1,115 @@
+@use '../../../../styles/variables' as *;
+
+.calendar-wrapper {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+}
+
+.calendar-dropdown {
+    position: absolute;
+    left: 0;
+    top: 42px;
+    background: #ffffff;
+    border: 1px solid $grey-light-2;
+    border-radius: $input-radius;
+    box-shadow: $shadow;
+    z-index: 200;
+    padding: 12px;
+    min-width: 260px;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: $input-radius;
+    background: transparent;
+    color: $main-font-color;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: $grey-light;
+    }
+}
+
+.nav-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: $main-font-color;
+    min-width: 130px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.day-name {
+    font-size: 11px;
+    font-weight: bold;
+    color: $grey;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: $input-radius;
+    background: transparent;
+    color: $main-font-color;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(.disabled):not(.empty) {
+        background: $grey-light;
+        color: $primary-color;
+    }
+
+    &.today {
+        border: 1px solid $primary-color;
+        font-weight: bold;
+    }
+
+    &.selected {
+        background: $primary-color;
+        color: #ffffff;
+        font-weight: bold;
+
+        &:hover {
+            background: $primary-dark-color;
+        }
+    }
+
+    &.disabled {
+        color: $grey-light-2;
+        cursor: not-allowed;
+    }
+
+    &.empty {
+        pointer-events: none;
+    }
+}

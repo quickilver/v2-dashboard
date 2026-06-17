@@ -1,0 +1,35 @@
+<div class="editor-body">
+    <div class="value-add field-container">
+        <input
+            class="input-field"
+            placeholder="Введите новое значение"
+            [(ngModel)]="newValue"
+            (keyup.enter)="addValue()"
+        />
+        <button class="primary" (click)="addValue()">Добавить</button>
+    </div>
+
+    @if (values().length === 0) {
+        <div class="values-empty">Нет значений</div>
+    } @else {
+        <div class="values-list">
+            @for (value of values(); track $index) {
+                <div class="value-item field-container">
+                    <input
+                        class="input-field value-input"
+                        [value]="value.value"
+                        #valInput
+                        (blur)="onValueBlur($index, valInput.value)"
+                        (keyup.enter)="onValueBlur($index, valInput.value); valInput.blur()"
+                    />
+                    <button
+                        class="value-delete"
+                        (click)="deleteValue($index)"
+                        title="Удалить"
+                    >✕
+                    </button>
+                </div>
+            }
+        </div>
+    }
+</div>

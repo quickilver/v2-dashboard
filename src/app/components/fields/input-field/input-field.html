@@ -3,7 +3,7 @@
         <label class="label-field">{{ label() }}</label>
     }
     <input
-        type="text"
+        [type]="type()"
         class="input-field"
         [placeholder]="placeholder()"
         [value]="value()"

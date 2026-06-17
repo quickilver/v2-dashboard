@@ -1,0 +1,45 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <div class="calendar-wrapper" (mouseleave)="closeCalendar()">
+        <input
+            class="input-field"
+            [placeholder]="placeholder()"
+            [value]="value()"
+            (click)="toggleCalendar()"
+            readonly
+        />
+        @if (isOpen()) {
+            <div class="calendar-dropdown">
+                <div class="calendar-nav">
+                    <button type="button" class="nav-btn" (click)="prevYear()">&laquo;</button>
+                    <button type="button" class="nav-btn" (click)="prevMonth()">&lsaquo;</button>
+                    <span class="nav-title">{{ monthName }} {{ currentYear() }}</span>
+                    <button type="button" class="nav-btn" (click)="nextMonth()">&rsaquo;</button>
+                    <button type="button" class="nav-btn" (click)="nextYear()">&raquo;</button>
+                </div>
+                <div class="calendar-grid">
+                    @for (dayName of weekDays; track dayName) {
+                        <div class="day-name">{{ dayName }}</div>
+                    }
+                    @for (dayInfo of days(); track $index) {
+                        @if (dayInfo.day === 0) {
+                            <div class="day empty"></div>
+                        } @else {
+                            <button
+                                type="button"
+                                class="day"
+                                [class.today]="dayInfo.isToday"
+                                [class.selected]="dayInfo.isSelected"
+                                [class.disabled]="dayInfo.isDisabled"
+                                [disabled]="dayInfo.isDisabled"
+                                (mousedown)="selectDate(dayInfo)"
+                            >{{ dayInfo.day }}</button>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

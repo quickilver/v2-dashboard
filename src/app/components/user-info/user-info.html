@@ -1,0 +1,9 @@
+<div class="user-info">
+    <app-icon name="user" class="user-icon"/>
+    <div class="greeting-text">
+        <span>Добро пожаловать,</span><br>{{ authService.user()?.name }}
+    </div>
+    <div class="logout" (click)="handleLogout()">
+        <app-icon name="logout"/>
+    </div>
+</div>

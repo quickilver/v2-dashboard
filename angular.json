@@ -6,7 +6,7 @@
     },
     "newProjectRoot": "projects",
     "projects": {
-        "vibe-admin": {
+        "v2-dashboard": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -79,10 +79,10 @@
                     "builder": "@angular/build:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "vibe-admin:build:production"
+                            "buildTarget": "v2-dashboard:build:production"
                         },
                         "development": {
-                            "buildTarget": "vibe-admin:build:development"
+                            "buildTarget": "v2-dashboard:build:development"
                         }
                     },
                     "defaultConfiguration": "development"

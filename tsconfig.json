@@ -21,6 +21,7 @@
         "strictInputAccessModifiers": true,
         "strictTemplates": true
     },
+    "include": ["types.d.ts", "src/**/*"],
     "files": [],
     "references": [
         {

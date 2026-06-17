@@ -4,8 +4,12 @@
             <div class="confirm-title">{{ confirmService.title() }}</div>
             <div class="confirm-description">{{ confirmService.description() }}</div>
             <div class="confirm-actions">
-                <button class="btn-cancel" (click)="onCancel()">{{ confirmService.cancelLabel() }}</button>
-                <button class="btn-confirm" (click)="onConfirm()">{{ confirmService.confirmLabel() }}</button>
+                <button (click)="onCancel()">
+                    {{ confirmService.cancelLabel() }}
+                </button>
+                <button class="primary" (click)="onConfirm()">
+                    {{ confirmService.confirmLabel() }}
+                </button>
             </div>
         </div>
     </div>

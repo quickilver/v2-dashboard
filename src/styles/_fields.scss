@@ -17,7 +17,7 @@
         padding: 8px 12px;
         border-radius: $input-radius;
         outline: none;
-        transition: .3s ease-in-out;
+        transition: 0.3s ease-in-out;
     }
 
     .wyswig-field {
@@ -48,8 +48,7 @@ button {
     border-radius: $input-radius;
     padding: 8px 12px;
     cursor: pointer;
-    transition: .3s ease-in-out;
-
+    transition: 0.3s ease-in-out;
 
     &:hover {
         background: $grey-light-2;
@@ -60,7 +59,7 @@ button {
         border-color: $primary-dark-color;
         color: #ffffff;
 
-        &:hover{
+        &:hover {
             background: $primary-dark-color;
         }
     }

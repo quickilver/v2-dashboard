@@ -1,0 +1,39 @@
+@if (loading()) {
+    <div class="editor-loading">Загрузка...</div>
+} @else {
+    <div class="editor-form">
+        <div class="editor-body">
+            <app-input-field
+                label="GUID"
+                placeholder="Введите GUID магазина"
+                [(value)]="guid"
+            />
+
+            <app-input-field
+                label="Название"
+                placeholder="Введите название магазина"
+                [(value)]="title"
+            />
+
+            <app-input-field
+                label="Адрес"
+                placeholder="Введите адрес магазина"
+                [(value)]="address"
+            />
+
+            <app-checkbox-field
+                label="Отображать на сайте"
+                [(checked)]="display"
+            />
+
+        </div>
+
+    </div>
+
+    <div class="editor-actions">
+        <button (click)="onCancel()">Отмена</button>
+        <button class="primary" (click)="onSave()" [disabled]="saving()">
+            {{ saving() ? 'Сохранение...' : (isEditMode() ? 'Сохранить' : 'Создать') }}
+        </button>
+    </div>
+}

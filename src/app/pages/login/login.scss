@@ -1,0 +1,40 @@
+@use 'variables' as *;
+
+.login-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    z-index: 1000;
+
+    .login-form {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 20px);
+        background-color: #ffffff;
+        border-radius: 8px;
+        max-width: 400px;
+        width: calc(100% - 20px);
+        margin: 10px;
+
+        .login-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-field {
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            text-align: center;
+            justify-content: center;
+        }
+
+    }
+}

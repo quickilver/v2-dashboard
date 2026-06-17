@@ -1,0 +1,55 @@
+<ul class="tree-list" [class.is-selectable]="selectable()">
+    @for (node of nodes(); track node.category.id) {
+        <li class="tree-item">
+            <div class="tree-node"
+                 [class.is-selected]="selectable() && isSelected(node.category.id)"
+            >
+                <div class="tree-toggle" (click)="toggleNode(node)">
+                    <app-icon
+                        [name]="node.expanded ? 'chevron-down' : 'chevron-right'"
+                        [size]="16"
+                    />
+                </div>
+                <div
+                    class="tree-label"
+                    (click)="onClick(node.category)"
+                >
+                    {{ node.category.title }}
+                </div>
+
+                @if (editable()) {
+                    <div class="tree-position">
+                        <input type="number"
+                               placeholder="Позиция"
+                               [value]="node.category.position"
+                               (change)="onChangePosition(node.category, $event)">
+                    </div>
+                    <div class="tree-actions">
+                        <app-dropdown-field label="Действия" [options]="getRowActions(node.category)"/>
+                    </div>
+                }
+
+            </div>
+
+            @if (node.expanded) {
+                <app-categories-tree
+                    [parentId]="node.category.id"
+                    [editable]="editable()"
+                    [selectable]="selectable()"
+                    [multiple]="multiple()"
+                    [(value)]="value"
+                />
+            }
+        </li>
+    }
+    @if (loading() && nodes().length === 0) {
+        <li class="tree-item">
+            <div class="tree-node">Загрузка ...</div>
+        </li>
+    }
+    @if (editable() && !loading()) {
+        <li class="tree-item">
+            <div class="tree-node create-node" (click)="onCreate(parentId())">Создать категорию</div>
+        </li>
+    }
+</ul>

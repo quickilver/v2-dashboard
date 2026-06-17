@@ -1,0 +1,19 @@
+<div class="notifications-container">
+    @for (notif of notificationService.notifications(); track notif.id) {
+        <div class="notification" [class]="'notification notification--' + notif.type">
+            <div class="notification__header">
+                <span class="notification__title">{{ notif.title }}</span>
+                <button class="notification__close" (click)="notif.dismiss()">✕</button>
+            </div>
+            @if (notif.description) {
+                <p class="notification__description">{{ notif.description }}</p>
+            }
+            <div class="notification__progress">
+                <div
+                    class="notification__progress-bar"
+                    [style.width.%]="notif.progress()"
+                ></div>
+            </div>
+        </div>
+    }
+</div>

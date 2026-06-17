@@ -1,39 +1,36 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IconService } from '../../core/services/icon.service';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { IconService } from '../../services/icon.service';
 
 @Component({
     selector: 'app-icon',
     template: ``,
     standalone: true,
-    styles: []
+    styles: [],
 })
-export class IconComponent implements OnInit, OnChanges {
+export class IconComponent implements OnChanges {
     @Input() name: string = '';
     @Input() size: number = 24;
     @Input() color: string = 'currentColor';
 
     constructor(
         private iconService: IconService,
-        private elementRef: ElementRef
-    ) {
-    }
-
-    async ngOnInit() {
-        await this.loadIcon();
-        this.applyStyles();
-    }
+        private elementRef: ElementRef,
+    ) {}
 
     async ngOnChanges(changes: SimpleChanges) {
         if (changes['name']) {
             await this.loadIcon();
         }
-        this.applyStyles();
+        if (changes['size'] || changes['color']) {
+            this.applyStyles();
+        }
     }
 
     private async loadIcon() {
         if (!this.name) return;
 
         this.elementRef.nativeElement.innerHTML = await this.iconService.getContent(this.name);
+        this.applyStyles();
     }
 
     private applyStyles() {

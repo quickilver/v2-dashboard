@@ -1,0 +1,31 @@
+<div class="login-wrapper">
+    <form (ngSubmit)="onSubmit()" class="login-form">
+        <div class="login-title">Вход в систему</div>
+
+        <div class="form-field">
+            <app-input-field
+                label="Email"
+                placeholder="admin@admin.com"
+                type="email"
+                [(value)]="email"
+            />
+        </div>
+
+        <div class="form-field">
+            <app-input-field
+                label="Пароль"
+                placeholder="••••••••"
+                type="password"
+                [(value)]="password"
+            />
+        </div>
+
+        <button type="submit" class="primary" [disabled]="loading()">
+            @if (loading()) {
+                Вход...
+            } @else {
+                Войти
+            }
+        </button>
+    </form>
+</div>

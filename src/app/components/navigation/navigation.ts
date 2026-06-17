@@ -1,24 +1,40 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NavigationItem } from '../../core/models/navigation-item.model';
+import { NavigationItem } from '../../models/navigation-item.model';
+import { Module } from '../../models/module.model';
+import { ModulesService } from '../../services/modules.service';
+import { IconComponent } from '../icon/icon';
 
 @Component({
-  selector: 'app-navigation',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './navigation.html',
-  styleUrl: './navigation.scss',
+    selector: 'app-navigation',
+    standalone: true,
+    imports: [RouterLink, IconComponent],
+    templateUrl: './navigation.html',
+    styleUrl: './navigation.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
-  navigation: NavigationItem[] = [
-    { title: 'Каталог', route: '/catalog' ,children: [
-      { title: 'Категории', route: '/categories' },
-      { title: 'Товары', route: '/products' },
-      { title: 'Склады', route: '/stores' },
-      { title: 'Типы цен', route: '/prices' },
-    ]},
-    { title: 'Заказы', route: '/orders' },
-    { title: 'Клиенты', route: '/users' },  
-    { title: 'Настройки', route: '/settings' },  
-  ];
+    readonly navigation = signal<NavigationItem[]>([]);
+
+    private readonly modulesService = inject(ModulesService);
+
+    constructor() {
+        this.loadNavigation();
+    }
+
+    private async loadNavigation(): Promise<void> {
+        const response = await this.modulesService.index();
+        this.navigation.set(response.data.map((module) => this.mapModuleToNavigation(module)));
+    }
+
+    private mapModuleToNavigation(module: Module): NavigationItem {
+        return {
+            title: module.title,
+            route: module.path,
+            icon: module.icon,
+            children: module.children?.length
+                ? module.children.map((child) => this.mapModuleToNavigation(child))
+                : undefined,
+        };
+    }
 }

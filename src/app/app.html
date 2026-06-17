@@ -1,2 +1,11 @@
-<app-layout></app-layout>
+@if (authService.isAuthenticated()) {
+    <app-layout></app-layout>
+} @else {
+    <app-login />
+}
+
 <app-confirm />
+
+<app-popup />
+
+<app-notification />

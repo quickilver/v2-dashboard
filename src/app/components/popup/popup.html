@@ -1,0 +1,13 @@
+@if (popupService.isShow()) {
+    <div class="popup-overlay">
+        <div class="popup-dialog">
+            <div class="popup-header">
+                <div class="popup-title">{{ popupService.title() }}</div>
+                <button class="popup-close" (click)="popupService.resolve()">✕</button>
+            </div>
+            <div class="popup-body">
+                <ng-container *ngComponentOutlet="popupService.component(); inputs: getInputs()" />
+            </div>
+        </div>
+    </div>
+}

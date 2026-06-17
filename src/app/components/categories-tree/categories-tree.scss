@@ -1,0 +1,164 @@
+@use '../../../styles/variables' as *;
+
+.tree-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.tree-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &.is-selectable {
+        .tree-node.is-selected {
+            background: $primary-color !important;
+            color: #ffffff !important;
+
+            .tree-label {
+                color: #ffffff !important;
+            }
+        }
+    }
+
+    .tree-list {
+        padding-left: 25px;
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            left: 13px;
+            height: calc(100% - 12px);
+            border-left: 1px solid $grey-light-2
+        }
+
+        > .tree-item {
+            position: relative;
+
+            &:before {
+                content: "";
+                position: absolute;
+                top: 14px;
+                left: -11px;
+                width: 10px;
+                border-top: 1px solid $grey-light-2;
+            }
+        }
+    }
+
+    .tree-item {
+        margin: 0;
+        padding: 0;
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.15s;
+
+            &:hover {
+                background-color: $grey-light;
+            }
+
+            .tree-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                border-radius: 4px;
+
+                &:hover {
+                    background: $grey-light-2
+                }
+            }
+
+            .tree-toggle-placeholder {
+                display: block;
+                width: 20px;
+                height: 20px;
+            }
+
+            .tree-spinner {
+                display: block;
+                width: 14px;
+                height: 14px;
+                border: 2px solid $grey-light-2;
+                border-top-color: $primary-color;
+                border-radius: 50%;
+                animation: tree-spin 0.6s linear infinite;
+            }
+
+            .tree-label {
+                display: flex;
+                width: 100%;
+                flex: 1;
+                font-size: 14px;
+                color: $main-font-color;
+            }
+
+            .tree-radio {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 18px;
+                height: 18px;
+                border: 2px solid $grey-light-2;
+                border-radius: 50%;
+                flex-shrink: 0;
+                transition: border-color 0.15s, background-color 0.15s;
+                position: relative;
+
+                &--checked {
+                    border-color: $primary-color;
+                    background-color: $primary-color;
+
+                    &::after {
+                        content: '';
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background-color: #fff;
+                    }
+                }
+            }
+
+            .tree-position {
+                input {
+                    border: 1px solid $input-border-color;
+                    padding: 0 5px;
+                    line-height: 23px;
+                    width: 70px;
+                    border-radius: 4px;
+                    outline: none;
+                    background: $input-background-color;
+
+                    &:focus {
+                        border-color: $primary-color;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    .create-node {
+        font-weight: 600;
+        padding-left: 10px !important;
+    }
+}
+
+@keyframes tree-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

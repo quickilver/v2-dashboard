@@ -1,0 +1,62 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">Загрузка...</div>
+    } @else {
+        <div class="tabs top-line">
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                Информация
+            </div>
+            <div [class.is-active]="isActiveTab('parent')" (click)="changeTab('parent')">
+                Родительская категория
+            </div>
+        </div>
+        <div class="editor-form">
+            @if (isActiveTab('info')) {
+                <div class="editor-body">
+                    <app-input-field
+                        label="GUID"
+                        placeholder="Введите GUID категории"
+                        [(value)]="guid"
+                    />
+
+                    <app-input-field
+                        label="Название"
+                        placeholder="Введите название категории"
+                        [(value)]="title"
+                    />
+
+                    <app-input-field
+                        label="Алиас"
+                        placeholder="Введите алиас категории"
+                        [(value)]="alias"
+                    />
+
+                    <app-input-field
+                        label="Позиция"
+                        placeholder="Введите позицию"
+                        type="number"
+                        [(value)]="position"
+                    />
+
+                    <app-checkbox-field
+                        label="Отображать на сайте"
+                        [(checked)]="display"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('parent')) {
+                <div class="current-category">Выбранная категория: {{ parent() }}</div>
+                <app-categories-tree [parentId]="0" [selectable]="true" [(value)]="parent" />
+            }
+
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="saving()">
+                {{ saving() ? 'Сохранение...' : (isEditMode() ? 'Сохранить' : 'Создать') }}
+            </button>
+        </div>
+    }
+</div>

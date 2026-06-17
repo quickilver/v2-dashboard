@@ -1,0 +1,17 @@
+<app-listing
+    [columns]="columns()"
+    [data]="prices()"
+    [loading]="loading()"
+    [meta]="meta()"
+    [pageSize]="pageSize()"
+    [page]="page()"
+    title="Цены"
+    [actionsColumn]="true"
+    [searchable]="false"
+    (rowClick)="onRowClick($event)"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+    (editClick)="onEdit($event)"
+    (deleteClick)="onDelete($event)"
+    (createClick)="createClick()"
+/>

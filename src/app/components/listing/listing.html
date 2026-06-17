@@ -1,0 +1,115 @@
+<div class="listing-container">
+    <div class="header">
+        <ng-content select="[header-left]" />
+        <div class="title">{{ title() }}</div>
+        <div class="actions">
+            <ng-content select="[header-actions]" />
+            <button class="primary" (click)="onCreateClick()">Создать</button>
+        </div>
+    </div>
+
+    <div class="listing">
+        @if (searchable()) {
+            <div class="filters">
+                <div class="filter-list">
+                    <app-input-field
+                        placeholder="Поиск"
+                        [value]="searchQuery()"
+                        (valueChange)="onSearch($event)"
+                    />
+                    <div class="filter-actions">
+                        <ng-content select="[filter-actions]" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (loading()) {
+            <div class="loading">Загрузка...</div>
+        } @else {
+            <div class="table">
+                <table>
+                    <thead>
+                    <tr>
+                        @for (col of columns(); track trackByColumn($index, col)) {
+                            <th
+                                [class.sortable]="col.sortable"
+                                [class.active]="sortState()?.key === col.key"
+                                [style.width]="col.width || 'auto'"
+                                (click)="onSort(col)"
+                            >
+                                {{ col.title }}
+                                @if (sortable() && col.sortable) {
+                                    <app-icon [name]="getSortIcon(col.key)" [size]="14" />
+                                }
+                            </th>
+                        }
+                        @if (actionsColumn()) {
+                            <th class="actions-th">Действия</th>
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @for (row of data(); track trackByFn($index, row)) {
+                            <tr (click)="onRowClick(row)" class="data-row">
+                                @for (col of columns(); track trackByColumn($index, col)) {
+                                    @if (col.type === 'boolean') {
+                                    <td>{{ row[col.key] ? (col.labels?.true || 'Да') : (col.labels?.false || 'Нет') }}</td>
+                                } @else {
+                                    <td>{{ row[col.key] }}</td>
+                                }
+                                }
+                                @if (actionsColumn()) {
+                                    <td class="actions-td" (click)="$event.stopPropagation()">
+                                        <app-dropdown-field
+                                            label="Действия"
+                                            [options]="getRowActions(row)"
+                                        />
+                                    </td>
+                                }
+                            </tr>
+                        } @empty {
+                            <tr>
+                                <td [attr.colspan]="columns().length + (actionsColumn() ? 1 : 0)" class="empty">Нет
+                                    данных
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages() > 1) {
+                <div class="pagination">
+                    <div class="buttons">
+                        <button
+                            class="page-btn"
+                            [disabled]="page() <= 1"
+                            (click)="onPageChange(page() - 1)"
+                        >
+                            <app-icon name="chevron-left" [size]="16" />
+                        </button>
+
+                        @for (p of pages(); track p) {
+                            <button
+                                class="page-btn"
+                                [class.active]="p === page()"
+                                (click)="onPageChange(p)"
+                            >
+                                {{ p }}
+                            </button>
+                        }
+
+                        <button
+                            class="page-btn"
+                            [disabled]="page() >= totalPages()"
+                            (click)="onPageChange(page() + 1)"
+                        >
+                            <app-icon name="chevron-right" [size]="16" />
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="field-container">
+    <label class="checkbox-label">
+        <input
+            type="checkbox"
+            class="checkbox-input"
+            [checked]="checked()"
+            (change)="handleChange($event)"
+        />
+        @if (label()) {
+            <span class="checkbox-text">{{ label() }}</span>
+        }
+    </label>
+</div>
