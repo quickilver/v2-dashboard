@@ -7,23 +7,28 @@
     </aside>
 
     <main class="listing-main">
-        <app-listing
-            [columns]="columns()"
-            [data]="settings()"
-            [loading]="loading()"
-            [meta]="meta()"
-            [pageSize]="pageSize()"
-            [page]="page()"
-            title="Настройки"
-            [actionsColumn]="true"
-            [searchable]="true"
-            (rowClick)="onRowClick($event)"
-            (searchChange)="onSearch($event.toString())"
-            (sortChange)="onSort($event)"
-            (pageChange)="onPageChange($event)"
-            (editClick)="onEdit($event)"
-            (deleteClick)="onDelete($event)"
-            (createClick)="createClick()"
-        />
+        <div class="settings-list">
+            @for (setting of settings(); track setting.id) {
+                <div class="settings-list__item">
+                    <app-setting-field
+                        [title]="setting.title"
+                        [type]="setting.type === 'checkbox' ? 'checkbox' : 'text'"
+                        [value]="setting.type === 'checkbox' ? (setting.value === '1' || setting.value === 'true') : setting.value ?? ''"
+                        [alias]="setting.alias"
+                        [options]="setting.options"
+                    />
+                    <div class="settings-list__actions">
+                        <button class="settings-list__btn" (click)="onEdit(setting)">✎</button>
+                        <button class="settings-list__btn settings-list__btn--danger" (click)="onDelete(setting)">✕</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (settings().length === 0) {
+            <div class="settings-empty">Нет настроек</div>
+        }
+
+        <button class="settings-create-btn" (click)="createClick()">+ Создать настройку</button>
     </main>
 </div>

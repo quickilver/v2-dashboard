@@ -1,21 +1,18 @@
 import { Component, signal, input, effect, untracked, ChangeDetectionStrategy, inject } from '@angular/core';
-import { ListingComponent } from '../../../listing/listing';
-import { ListingColumn } from '../../../../models/listing.model';
+import { SettingFieldComponent } from '../../../fields/setting-field/setting-field';
 import { SettingService } from '../../../../services/setting.service';
 import { SettingModel } from '../../../../models/setting.model';
 import { SettingsIndexResponse } from '../../../../models/responses/settings/settings-index.response';
-import { MetaModel } from '../../../../models/meta.model';
 import { ConfirmService } from '../../../../services/confirm.service';
 import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { SettingsEditorComponent } from '../settings-editor/settings-editor';
 import { SettingsGroupsComponent } from '../settings-groups/settings-groups';
-import { SettingIndexParams } from '../../../../models/params/setting-index.params';
 
 @Component({
     selector: 'app-settings-listing',
     standalone: true,
-    imports: [ListingComponent, SettingsGroupsComponent],
+    imports: [SettingFieldComponent, SettingsGroupsComponent],
     templateUrl: './settings-listing.html',
     styleUrl: './settings-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,33 +27,13 @@ export class SettingsListingComponent {
 
     readonly selectedGroup = signal<string | null>(null);
 
-    columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'alias', title: 'Алиас', sortable: true },
-        { key: 'type', title: 'Тип', sortable: true, width: '100px' },
-        { key: 'group', title: 'Группа', sortable: true },
-        { key: 'value', title: 'Значение', sortable: true },
-    ]);
-
     settings = signal<SettingModel[]>([]);
     loading = signal<boolean>(false);
-    meta = signal<MetaModel | null>(null);
-    pageSize = signal<number>(50);
-    page = signal<number>(1);
-
-    private currentSearch: string = '';
-    private currentSort: string = '';
-    private currentDirection: 'asc' | 'desc' = 'asc';
 
     constructor() {
         effect(() => {
-            // Reload whenever the group filter changes (untracked to avoid loops)
             const g = this.selectedGroup();
-            untracked(() => {
-                this.page.set(1);
-                this.loadSettings();
-            });
+            untracked(() => this.loadSettings());
         });
     }
 
@@ -67,18 +44,10 @@ export class SettingsListingComponent {
     async loadSettings(): Promise<void> {
         this.loading.set(true);
         try {
-            const params: SettingIndexParams = {
-                page: this.page(),
-                per_page: this.pageSize(),
-                query: this.currentSearch,
-                sort: this.currentSort,
-                direction: this.currentDirection,
+            const response: SettingsIndexResponse = await this.settingService.index({
                 group: this.selectedGroup() ?? undefined,
-            };
-
-            const response: SettingsIndexResponse = await this.settingService.index(params);
+            });
             this.settings.set(response.data);
-            this.meta.set(response.meta);
         } catch (error) {
             this.notificationService.error('Ошибка при загрузке настроек');
         } finally {
@@ -126,23 +95,5 @@ export class SettingsListingComponent {
         ).then(() => {
             this.loadSettings();
         });
-    }
-
-    onSearch(query: string): void {
-        this.currentSearch = query;
-        this.page.set(1);
-        this.loadSettings();
-    }
-
-    onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
-        this.currentSort = sort.key;
-        this.currentDirection = sort.direction;
-        this.page.set(1);
-        this.loadSettings();
-    }
-
-    onPageChange(page: number): void {
-        this.page.set(page);
-        this.loadSettings();
     }
 }

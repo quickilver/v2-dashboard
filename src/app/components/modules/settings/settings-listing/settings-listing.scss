@@ -18,5 +18,88 @@
 .listing-main {
     flex: 1;
     min-width: 0;
-    overflow: hidden;
+    overflow-y: auto;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 12px;
+        border-radius: 6px;
+        transition: background 0.15s;
+
+        &:hover {
+            background: #f5f5f5;
+
+            .settings-list__actions {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+
+    &__btn {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        transition: all 0.15s;
+
+        &:hover {
+            background: #e8e8e8;
+            border-color: #bbb;
+        }
+
+        &--danger:hover {
+            background: #ffe0e0;
+            border-color: #fcc;
+            color: #d32f2f;
+        }
+    }
+}
+
+.settings-empty {
+    padding: 32px;
+    text-align: center;
+    color: #999;
+}
+
+.settings-create-btn {
+    display: block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    width: 100%;
+    text-align: center;
+    transition: all 0.15s;
+
+    &:hover {
+        border-color: var(--primary-color, #4f6ef7);
+        color: var(--primary-color, #4f6ef7);
+        background: rgba(79, 110, 247, 0.05);
+    }
 }
