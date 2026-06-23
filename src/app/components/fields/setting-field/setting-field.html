@@ -1,0 +1,19 @@
+<div class="setting-field">
+    <div class="setting-field__control">
+        @switch (type()) {
+            @case ('text') {
+                <app-input-field
+                    [label]="title()"
+                    [(value)]="value"
+                />
+            }
+            @case ('checkbox') {
+                <app-checkbox-field
+                    [label]="''"
+                    [checked]="!!value()"
+                    (checkedChange)="value.set($event)"
+                />
+            }
+        }
+    </div>
+</div>

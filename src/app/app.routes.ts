@@ -6,6 +6,7 @@ import { StoreListingComponent } from './components/modules/stores/store-listing
 import { PricesListingComponent } from './components/modules/prices/prices-listing/prices-listing';
 import { CategoriesListingComponent } from './components/modules/categories/categories-listing/categories-listing';
 import { AttributesListingComponent } from './components/modules/attributes/attributes-listing/attributes-listing';
+import { SettingsListingComponent } from './components/modules/settings/settings-listing/settings-listing';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -16,4 +17,5 @@ export const routes: Routes = [
     { path: 'catalog/stores', component: StoreListingComponent },
     { path: 'catalog/prices', component: PricesListingComponent },
     { path: 'catalog/attributes', component: AttributesListingComponent },
+    { path: 'settings', component: SettingsListingComponent },
 ];

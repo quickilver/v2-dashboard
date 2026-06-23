@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+.listing-layout {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+.listing-sidebar {
+    flex-shrink: 0;
+    width: 240px;
+    overflow-y: auto;
+    box-shadow: $shadow;
+    background: #ffffff;
+    border-radius: $input-radius;
+}
+
+.listing-main {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}

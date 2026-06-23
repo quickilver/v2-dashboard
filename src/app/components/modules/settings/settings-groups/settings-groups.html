@@ -1,0 +1,13 @@
+<ul class="groups-list">
+    @for (group of groups(); track group) {
+        <li
+            class="group-item"
+            [class.is-active]="selectedGroup() === group"
+            (click)="selectGroup(group)"
+        >
+            {{ group }}
+        </li>
+    } @empty {
+        <li class="group-item group-item--empty">Группы не найдены</li>
+    }
+</ul>

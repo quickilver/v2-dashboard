@@ -1,0 +1,29 @@
+<div class="listing-layout">
+    <aside class="listing-sidebar">
+        <app-settings-groups
+            [settings]="settings()"
+            (groupSelected)="onGroupSelected($event)"
+        />
+    </aside>
+
+    <main class="listing-main">
+        <app-listing
+            [columns]="columns()"
+            [data]="settings()"
+            [loading]="loading()"
+            [meta]="meta()"
+            [pageSize]="pageSize()"
+            [page]="page()"
+            title="Настройки"
+            [actionsColumn]="true"
+            [searchable]="true"
+            (rowClick)="onRowClick($event)"
+            (searchChange)="onSearch($event.toString())"
+            (sortChange)="onSort($event)"
+            (pageChange)="onPageChange($event)"
+            (editClick)="onEdit($event)"
+            (deleteClick)="onDelete($event)"
+            (createClick)="createClick()"
+        />
+    </main>
+</div>
