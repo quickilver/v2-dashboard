@@ -35,7 +35,9 @@
                                 [class.disabled]="dayInfo.isDisabled"
                                 [disabled]="dayInfo.isDisabled"
                                 (mousedown)="selectDate(dayInfo)"
-                            >{{ dayInfo.day }}</button>
+                            >
+                                {{ dayInfo.day }}
+                            </button>
                         }
                     }
                 </div>

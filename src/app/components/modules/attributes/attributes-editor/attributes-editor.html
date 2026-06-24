@@ -28,15 +28,9 @@
                         [(value)]="title"
                     />
 
-                    <app-checkbox-field
-                        label="Отображать на сайте"
-                        [(checked)]="isDisplay"
-                    />
+                    <app-checkbox-field label="Отображать на сайте" [(checked)]="isDisplay" />
 
-                    <app-checkbox-field
-                        label="Использовать как фильтр"
-                        [(checked)]="isFilter"
-                    />
+                    <app-checkbox-field label="Использовать как фильтр" [(checked)]="isFilter" />
                 </div>
             }
 
@@ -48,7 +42,7 @@
         <div class="editor-actions">
             <button (click)="onCancel()">Отмена</button>
             <button class="primary" (click)="onSave()" [disabled]="saving()">
-                {{ saving() ? 'Сохранение...' : (isEditMode() ? 'Сохранить' : 'Создать') }}
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
             </button>
         </div>
     }

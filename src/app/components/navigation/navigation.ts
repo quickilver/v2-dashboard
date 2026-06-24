@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavigationItem } from '../../models/navigation-item.model';
-import { Module } from '../../models/module.model';
-import { ModulesService } from '../../services/modules.service';
+import { ModuleModel } from '../../models/module.model';
+import { ModuleService } from '../../services/module.service';
 import { IconComponent } from '../icon/icon';
 
 @Component({
@@ -16,7 +16,7 @@ import { IconComponent } from '../icon/icon';
 export class NavigationComponent {
     readonly navigation = signal<NavigationItem[]>([]);
 
-    private readonly modulesService = inject(ModulesService);
+    private readonly modulesService = inject(ModuleService);
 
     constructor() {
         this.loadNavigation();
@@ -27,7 +27,7 @@ export class NavigationComponent {
         this.navigation.set(response.data.map((module) => this.mapModuleToNavigation(module)));
     }
 
-    private mapModuleToNavigation(module: Module): NavigationItem {
+    private mapModuleToNavigation(module: ModuleModel): NavigationItem {
         return {
             title: module.title,
             route: module.path,

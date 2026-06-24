@@ -4,7 +4,7 @@ import { DOCUMENT } from '@angular/common';
 type PopupResolver = () => void;
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PopupService {
     private readonly _document: Document = inject(DOCUMENT);

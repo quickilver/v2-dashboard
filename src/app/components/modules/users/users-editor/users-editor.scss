@@ -1,0 +1,37 @@
+@use 'variables' as *;
+
+.modules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: $main-font-color;
+        padding: 6px 8px;
+        border-radius: 4px;
+
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        &.parent {
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        &.child {
+            padding-left: 32px;
+            font-weight: 400;
+        }
+
+        &:hover {
+            background-color: $grey-light;
+        }
+    }
+}

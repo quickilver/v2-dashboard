@@ -5,7 +5,7 @@ import {
     input,
     model,
     signal,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { PriceService } from '../../../../services/price.service';
@@ -18,7 +18,7 @@ import { NotificationService } from '../../../../services/notification.service';
     standalone: true,
     imports: [InputFieldComponent],
     templateUrl: './prices-editor.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PricesEditorComponent implements OnInit {
     private readonly priceService = inject(PriceService);
@@ -65,7 +65,7 @@ export class PricesEditorComponent implements OnInit {
             const data: Partial<PriceModel> = {
                 guid: this.guid().trim(),
                 title: this.title().trim(),
-                currency: this.currency().trim()
+                currency: this.currency().trim(),
             };
 
             if (this.isEditMode()) {

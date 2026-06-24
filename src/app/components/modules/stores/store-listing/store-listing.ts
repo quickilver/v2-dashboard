@@ -16,7 +16,7 @@ import { StoreIndexParams } from '../../../../models/params/store-index.params';
     standalone: true,
     imports: [ListingComponent],
     templateUrl: './store-listing.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreListingComponent implements OnInit {
     private readonly storeService = inject(StoreService);
@@ -27,7 +27,7 @@ export class StoreListingComponent implements OnInit {
     columns = signal<ListingColumn[]>([
         { key: 'id', title: 'ID', sortable: true, width: '60px' },
         { key: 'title', title: 'Название', sortable: true },
-        { key: 'address', title: 'Адрес', sortable: true }
+        { key: 'address', title: 'Адрес', sortable: true },
     ]);
 
     stores = signal<StoreModel[]>([]);
@@ -50,7 +50,7 @@ export class StoreListingComponent implements OnInit {
                 page: this.page(),
                 per_page: this.pageSize(),
                 sort: this.currentSort,
-                direction: this.currentDirection
+                direction: this.currentDirection,
             };
 
             const response: StoresIndexResponse = await this.storeService.index(params);
@@ -68,13 +68,11 @@ export class StoreListingComponent implements OnInit {
     }
 
     onEdit(store: StoreModel): void {
-        this.popupService.open(
-            'Редактирование магазина',
-            StoreEditorComponent,
-            { id: store.id }
-        ).then(() => {
-            this.loadStores();
-        });
+        this.popupService
+            .open('Редактирование магазина', StoreEditorComponent, { id: store.id })
+            .then(() => {
+                this.loadStores();
+            });
     }
 
     async onDelete(store: StoreModel): Promise<void> {
@@ -82,7 +80,7 @@ export class StoreListingComponent implements OnInit {
             'Удаление магазина',
             `Вы уверены, что хотите удалить магазин "${store.title}"?`,
             'Удалить',
-            'Отмена'
+            'Отмена',
         );
 
         if (confirmed) {
@@ -97,10 +95,7 @@ export class StoreListingComponent implements OnInit {
     }
 
     createClick(): void {
-        this.popupService.open(
-            'Создание магазина',
-            StoreEditorComponent
-        ).then(() => {
+        this.popupService.open('Создание магазина', StoreEditorComponent).then(() => {
             this.loadStores();
         });
     }

@@ -1,11 +1,4 @@
-import {
-    Component,
-    input,
-    output,
-    signal,
-    computed,
-    ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, input, output, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { DropdownFieldComponent } from '../fields/dropdown-field/dropdown-field';
@@ -26,8 +19,8 @@ export interface SortState {
     styleUrl: './listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
-        class: 'listing-wrapper'
-    }
+        class: 'listing-wrapper',
+    },
 })
 export class ListingComponent {
     columns = input<ListingColumn[]>([]);
@@ -125,12 +118,12 @@ export class ListingComponent {
         return [
             {
                 label: 'Редактировать',
-                action: () => this.onEditClick(item)
+                action: () => this.onEditClick(item),
             },
             {
                 label: 'Удалить',
-                action: () => this.onDeleteClick(item)
-            }
+                action: () => this.onDeleteClick(item),
+            },
         ];
     }
 

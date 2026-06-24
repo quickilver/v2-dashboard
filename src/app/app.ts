@@ -9,7 +9,13 @@ import { NotificationComponent } from './components/notification/notification';
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [LayoutComponent, LoginComponent, ConfirmComponent, PopupComponent, NotificationComponent],
+    imports: [
+        LayoutComponent,
+        LoginComponent,
+        ConfirmComponent,
+        PopupComponent,
+        NotificationComponent,
+    ],
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })

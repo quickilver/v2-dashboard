@@ -1,5 +1,5 @@
-import { Module } from '../../module.model';
+import { ModuleModel } from '../../module.model';
 
 export interface ModulesIndexResponse {
-    data: Module[];
+    data: ModuleModel[];
 }

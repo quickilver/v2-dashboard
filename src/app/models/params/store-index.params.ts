@@ -1,4 +1,4 @@
-export interface StoreIndexParams{
+export interface StoreIndexParams {
     page?: number;
     per_page?: number;
     query?: string;

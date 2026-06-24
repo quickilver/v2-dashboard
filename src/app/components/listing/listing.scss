@@ -57,7 +57,7 @@
                     &.sortable {
                         cursor: pointer;
 
-                        &.active{
+                        &.active {
                             app-icon {
                                 opacity: 1;
                             }
@@ -75,7 +75,7 @@
                     app-icon {
                         vertical-align: middle;
                         margin-left: 4px;
-                        opacity: .2;
+                        opacity: 0.2;
                     }
                 }
 
@@ -111,7 +111,7 @@
                         }
 
                         &:last-child {
-                            td{
+                            td {
                                 border-bottom: none;
                             }
                         }

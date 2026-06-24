@@ -9,10 +9,7 @@
                 <p class="notification__description">{{ notif.description }}</p>
             }
             <div class="notification__progress">
-                <div
-                    class="notification__progress-bar"
-                    [style.width.%]="notif.progress()"
-                ></div>
+                <div class="notification__progress-bar" [style.width.%]="notif.progress()"></div>
             </div>
         </div>
     }

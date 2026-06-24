@@ -25,7 +25,8 @@ export class CategoriesService {
             if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
-            if (params.parent_id !== undefined) httpParams = httpParams.set('parent_id', params.parent_id ?? '');
+            if (params.parent_id !== undefined)
+                httpParams = httpParams.set('parent_id', params.parent_id ?? '');
         }
         return firstValueFrom(
             this.http.get<CategoriesIndexResponse>(this.apiUrl, { params: httpParams }),

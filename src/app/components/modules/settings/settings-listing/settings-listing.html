@@ -1,34 +1,27 @@
-<div class="listing-layout">
-    <aside class="listing-sidebar">
-        <app-settings-groups
-            [settings]="settings()"
-            (groupSelected)="onGroupSelected($event)"
-        />
-    </aside>
-
-    <main class="listing-main">
-        <div class="settings-list">
-            @for (setting of settings(); track setting.id) {
-                <div class="settings-list__item">
-                    <app-setting-field
-                        [title]="setting.title"
-                        [type]="setting.type === 'checkbox' ? 'checkbox' : 'text'"
-                        [value]="setting.type === 'checkbox' ? (setting.value === '1' || setting.value === 'true') : setting.value ?? ''"
-                        [alias]="setting.alias"
-                        [options]="setting.options"
-                    />
-                    <div class="settings-list__actions">
-                        <button class="settings-list__btn" (click)="onEdit(setting)">✎</button>
-                        <button class="settings-list__btn settings-list__btn--danger" (click)="onDelete(setting)">✕</button>
-                    </div>
-                </div>
+<div class="settings-list">
+    @for (group of groupedSettings(); track group[0]) {
+        <div class="settings-group">
+            @if (group[0]) {
+                <h3 class="settings-group-title">{{ group[0] }}</h3>
             }
+            <div class="settings-group-body">
+                @for (setting of group[1]; track setting.id) {
+                    <div class="settings-list-item">
+                        <app-setting-field
+                            class="setting-field"
+                            [title]="setting.title"
+                            [type]="setting.type === 'checkbox' ? 'checkbox' : 'text'"
+                            [value]="setting.type === 'checkbox' ? (setting.value === '1' || setting.value === 'true') : setting.value ?? ''"
+                            [alias]="setting.alias"
+                            [options]="setting.options"
+                        />
+                    </div>
+                }
+            </div>
         </div>
-
-        @if (settings().length === 0) {
-            <div class="settings-empty">Нет настроек</div>
-        }
-
-        <button class="settings-create-btn" (click)="createClick()">+ Создать настройку</button>
-    </main>
+    }
 </div>
+
+@if (settings().length === 0) {
+    <div class="settings-empty">Нет настроек</div>
+}

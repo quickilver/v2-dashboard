@@ -1,0 +1,9 @@
+<div class="file-manager-layout">
+    <aside class="file-manager-sidebar">
+        <app-file-manager-tree [path]="path()" />
+    </aside>
+    <main class="file-manager-content">
+        <app-file-manager-upload [path]="path()" (uploadComplete)="onUploadComplete()" />
+        <app-file-manager-files [path]="path()" />
+    </main>
+</div>

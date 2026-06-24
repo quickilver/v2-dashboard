@@ -3,11 +3,7 @@
 } @else {
     <div class="editor-form">
         <div class="editor-body">
-            <app-input-field
-                label="GUID"
-                placeholder="Введите GUID магазина"
-                [(value)]="guid"
-            />
+            <app-input-field label="GUID" placeholder="Введите GUID магазина" [(value)]="guid" />
 
             <app-input-field
                 label="Название"
@@ -21,19 +17,14 @@
                 [(value)]="address"
             />
 
-            <app-checkbox-field
-                label="Отображать на сайте"
-                [(checked)]="display"
-            />
-
+            <app-checkbox-field label="Отображать на сайте" [(checked)]="display" />
         </div>
-
     </div>
 
     <div class="editor-actions">
         <button (click)="onCancel()">Отмена</button>
         <button class="primary" (click)="onSave()" [disabled]="saving()">
-            {{ saving() ? 'Сохранение...' : (isEditMode() ? 'Сохранить' : 'Создать') }}
+            {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
         </button>
     </div>
 }

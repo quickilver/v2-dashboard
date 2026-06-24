@@ -9,5 +9,4 @@ import { CategoriesTreeComponent } from '../../../categories-tree/categories-tre
     styleUrl: './categories-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoriesListingComponent {
-}
+export class CategoriesListingComponent {}

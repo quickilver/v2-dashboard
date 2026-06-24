@@ -16,7 +16,7 @@ import { AttributeIndexParams } from '../../../../models/params/attribute-index.
     standalone: true,
     imports: [ListingComponent],
     templateUrl: './attributes-listing.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttributesListingComponent implements OnInit {
     private readonly attributeService = inject(AttributeService);
@@ -27,8 +27,20 @@ export class AttributesListingComponent implements OnInit {
     columns = signal<ListingColumn[]>([
         { key: 'id', title: 'ID', sortable: true, width: '60px' },
         { key: 'title', title: 'Название', sortable: true },
-        { key: 'is_display', title: 'Отображение', sortable: true, type: 'boolean', labels: { true: 'Да', false: 'Нет' } },
-        { key: 'is_filter', title: 'Фильтр', sortable: true, type: 'boolean', labels: { true: 'Да', false: 'Нет' } }
+        {
+            key: 'is_display',
+            title: 'Отображение',
+            sortable: true,
+            type: 'boolean',
+            labels: { true: 'Да', false: 'Нет' },
+        },
+        {
+            key: 'is_filter',
+            title: 'Фильтр',
+            sortable: true,
+            type: 'boolean',
+            labels: { true: 'Да', false: 'Нет' },
+        },
     ]);
 
     attributes = signal<AttributeShortModel[]>([]);
@@ -51,7 +63,7 @@ export class AttributesListingComponent implements OnInit {
                 page: this.page(),
                 per_page: this.pageSize(),
                 sort: this.currentSort,
-                direction: this.currentDirection
+                direction: this.currentDirection,
             };
 
             const response: AttributesIndexResponse = await this.attributeService.index(params);
@@ -69,13 +81,11 @@ export class AttributesListingComponent implements OnInit {
     }
 
     onEdit(attribute: AttributeShortModel): void {
-        this.popupService.open(
-            'Редактирование характеристики',
-            AttributesEditorComponent,
-            { id: attribute.id }
-        ).then(() => {
-            this.loadAttributes();
-        });
+        this.popupService
+            .open('Редактирование характеристики', AttributesEditorComponent, { id: attribute.id })
+            .then(() => {
+                this.loadAttributes();
+            });
     }
 
     async onDelete(attribute: AttributeShortModel): Promise<void> {
@@ -83,7 +93,7 @@ export class AttributesListingComponent implements OnInit {
             'Удаление характеристики',
             `Вы уверены, что хотите удалить характеристику "${attribute.title}"?`,
             'Удалить',
-            'Отмена'
+            'Отмена',
         );
 
         if (confirmed) {
@@ -98,10 +108,7 @@ export class AttributesListingComponent implements OnInit {
     }
 
     createClick(): void {
-        this.popupService.open(
-            'Создание характеристики',
-            AttributesEditorComponent
-        ).then(() => {
+        this.popupService.open('Создание характеристики', AttributesEditorComponent).then(() => {
             this.loadAttributes();
         });
     }

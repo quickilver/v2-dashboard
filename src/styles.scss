@@ -65,11 +65,12 @@ body.popup-open {
 }
 
 * {
-    font-family: 'Manrope',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+    font-family:
+        'Manrope',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
 }
 
 html,
@@ -130,7 +131,7 @@ body {
             padding: 4px 6px;
             color: #ffffff;
             border-radius: 4px;
-                background: $primary-color;
+            background: $primary-color;
         }
 
         &.is-active {
@@ -146,7 +147,7 @@ body {
 .popup-body {
     .tabs {
         padding: 0 20px;
-        background: linear-gradient(to top, rgba(255, 255, 255, .4), rgba(255, 255, 255, 1));
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 1));
         position: sticky;
         top: 0;
     }

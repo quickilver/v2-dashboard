@@ -6,7 +6,7 @@ import {
     model,
     signal,
     forwardRef,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import { CategoriesService } from '../../services/categories.service';
 import { IconComponent } from '../icon/icon';
@@ -24,7 +24,7 @@ import { ConfirmService } from '../../services/confirm.service';
     imports: [IconComponent, forwardRef(() => CategoriesTreeComponent), DropdownFieldComponent],
     templateUrl: './categories-tree.html',
     styleUrl: './categories-tree.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesTreeComponent implements OnInit {
     private readonly confirmService = inject(ConfirmService);
@@ -53,13 +53,13 @@ export class CategoriesTreeComponent implements OnInit {
                 parent_id: this.parentId(),
                 per_page: 100,
                 sort: 'position',
-                direction: 'desc'
+                direction: 'desc',
             });
             this.nodes.set(
                 response.data.map((category) => ({
                     category,
-                    expanded: false
-                }))
+                    expanded: false,
+                })),
             );
             this.loaded.set(true);
         } finally {
@@ -98,16 +98,14 @@ export class CategoriesTreeComponent implements OnInit {
         return this.value() === categoryId;
     }
 
-
     async onCreate(parentId: number): Promise<void> {
-        const { CategoriesEditorComponent } = await import('../modules/categories/categories-editor/categories-editor');
-        this.popupService.open(
-            'Создание категории',
-            CategoriesEditorComponent,
-            { parentId }
-        ).then(() => {
-            this.load();
-        });
+        const { CategoriesEditorComponent } =
+            await import('../modules/categories/categories-editor/categories-editor');
+        this.popupService
+            .open('Создание категории', CategoriesEditorComponent, { parentId })
+            .then(() => {
+                this.load();
+            });
     }
 
     onChangePosition(category: Category, event: Event): void {
@@ -122,7 +120,9 @@ export class CategoriesTreeComponent implements OnInit {
                 this.load();
             })
             .catch((e) => {
-                this.notificationsService.error(e.error?.message || 'Ошибка при обновлении позиции');
+                this.notificationsService.error(
+                    e.error?.message || 'Ошибка при обновлении позиции',
+                );
             });
     }
 
@@ -132,44 +132,42 @@ export class CategoriesTreeComponent implements OnInit {
         }
 
         if (this.editable()) {
-            const { CategoriesEditorComponent } = await import('../modules/categories/categories-editor/categories-editor');
-            this.popupService.open(
-                'Редактирование категории',
-                CategoriesEditorComponent,
-                { id: category.id }
-            ).then(() => {
-                this.load();
-            });
+            const { CategoriesEditorComponent } =
+                await import('../modules/categories/categories-editor/categories-editor');
+            this.popupService
+                .open('Редактирование категории', CategoriesEditorComponent, { id: category.id })
+                .then(() => {
+                    this.load();
+                });
         }
     }
 
     onDeleteClick(category: Category): void {
-        this.confirmService.confirm(
-            'Удаление категории',
-            'Удалить категорию ' + category.title + '?'
-        ).then(() => {
-            this.categoriesService
-                .delete(category.id)
-                .then(() => {
-                    this.notificationsService.success('Категория удалена');
-                    this.load();
-                })
-                .catch((e) => {
-                    this.notificationsService.error(e.error.message);
-                });
-        });
+        this.confirmService
+            .confirm('Удаление категории', 'Удалить категорию ' + category.title + '?')
+            .then(() => {
+                this.categoriesService
+                    .delete(category.id)
+                    .then(() => {
+                        this.notificationsService.success('Категория удалена');
+                        this.load();
+                    })
+                    .catch((e) => {
+                        this.notificationsService.error(e.error.message);
+                    });
+            });
     }
 
     getRowActions(item: any): DropdownOption[] {
         return [
             {
                 label: 'Редактировать',
-                action: () => this.onClick(item)
+                action: () => this.onClick(item),
             },
             {
                 label: 'Удалить',
-                action: () => this.onDeleteClick(item)
-            }
+                action: () => this.onDeleteClick(item),
+            },
         ];
     }
 }

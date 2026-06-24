@@ -1,0 +1,32 @@
+<div class="field-container" (mouseleave)="close()">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+
+    <div class="autocomplete-wrapper">
+        <input
+            type="text"
+            class="input-field"
+            [placeholder]="placeholder()"
+            [value]="search()"
+            (input)="onInput($event)"
+            (keydown)="onKeydown($event)"
+            (focus)="isOpen.set(search().length > 0)"
+            autocomplete="off"
+        />
+
+        @if (isOpen() && filteredOptions().length > 0) {
+            <ul class="autocomplete-menu">
+                @for (option of filteredOptions(); track $index; let i = $index) {
+                    <li
+                        class="autocomplete-item"
+                        [class.active]="activeIndex() === i"
+                        (click)="selectOption(option)"
+                    >
+                        {{ option.label }}
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

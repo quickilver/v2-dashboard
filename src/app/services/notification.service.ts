@@ -12,7 +12,7 @@ export interface NotificationItem {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NotificationService {
     readonly notifications: WritableSignal<NotificationItem[]> = signal<NotificationItem[]>([]);
@@ -31,7 +31,6 @@ export class NotificationService {
 
         this._startTimer(item);
     }
-
 
     error(title: string, description?: string): void {
         this.add('error', title, description);

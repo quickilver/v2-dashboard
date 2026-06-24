@@ -1,0 +1,43 @@
+<div class="field-container" (mouseleave)="close()">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+
+    <div class="autocomplete-wrapper">
+        <input
+            type="text"
+            class="input-field"
+            [placeholder]="placeholder()"
+            [value]="search()"
+            (input)="onInput($event)"
+            (keydown)="onKeydown($event)"
+            (focus)="isOpen.set(search().length > 0)"
+            autocomplete="off"
+        />
+
+        @if (isOpen()) {
+            @if (loading()) {
+                <ul class="autocomplete-menu">
+                    <li class="autocomplete-item autocomplete-item--info">Loading...</li>
+                </ul>
+            } @else if (filteredProducts().length > 0) {
+                <ul class="autocomplete-menu">
+                    @for (product of filteredProducts(); track product.id; let i = $index) {
+                        <li
+                            class="autocomplete-item"
+                            [class.active]="activeIndex() === i"
+                            (click)="selectProduct(product)"
+                        >
+                            <span class="product-title">{{ product.title }}</span>
+                            <span class="product-sku">{{ product.sku }}</span>
+                        </li>
+                    }
+                </ul>
+            } @else {
+                <ul class="autocomplete-menu">
+                    <li class="autocomplete-item autocomplete-item--info">No products found</li>
+                </ul>
+            }
+        }
+    </div>
+</div>

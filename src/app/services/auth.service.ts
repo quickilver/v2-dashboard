@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthLoginResponse } from '../models/responses/auth/auth-login.response';
-import { User } from '../models/user.model';
+import { UserModel } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +14,7 @@ export class AuthService {
     private readonly userKey = 'auth_user';
 
     readonly isAuthenticated = signal<boolean>(false);
-    readonly user = signal<User | null>(null);
+    readonly user = signal<UserModel | null>(null);
 
     constructor(private http: HttpClient) {
         this.loadFromStorage();
@@ -58,7 +58,7 @@ export class AuthService {
 
         if (token && userData) {
             try {
-                const user = JSON.parse(userData) as User;
+                const user = JSON.parse(userData) as UserModel;
                 this.isAuthenticated.set(true);
                 this.user.set(user);
             } catch {

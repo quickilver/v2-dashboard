@@ -5,7 +5,7 @@ import {
     input,
     model,
     signal,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-field';
@@ -21,7 +21,7 @@ import { CategoriesTreeComponent } from '../../../categories-tree/categories-tre
     imports: [InputFieldComponent, CheckboxFieldComponent, CategoriesTreeComponent],
     templateUrl: './categories-editor.html',
     styleUrl: './categories-editor.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesEditorComponent implements OnInit {
     private readonly categoriesService = inject(CategoriesService);
@@ -82,7 +82,7 @@ export class CategoriesEditorComponent implements OnInit {
                 alias: this.alias().trim(),
                 parent_id: this.parent(),
                 display: this.display(),
-                position: this.position()
+                position: this.position(),
             };
 
             if (this.isEditMode()) {

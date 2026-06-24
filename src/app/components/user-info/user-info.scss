@@ -10,7 +10,7 @@
     border-radius: 5px;
     margin-bottom: 20px;
 
-    .user-icon{
+    .user-icon {
         font-size: 34px;
         height: 34px !important;
         width: 34px !important;
@@ -26,7 +26,7 @@
     .logout {
         display: flex;
         width: 34px;
-        height:34px;
+        height: 34px;
         background: $grey-light;
         align-items: center;
         justify-content: center;
@@ -34,7 +34,7 @@
         border-radius: 5px;
         cursor: pointer;
 
-        &:hover{
+        &:hover {
             background: $grey-light-2;
         }
 

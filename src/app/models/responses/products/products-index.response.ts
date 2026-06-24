@@ -1,7 +1,7 @@
 import { MetaModel } from '../../meta.model';
-import { ProductShort } from '../../products/product-short.model';
+import { ProductIndex } from '../../products/product-short.model';
 
 export interface ProductsIndexResponse {
-    data: ProductShort[];
+    data: ProductIndex[];
     meta: MetaModel;
 }

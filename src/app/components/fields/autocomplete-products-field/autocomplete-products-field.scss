@@ -1,0 +1,87 @@
+@use '../../../../styles/variables' as *;
+
+.field-container {
+    display: flex;
+    flex-direction: column;
+
+    .label-field {
+        font-size: 14px;
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+}
+
+.autocomplete-wrapper {
+    position: relative;
+
+    .input-field {
+        width: 100%;
+        box-sizing: border-box;
+        background: $input-background-color;
+        border: 1px solid $input-border-color;
+        padding: 8px 12px;
+        border-radius: $input-radius;
+        outline: none;
+        transition: 0.3s ease-in-out;
+    }
+}
+
+.autocomplete-menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: #ffffff;
+    border: 1px solid $input-border-color;
+    border-radius: $input-radius;
+    box-shadow: $shadow;
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
+
+    .autocomplete-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.15s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+
+        &:hover,
+        &.active {
+            background-color: $grey-light;
+        }
+
+        &.active {
+            background-color: $grey-light-2;
+        }
+
+        &--info {
+            cursor: default;
+            color: $grey;
+            justify-content: center;
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+
+    .product-title {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .product-sku {
+        font-size: 12px;
+        color: $grey;
+        flex-shrink: 0;
+    }
+}

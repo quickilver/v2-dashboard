@@ -38,10 +38,7 @@
                         [(value)]="position"
                     />
 
-                    <app-checkbox-field
-                        label="Отображать на сайте"
-                        [(checked)]="display"
-                    />
+                    <app-checkbox-field label="Отображать на сайте" [(checked)]="display" />
                 </div>
             }
 
@@ -49,13 +46,12 @@
                 <div class="current-category">Выбранная категория: {{ parent() }}</div>
                 <app-categories-tree [parentId]="0" [selectable]="true" [(value)]="parent" />
             }
-
         </div>
 
         <div class="editor-actions">
             <button (click)="onCancel()">Отмена</button>
             <button class="primary" (click)="onSave()" [disabled]="saving()">
-                {{ saving() ? 'Сохранение...' : (isEditMode() ? 'Сохранить' : 'Создать') }}
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
             </button>
         </div>
     }

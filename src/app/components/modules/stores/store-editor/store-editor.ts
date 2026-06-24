@@ -5,7 +5,7 @@ import {
     input,
     model,
     signal,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-field';
@@ -19,7 +19,7 @@ import { NotificationService } from '../../../../services/notification.service';
     standalone: true,
     imports: [InputFieldComponent, CheckboxFieldComponent],
     templateUrl: './store-editor.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreEditorComponent implements OnInit {
     private readonly storeService = inject(StoreService);
@@ -69,7 +69,7 @@ export class StoreEditorComponent implements OnInit {
                 guid: this.guid().trim(),
                 title: this.title().trim(),
                 address: this.address().trim(),
-                display: this.display()
+                display: this.display(),
             };
 
             if (this.isEditMode()) {

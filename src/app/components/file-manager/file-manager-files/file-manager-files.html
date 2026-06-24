@@ -1,0 +1,50 @@
+<table>
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th class="column-time">Время создания/изменения</th>
+        <th class="column-size">Размер</th>
+    </tr>
+    </thead>
+    <tbody>
+        @if (loading()) {
+            <div class="files-loading">Loading…</div>
+        } @else {
+
+            @if (directories().length) {
+                @for (dir of directories(); track dir.path) {
+                    <tr>
+                        <td>
+                            <div class="file-item">
+                                <app-icon name="folder" />
+                                <span>{{ dir.name }}</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+            @if (files().length) {
+                @for (file of files(); track file.path) {
+                    <tr>
+                        <td>
+                            <div class="file-item">
+                                <app-icon name="file" />
+                                <span>{{ file.name }}</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+
+            @if (!files().length && !directories().length) {
+                <tr>
+                    <td colspan="3">No files</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

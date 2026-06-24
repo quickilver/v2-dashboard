@@ -22,11 +22,8 @@
                         (blur)="onValueBlur($index, valInput.value)"
                         (keyup.enter)="onValueBlur($index, valInput.value); valInput.blur()"
                     />
-                    <button
-                        class="value-delete"
-                        (click)="deleteValue($index)"
-                        title="Удалить"
-                    >✕
+                    <button class="value-delete" (click)="deleteValue($index)" title="Удалить">
+                        ✕
                     </button>
                 </div>
             }

@@ -14,7 +14,7 @@ interface DayInfo {
     templateUrl: './calendar-field.html',
     styleUrl: './calendar-field.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true
+    standalone: true,
 })
 export class CalendarFieldComponent {
     label = input<string>('');
@@ -31,8 +31,18 @@ export class CalendarFieldComponent {
     weekDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     private monthNames: string[] = [
-        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь',
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
     ];
 
     get monthName(): string {
@@ -59,7 +69,13 @@ export class CalendarFieldComponent {
         const result: DayInfo[] = [];
 
         for (let i = 0; i < startDay; i++) {
-            result.push({ day: 0, isDisabled: true, isToday: false, isSelected: false, date: new Date(0) });
+            result.push({
+                day: 0,
+                isDisabled: true,
+                isToday: false,
+                isSelected: false,
+                date: new Date(0),
+            });
         }
 
         for (let d = 1; d <= daysInMonth; d++) {
@@ -103,7 +119,7 @@ export class CalendarFieldComponent {
     }
 
     toggleCalendar(): void {
-        this.isOpen.update(v => !v);
+        this.isOpen.update((v) => !v);
     }
 
     closeCalendar(): void {
@@ -119,26 +135,26 @@ export class CalendarFieldComponent {
     prevMonth(): void {
         if (this.currentMonth() === 0) {
             this.currentMonth.set(11);
-            this.currentYear.update(y => y - 1);
+            this.currentYear.update((y) => y - 1);
         } else {
-            this.currentMonth.update(m => m - 1);
+            this.currentMonth.update((m) => m - 1);
         }
     }
 
     nextMonth(): void {
         if (this.currentMonth() === 11) {
             this.currentMonth.set(0);
-            this.currentYear.update(y => y + 1);
+            this.currentYear.update((y) => y + 1);
         } else {
-            this.currentMonth.update(m => m + 1);
+            this.currentMonth.update((m) => m + 1);
         }
     }
 
     prevYear(): void {
-        this.currentYear.update(y => y - 1);
+        this.currentYear.update((y) => y - 1);
     }
 
     nextYear(): void {
-        this.currentYear.update(y => y + 1);
+        this.currentYear.update((y) => y + 1);
     }
 }

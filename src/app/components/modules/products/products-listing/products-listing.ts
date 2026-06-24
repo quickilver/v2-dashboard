@@ -2,7 +2,7 @@ import { Component, signal, ChangeDetectionStrategy, OnInit, inject } from '@ang
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { ProductService, ProductIndexParams } from '../../../../services/product.service';
-import { ProductShort } from '../../../../models/products/product-short.model';
+import { ProductIndex } from '../../../../models/products/product-short.model';
 import { ProductsIndexResponse } from '../../../../models/responses/products/products-index.response';
 import { MetaModel } from '../../../../models/meta.model';
 import { ConfirmService } from '../../../../services/confirm.service';
@@ -25,7 +25,7 @@ export class ProductsListingComponent implements OnInit {
         { key: 'sku', title: 'Артикул', sortable: true },
     ]);
 
-    products = signal<ProductShort[]>([]);
+    products = signal<ProductIndex[]>([]);
     loading = signal<boolean>(false);
     meta = signal<MetaModel | null>(null);
     pageSize = signal<number>(50);
@@ -60,15 +60,15 @@ export class ProductsListingComponent implements OnInit {
         }
     }
 
-    onRowClick(product: ProductShort): void {
+    onRowClick(product: ProductIndex): void {
         console.log('Row clicked:', product);
     }
 
-    onEdit(product: ProductShort): void {
+    onEdit(product: ProductIndex): void {
         console.log('Edit product:', product);
     }
 
-    async onDelete(product: ProductShort): Promise<void> {
+    async onDelete(product: ProductIndex): Promise<void> {
         const confirmed = await this.confirmService.confirm(
             'Удаление товара',
             `Вы уверены, что хотите удалить товар "${product.title}"?`,

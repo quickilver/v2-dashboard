@@ -1,0 +1,31 @@
+@use 'variables' as *;
+
+.upload-area {
+    margin-bottom: 12px;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: $primary-color;
+    color: #ffffff;
+    border-radius: $input-radius;
+    cursor: pointer;
+    font-size: 14px;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.9;
+    }
+
+    &.is-uploading {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+}

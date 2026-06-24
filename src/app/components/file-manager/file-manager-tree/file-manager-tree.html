@@ -1,0 +1,16 @@
+@if (loading()) {
+    <div class="tree-loading">Loading...</div>
+} @else {
+    <ul class="tree-list">
+        @for (dir of directories(); track dir.path) {
+            <li class="tree-item">
+                <div class="tree-folder">
+                    <app-icon name="folder" />
+                    <span class="folder-name">{{ dir.name }}</span>
+                </div>
+            </li>
+        } @empty {
+            <li class="tree-empty">No folders</li>
+        }
+    </ul>
+}

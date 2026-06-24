@@ -1,4 +1,4 @@
-export interface ProductShort {
+export interface ProductIndex {
     id: number;
     title: string;
     sku: string;

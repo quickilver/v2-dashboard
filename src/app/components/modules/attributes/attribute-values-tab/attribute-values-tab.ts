@@ -8,7 +8,7 @@ import { AttributeValuesStoreModel } from '../../../../models/attributes/attribu
     imports: [FormsModule],
     templateUrl: './attribute-values-tab.html',
     styleUrl: './attribute-values-tab.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttributeValuesTabComponent {
     values = model.required<AttributeValuesStoreModel[]>();
@@ -18,7 +18,7 @@ export class AttributeValuesTabComponent {
         const value = this.newValue().trim();
         if (!value) return;
 
-        this.values.update(vals => [...vals, { id: null, value }]);
+        this.values.update((vals) => [...vals, { id: null, value }]);
         this.newValue.set('');
     }
 
@@ -26,13 +26,13 @@ export class AttributeValuesTabComponent {
         const trimmed: string = newVal.trim();
         if (!trimmed) return;
 
-        this.values.update(vals =>
-            vals.map((value, i) => i === index ? { ...value, value: trimmed } : value)
+        this.values.update((vals) =>
+            vals.map((value, i) => (i === index ? { ...value, value: trimmed } : value)),
         );
     }
 
     deleteValue(index: number): void {
-        this.values.update(vals => vals.filter((_, i) => i !== index));
+        this.values.update((vals) => vals.filter((_, i) => i !== index));
     }
 
     onValueBlur(index: number, newVal: string): void {

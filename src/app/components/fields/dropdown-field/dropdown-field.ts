@@ -5,9 +5,7 @@ import { IconComponent } from '../../icon/icon';
 @Component({
     selector: 'app-dropdown-field',
     standalone: true,
-    imports: [
-        IconComponent
-    ],
+    imports: [IconComponent],
     templateUrl: './dropdown-field.html',
     styleUrl: './dropdown-field.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +17,7 @@ export class DropdownFieldComponent {
     isOpen = signal<boolean>(false);
 
     toggle(): void {
-        this.isOpen.update(value => !value);
+        this.isOpen.update((value) => !value);
     }
 
     selectOption(option: DropdownOption): void {

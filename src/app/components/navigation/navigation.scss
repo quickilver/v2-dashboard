@@ -32,7 +32,7 @@
                 > a {
                     font-weight: bold;
 
-                    .nav-icon{
+                    .nav-icon {
                         font-size: 20px;
                         height: 20px !important;
                     }
@@ -47,7 +47,7 @@
             &:before {
                 content: '';
                 position: absolute;
-                left: -8px;
+                left: -10px;
                 top: 5px;
                 border-left: 1px solid #adadad;
                 height: calc(100% - 20px);
@@ -59,7 +59,7 @@
                 &:before {
                     content: '';
                     position: absolute;
-                    left: -8px;
+                    left: -10px;
                     top: 16px;
                     height: 1px;
                     width: 10px;

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, input, model, signal, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    input,
+    model,
+    signal,
+    OnInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-field';
@@ -12,10 +20,14 @@ import { AttributeStoreModel } from '../../../../models/attributes/attribute-sto
 @Component({
     selector: 'app-attributes-editor',
     standalone: true,
-    imports: [FormsModule, InputFieldComponent, CheckboxFieldComponent, AttributeValuesTabComponent],
+    imports: [
+        FormsModule,
+        InputFieldComponent,
+        CheckboxFieldComponent,
+        AttributeValuesTabComponent,
+    ],
     templateUrl: './attributes-editor.html',
-    styleUrl: './attributes-editor.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttributesEditorComponent implements OnInit {
     private readonly attributeService = inject(AttributeService);
@@ -53,7 +65,7 @@ export class AttributesEditorComponent implements OnInit {
             this.title.set(attribute.title);
             this.isDisplay.set(attribute.is_display);
             this.isFilter.set(attribute.is_filter);
-            this.values.set(attribute.values.map(v => ({ id: v.id, value: v.value })));
+            this.values.set(attribute.values.map((v) => ({ id: v.id, value: v.value })));
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные характеристики');
         } finally {
@@ -70,7 +82,7 @@ export class AttributesEditorComponent implements OnInit {
                 title: this.title().trim(),
                 is_display: this.isDisplay(),
                 is_filter: this.isFilter(),
-                values: this.values()
+                values: this.values(),
             };
 
             if (this.isEditMode()) {

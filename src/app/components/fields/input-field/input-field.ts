@@ -5,7 +5,7 @@ import { Component, Input, input, InputSignal, model, ModelSignal } from '@angul
     standalone: true,
     imports: [],
     templateUrl: './input-field.html',
-    styleUrl: './input-field.scss'
+    styleUrl: './input-field.scss',
 })
 export class InputFieldComponent {
     label: InputSignal<string> = input<string>('');

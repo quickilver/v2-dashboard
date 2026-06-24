@@ -1,0 +1,42 @@
+@use 'variables' as *;
+
+
+table {
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+        th {
+            text-align: left;
+        }
+    }
+
+    tbody {
+        tr {
+            &:hover{
+                td{
+                    background: $grey-light-2;
+                }
+            }
+
+            td {
+                text-align: left;
+                padding: 4px;
+                border-bottom: 1px solid $grey-light-2;
+                vertical-align: center;
+
+                .file-item{
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+
+                app-icon {
+                    font-size: 18px;
+                    height: 18px !important;
+                    width: 18px !important;
+                }
+            }
+        }
+    }
+}

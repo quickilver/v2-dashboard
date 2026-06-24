@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.file-manager-layout {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+.file-manager-sidebar {
+    background: #ffffff;
+    width: 350px;
+    min-width: 350px;
+    padding: 10px;
+    overflow-y: auto;
+    box-shadow: $shadow;
+    border-radius: $input-radius;
+}
+
+.file-manager-content {
+    flex: 1;
+    overflow-y: auto;
+}

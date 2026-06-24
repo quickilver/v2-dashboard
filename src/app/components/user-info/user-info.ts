@@ -5,9 +5,7 @@ import { IconComponent } from '../icon/icon';
 @Component({
     selector: 'app-user-info',
     standalone: true,
-    imports: [
-        IconComponent
-    ],
+    imports: [IconComponent],
     templateUrl: './user-info.html',
     styleUrl: './user-info.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, computed, Input, input, model } from '@angular/core';
 import { InputFieldComponent } from '../input-field/input-field';
 import { CheckboxFieldComponent } from '../checkbox-field/checkbox-field';
 
@@ -7,7 +7,6 @@ import { CheckboxFieldComponent } from '../checkbox-field/checkbox-field';
     standalone: true,
     imports: [InputFieldComponent, CheckboxFieldComponent],
     templateUrl: './setting-field.html',
-    styleUrl: './setting-field.scss',
 })
 export class SettingFieldComponent {
     title = input<string>('');
@@ -15,4 +14,11 @@ export class SettingFieldComponent {
     value = model<string | number | boolean>('');
     alias = input<string>('');
     options = input<any>(null);
+
+    // Derived signal for text input compatibility (string | number only)
+    textValue = computed<string | number>(() => {
+        const v = this.value();
+        return typeof v === 'boolean' ? '' : v;
+    });
+
 }

@@ -16,7 +16,7 @@ import { PriceIndexParams } from '../../../../models/params/price-index.params';
     standalone: true,
     imports: [ListingComponent],
     templateUrl: './prices-listing.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PricesListingComponent implements OnInit {
     private readonly priceService = inject(PriceService);
@@ -27,7 +27,7 @@ export class PricesListingComponent implements OnInit {
     columns = signal<ListingColumn[]>([
         { key: 'id', title: 'ID', sortable: true, width: '60px' },
         { key: 'title', title: 'Название', sortable: true },
-        { key: 'currency', title: 'Валюта', sortable: true }
+        { key: 'currency', title: 'Валюта', sortable: true },
     ]);
 
     prices = signal<PriceModel[]>([]);
@@ -50,7 +50,7 @@ export class PricesListingComponent implements OnInit {
                 page: this.page(),
                 per_page: this.pageSize(),
                 sort: this.currentSort,
-                direction: this.currentDirection
+                direction: this.currentDirection,
             };
 
             const response: PricesIndexResponse = await this.priceService.index(params);
@@ -68,13 +68,11 @@ export class PricesListingComponent implements OnInit {
     }
 
     onEdit(price: PriceModel): void {
-        this.popupService.open(
-            'Редактирование цены',
-            PricesEditorComponent,
-            { id: price.id }
-        ).then(() => {
-            this.loadPrices();
-        });
+        this.popupService
+            .open('Редактирование цены', PricesEditorComponent, { id: price.id })
+            .then(() => {
+                this.loadPrices();
+            });
     }
 
     async onDelete(price: PriceModel): Promise<void> {
@@ -82,7 +80,7 @@ export class PricesListingComponent implements OnInit {
             'Удаление цены',
             `Вы уверены, что хотите удалить цену "${price.title}"?`,
             'Удалить',
-            'Отмена'
+            'Отмена',
         );
 
         if (confirmed) {
@@ -97,10 +95,7 @@ export class PricesListingComponent implements OnInit {
     }
 
     createClick(): void {
-        this.popupService.open(
-            'Создание цены',
-            PricesEditorComponent
-        ).then(() => {
+        this.popupService.open('Создание цены', PricesEditorComponent).then(() => {
             this.loadPrices();
         });
     }
