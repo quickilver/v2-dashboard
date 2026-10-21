@@ -1,0 +1,83 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">Загрузка...</div>
+    } @else {
+        <div class="tabs top-line">
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                Информация
+            </div>
+            <div [class.is-active]="isActiveTab('seo')" (click)="changeTab('seo')">
+                SEO
+            </div>
+            <div [class.is-active]="isActiveTab('content')" (click)="changeTab('content')">
+                Контент
+            </div>
+        </div>
+
+        <div class="editor-form">
+            @if (isActiveTab('info')) {
+                <div class="editor-body">
+                    <app-input-field
+                        label="Название"
+                        placeholder="Введите название страницы"
+                        [(value)]="title"
+                    />
+
+                    <app-input-field
+                        label="Алиас"
+                        placeholder="Введите алиас страницы"
+                        [(value)]="alias"
+                    />
+
+                    <app-input-field
+                        label="H1"
+                        placeholder="Введите H1 заголовок"
+                        [(value)]="h1"
+                    />
+
+                    <app-checkbox-field label="Отображать на сайте" [(checked)]="display" />
+                </div>
+            }
+
+            @if (isActiveTab('seo')) {
+                <div class="editor-body">
+                    <app-input-field
+                        label="SEO Title"
+                        placeholder="Введите SEO заголовок"
+                        [(value)]="seoTitle"
+                    />
+
+                    <app-input-field
+                        label="SEO Description"
+                        placeholder="Введите SEO описание"
+                        [(value)]="seoDescription"
+                    />
+
+                    <app-input-field
+                        label="SEO Keywords"
+                        placeholder="Введите SEO ключевые слова"
+                        [(value)]="seoKeywords"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('content')) {
+                <div class="editor-body editor-body--full">
+                    <app-wyswig-field
+                        class="page-content"
+                        label="Контент"
+                        placeholder="Введите содержимое страницы"
+                        [(value)]="content"
+                    />
+                </div>
+            }
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="saving()">
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+            </button>
+        </div>
+    }
+</div>

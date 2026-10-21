@@ -1,0 +1,10 @@
+<div class="address-bar">
+    <span class="address-label">Адрес:</span>
+    <div class="address-breadcrumbs">
+        <span class="crumb" (click)="navigate.emit('')">/</span>
+        @for (segment of segments(); track $index) {
+            <app-icon name="chevron-right" class="crumb-separator" />
+            <span class="crumb" (click)="navigate.emit(segmentPath($index))">{{ segment }}</span>
+        }
+    </div>
+</div>

@@ -68,10 +68,16 @@ export class UsersListingComponent implements OnInit {
 
     onEdit(user: UserShort): void {
         this.popupService
-            .open('Редактирование магазина', UsersEditorComponent, { id: user.id })
+            .open('Редактирование пользователя', UsersEditorComponent, { id: user.id })
             .then(() => {
                 this.loadUsers();
             });
+    }
+
+    createClick(): void {
+        this.popupService.open('Создание пользователя', UsersEditorComponent).then(() => {
+            this.loadUsers();
+        });
     }
 
     async onDelete(user: UserShort): Promise<void> {

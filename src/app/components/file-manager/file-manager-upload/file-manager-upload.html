@@ -1,12 +1,10 @@
-<div class="upload-area">
-    <label class="upload-button" [class.is-uploading]="uploading()">
-        <input
-            #fileInput
-            type="file"
-            (change)="onFileSelected($event)"
-            [disabled]="uploading()"
-        />
-        <app-icon name="upload" [size]="20" />
-        <span>{{ uploading() ? 'Uploading...' : 'Upload file' }}</span>
-    </label>
-</div>
+<label class="upload-button" [class.is-uploading]="uploading()">
+    <app-icon name="file" class="icon" />
+    <input
+        #fileInput
+        type="file"
+        (change)="onFileSelected($event)"
+        [disabled]="uploading()"
+    />
+    <span class>{{ uploading() ? 'загрузка...' : 'Загрузить файл' }}</span>
+</label>

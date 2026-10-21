@@ -1,12 +1,14 @@
-@if (popupService.isShow()) {
-    <div class="popup-overlay">
+@for (entry of popupService.stack(); track entry.id) {
+    <div class="popup-overlay" [style.z-index]="1000 + (popupService.stack().length - 1 - $index)">
         <div class="popup-dialog">
             <div class="popup-header">
-                <div class="popup-title">{{ popupService.title() }}</div>
-                <button class="popup-close" (click)="popupService.resolve()">✕</button>
+                <div class="popup-title">{{ entry.title }}</div>
+                @if ($first) {
+                    <button class="popup-close" (click)="popupService.resolve()">✕</button>
+                }
             </div>
             <div class="popup-body">
-                <ng-container *ngComponentOutlet="popupService.component(); inputs: getInputs()" />
+                <ng-container *ngComponentOutlet="entry.component; inputs: getInputs(entry)" />
             </div>
         </div>
     </div>

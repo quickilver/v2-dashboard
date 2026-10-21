@@ -12,6 +12,12 @@
     align-items: center;
     justify-content: right;
     z-index: 1000;
+    transition: .3s ease-in-out;
+
+    +.popup-overlay {
+        background-color: transparent;
+        transform: translateX(-60px) scale(.95)
+    }
 
     .popup-dialog {
         display: flex;

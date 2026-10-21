@@ -1,0 +1,43 @@
+@use 'variables' as *;
+
+.address-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-bottom: 1px solid $grey-light-2;
+    font-size: 13px;
+
+    .address-label {
+        color: #888;
+        white-space: nowrap;
+    }
+
+    .address-breadcrumbs {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 2px;
+
+        .crumb {
+            color: $primary-color;
+            cursor: pointer;
+            font-family: monospace;
+            padding: 1px 4px;
+            border-radius: 3px;
+
+            &:hover {
+                background: $grey-light-2;
+            }
+        }
+
+        .crumb-separator {
+            font-family: monospace;
+            font-size: 16px;
+            width: 16px !important;
+            height: 16px !important;
+            color: $grey !important;
+        }
+    }
+}

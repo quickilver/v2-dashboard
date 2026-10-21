@@ -3,18 +3,23 @@ import { DOCUMENT } from '@angular/common';
 
 type PopupResolver = () => void;
 
+export interface PopupEntry {
+    id: number;
+    title: string;
+    component: any;
+    inputs: Record<string, unknown>;
+}
+
 @Injectable({
     providedIn: 'root',
 })
 export class PopupService {
     private readonly _document: Document = inject(DOCUMENT);
 
-    isShow: WritableSignal<boolean> = signal<boolean>(false);
-    title: WritableSignal<string> = signal<string>('');
-    component: WritableSignal<any> = signal<any>(null);
-    inputs: WritableSignal<Record<string, unknown>> = signal<Record<string, unknown>>({});
+    stack: WritableSignal<PopupEntry[]> = signal<PopupEntry[]>([]);
 
-    private _resolver: PopupResolver | null = null;
+    private _nextId = 1;
+    private _resolvers = new Map<number, PopupResolver>();
 
     private _lockScroll(): void {
         const scrollbarWidth = window.innerWidth - this._document.documentElement.clientWidth;
@@ -28,28 +33,42 @@ export class PopupService {
     }
 
     open(title: string, component: any, data?: Record<string, unknown>): Promise<void> {
-        this.isShow.set(true);
-        this.title.set(title);
-        this.component.set(component);
-        this.inputs.set(data ?? {});
-        this._lockScroll();
+        const id = this._nextId++;
+        const entry: PopupEntry = {
+            id,
+            title,
+            component,
+            inputs: data ?? {},
+        };
+
+        this.stack.update((list) => [entry, ...list]);
+
+        if (this.stack().length === 1) {
+            this._lockScroll();
+        }
 
         return new Promise((resolve) => {
-            this._resolver = () => {
-                this.isShow.set(false);
-                this.title.set('');
-                this.component.set(null);
-                this.inputs.set({});
+            this._resolvers.set(id, () => {
+                this.stack.update((list) => list.filter((e) => e.id !== id));
+                this._resolvers.delete(id);
+
+                if (this.stack().length === 0) {
+                    this._unlockScroll();
+                }
+
                 resolve();
-            };
+            });
         });
     }
 
     resolve(): void {
-        if (this._resolver) {
-            this._resolver();
-            this._resolver = null;
+        const stack = this.stack();
+        if (stack.length === 0) return;
+
+        const top = stack[0];
+        const resolver = this._resolvers.get(top.id);
+        if (resolver) {
+            resolver();
         }
-        this._unlockScroll();
     }
 }

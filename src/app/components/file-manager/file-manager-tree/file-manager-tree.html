@@ -1,16 +1,26 @@
 @if (loading()) {
-    <div class="tree-loading">Loading...</div>
+    <div class="tree-loading">Загрузка ...</div>
 } @else {
     <ul class="tree-list">
         @for (dir of directories(); track dir.path) {
             <li class="tree-item">
-                <div class="tree-folder">
+                <div
+                    class="tree-folder"
+                    (click)="navigate.emit(fullPath(dir)); toggleExpand(dir.name)"
+                >
                     <app-icon name="folder" />
                     <span class="folder-name">{{ dir.name }}</span>
                 </div>
+                @if (isExpanded(dir.name)) {
+                    <div class="tree-children">
+                        <app-file-manager-tree
+                            [path]="fullPath(dir)"
+                            [expandToPath]="childExpandPath()"
+                            (navigate)="onNavigate($event)"
+                        />
+                    </div>
+                }
             </li>
-        } @empty {
-            <li class="tree-empty">No folders</li>
         }
     </ul>
 }

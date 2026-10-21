@@ -8,20 +8,58 @@
     </thead>
     <tbody>
         @if (loading()) {
-            <div class="files-loading">Loading…</div>
+            <tr>
+                <td>Загрузка ...</td>
+                <td></td>
+                <td></td>
+            </tr>
         } @else {
-
+            @if (!isRoot) {
+                <tr class="clickable-row" (click)="navigate.emit(parentPath)">
+                    <td>
+                        <div class="file-item">
+                            <app-icon name="folder" />
+                            <span><strong>...</strong></span>
+                        </div>
+                    </td>
+                    <td class="column-time"></td>
+                    <td class="column-size"></td>
+                </tr>
+            }
+            @if (creatingFolder()) {
+                <tr class="create-folder-row">
+                    <td colspan="3">
+                        <div class="file-item">
+                            <app-icon name="folder" />
+                            <input
+                                class="create-folder-input"
+                                [value]="newFolderName()"
+                                (input)="onInputChange($event)"
+                                (keydown)="onInputKeydown($event)"
+                                placeholder="Название папки"
+                                autofocus
+                            />
+                            <button class="create-folder-btn save" (click)="confirmCreateFolder()">
+                                сохранить
+                            </button>
+                            <button class="create-folder-btn cancel" (click)="cancelCreateFolder()">
+                                отмена
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
             @if (directories().length) {
                 @for (dir of directories(); track dir.path) {
-                    <tr>
+                    <tr class="clickable-row" (click)="navigateTo(dir)">
                         <td>
                             <div class="file-item">
                                 <app-icon name="folder" />
                                 <span>{{ dir.name }}</span>
                             </div>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td class="column-time">{{ formatDate(dir.created_at) }}</td>
+                        <td class="column-size">—</td>
                     </tr>
                 }
             }
@@ -34,15 +72,15 @@
                                 <span>{{ file.name }}</span>
                             </div>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td class="column-time">{{ formatDate(file.last_modified) }}</td>
+                        <td class="column-size">{{ formatSize(file.size) }}</td>
                     </tr>
                 }
             }
 
             @if (!files().length && !directories().length) {
                 <tr>
-                    <td colspan="3">No files</td>
+                    <td colspan="3">Нет данных</td>
                 </tr>
             }
         }

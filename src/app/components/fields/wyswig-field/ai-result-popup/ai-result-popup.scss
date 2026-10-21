@@ -1,0 +1,51 @@
+@use 'variables' as *;
+
+.ai-result-popup {
+    height: 100%;
+}
+
+.ai-result-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: white;
+}
+
+.ai-result-actions {
+    position: sticky;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.skeleton-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skeleton-line {
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, $grey-light 25%, #e8e8e8 50%, $grey-light 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    width: 100%;
+
+    &--short {
+        width: 60%;
+    }
+
+    &--medium {
+        width: 80%;
+    }
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

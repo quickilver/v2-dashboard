@@ -6,7 +6,9 @@ import { IconComponent } from '../../icon/icon';
 @Component({
     selector: 'app-file-manager-upload',
     standalone: true,
-    imports: [IconComponent],
+    imports: [
+        IconComponent
+    ],
     templateUrl: './file-manager-upload.html',
     styleUrl: './file-manager-upload.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

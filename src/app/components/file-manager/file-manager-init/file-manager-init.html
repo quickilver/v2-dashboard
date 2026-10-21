@@ -1,9 +1,28 @@
 <div class="file-manager-layout">
-    <aside class="file-manager-sidebar">
-        <app-file-manager-tree [path]="path()" />
-    </aside>
-    <main class="file-manager-content">
-        <app-file-manager-upload [path]="path()" (uploadComplete)="onUploadComplete()" />
-        <app-file-manager-files [path]="path()" />
-    </main>
+    <div class="file-manager-tools">
+        <div class="file-manager-tools-group">
+            <div class="button" (click)="createFolder()">
+                <app-icon name="folder" class="icon"/>
+                <span class="create-folder">Создать папку</span>
+            </div>
+            <app-file-manager-upload [path]="activePath()" (uploadComplete)="onUploadComplete()"  class="button"/>
+        </div>
+    </div>
+    <app-file-manager-address [path]="activePath()" (navigate)="onNavigate($event)"></app-file-manager-address>
+    <div class="file-manager-content">
+        <aside class="file-manager-left">
+            <app-file-manager-tree
+                [path]="path()"
+                [expandToPath]="expandTreePath()"
+                (navigate)="onNavigate($event)"
+            />
+        </aside>
+        <main class="file-manager-right">
+            <app-file-manager-files
+                [path]="activePath()"
+                [rootPath]="path()"
+                (navigate)="onNavigate($event)"
+            />
+        </main>
+    </div>
 </div>

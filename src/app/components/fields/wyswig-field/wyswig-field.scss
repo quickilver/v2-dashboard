@@ -1,15 +1,46 @@
-.toolbar button,
-.toolbar select {
-    padding: 0.25rem 0.5rem;
-    cursor: pointer;
-    background: white;
-    border: 1px solid var(--field-border-color);
-    border-radius: 0.25rem;
-    min-width: 32px;
+@use 'variables' as *;
+
+.wyswig-container {
+    display: flex;
+    flex: 1;
+
+    .wyswig-field {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+}
+
+.toolbar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .buttons {
+        display: flex;
+        gap: 5px;
+
+        button,
+        select {
+            padding: 4px 8px;
+            cursor: pointer;
+            background: $grey-light;
+            border: none;
+            border-radius: $input-radius;
+            min-width: 32px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                background: $grey-light-2;
+            }
+        }
+    }
 }
 
 .toolbar button:hover {
-    background-color: #e5e7eb;
 }
 
 .divider {
@@ -26,12 +57,10 @@
     padding: var(--field-padding);
     background: white;
     overflow-y: auto;
-}
-
-.editor:focus {
     outline: none;
-    border-color: var(--field-focus-color);
-    box-shadow: 0 0 0 2px rgba(51, 153, 255, 0.2);
+    flex: 1;
+    max-height: 500px;
+    background: $input-background-color;
 }
 
 .editor:empty:before {

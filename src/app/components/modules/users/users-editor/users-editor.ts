@@ -41,10 +41,13 @@ export class UsersEditorComponent implements OnInit {
 
     name = model<string>('');
     email = model<string>('');
+    password = model<string>('');
     fullAccess = model<boolean>(false);
 
     modules = signal<ModuleModel[]>([]);
     permissions = signal<number[]>([]);
+
+    permissionsCount = computed<number>(() => this.permissions().length);
 
     flatModules = computed(() => {
         const result: { module: ModuleModel; children: ModuleModel[] }[] = [];
@@ -83,6 +86,7 @@ export class UsersEditorComponent implements OnInit {
             this.name.set(user.name);
             this.email.set(user.email);
             this.fullAccess.set(user.full_access);
+            this.permissions.set(this.normalizePermissions(user.permissions));
         } catch {
             this.notificationService.error('Не удалось загрузить данные пользователя');
         } finally {
@@ -90,16 +94,28 @@ export class UsersEditorComponent implements OnInit {
         }
     }
 
+    private normalizePermissions(permissions?: number[] | { id: number }[]): number[] {
+        if (!permissions) return [];
+        return permissions.map((permission) =>
+            typeof permission === 'number' ? permission : permission.id,
+        );
+    }
+
     async onSave(): Promise<void> {
         this.saving.set(true);
 
         try {
-            const data: Partial<UserModel> & { permissions?: number[] } = {
+            const data: Partial<UserModel> & { permissions?: number[]; password?: string } = {
                 name: this.name().trim(),
                 email: this.email().trim(),
                 full_access: this.fullAccess(),
                 permissions: this.permissions(),
             };
+
+            const password = this.password().trim();
+            if (password) {
+                data.password = password;
+            }
 
             if (this.isEditMode()) {
                 await this.userService.update(this.id()!, data);

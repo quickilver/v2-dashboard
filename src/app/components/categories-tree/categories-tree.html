@@ -4,6 +4,7 @@
             <div
                 class="tree-node"
                 [class.is-selected]="selectable() && isSelected(node.category.id)"
+                [class.is-ancestor]="selectable() && isAncestor(node.category.id)"
             >
                 <div class="tree-toggle" (click)="toggleNode(node)">
                     <app-icon
@@ -36,10 +37,12 @@
             @if (node.expanded) {
                 <app-categories-tree
                     [parentId]="node.category.id"
+                    [ancestors]="node.path"
                     [editable]="editable()"
                     [selectable]="selectable()"
                     [multiple]="multiple()"
                     [(value)]="value"
+                    [(selectedPaths)]="selectedPaths"
                 />
             }
         </li>

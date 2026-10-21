@@ -36,7 +36,9 @@ export class CategoriesTreeComponent implements OnInit {
     editable = input<boolean>(false);
     multiple = input<boolean>(false);
     parentId = input<number>(0);
+    ancestors = input<number[]>([]);
     value = model<number | number[] | null>(null);
+    selectedPaths = model<number[][]>([]);
 
     nodes = signal<CategoryTreeNodeModel[]>([]);
     loading = signal(false);
@@ -59,6 +61,7 @@ export class CategoriesTreeComponent implements OnInit {
                 response.data.map((category) => ({
                     category,
                     expanded: false,
+                    path: [...this.ancestors(), category.id],
                 })),
             );
             this.loaded.set(true);
@@ -73,20 +76,26 @@ export class CategoriesTreeComponent implements OnInit {
     }
 
     selectNode(category: Category): void {
+        const path = this.getNodePath(category.id);
+
         if (this.multiple()) {
             const current = Array.isArray(this.value()) ? [...(this.value() as number[])] : [];
             const index = current.indexOf(category.id);
             if (index >= 0) {
                 current.splice(index, 1);
+                this.removePath(path);
             } else {
                 current.push(category.id);
+                this.addPath(path);
             }
             this.value.set(current);
         } else {
             if (this.value() === category.id) {
                 this.value.set(null);
+                this.selectedPaths.set([]);
             } else {
                 this.value.set(category.id);
+                this.selectedPaths.set([path]);
             }
         }
     }
@@ -96,6 +105,36 @@ export class CategoriesTreeComponent implements OnInit {
             return Array.isArray(this.value()) && (this.value() as number[]).includes(categoryId);
         }
         return this.value() === categoryId;
+    }
+
+    isAncestor(categoryId: number): boolean {
+        return this.selectedPaths().some((path) => {
+            const index = path.indexOf(categoryId);
+            return index >= 0 && index < path.length - 1;
+        });
+    }
+
+    private getNodePath(categoryId: number): number[] {
+        const node = this.nodes().find((item) => item.category.id === categoryId);
+        return node?.path ?? [...this.ancestors(), categoryId];
+    }
+
+    private addPath(path: number[]): void {
+        const exists = this.selectedPaths().some(
+            (item) => item.length === path.length && item.every((id, index) => id === path[index]),
+        );
+        if (!exists) {
+            this.selectedPaths.set([...this.selectedPaths(), path]);
+        }
+    }
+
+    private removePath(path: number[]): void {
+        this.selectedPaths.set(
+            this.selectedPaths().filter(
+                (item) =>
+                    !(item.length === path.length && item.every((id, index) => id === path[index])),
+            ),
+        );
     }
 
     async onCreate(parentId: number): Promise<void> {

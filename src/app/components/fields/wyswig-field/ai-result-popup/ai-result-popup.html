@@ -1,0 +1,26 @@
+<div class="ai-result-popup">
+    <div class="ai-result-body">
+        @if (loading()) {
+            <div class="skeleton-text">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line skeleton-line--short"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line skeleton-line--medium"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line skeleton-line--short"></div>
+                <div class="skeleton-line"></div>
+            </div>
+        } @else {
+            <div class="ai-result-content" [innerHTML]="resultHtml()"></div>
+        }
+    </div>
+    @if (!loading()) {
+        <div class="editor-actions">
+            <button (click)="reject()" [disabled]="loading()">Отмена</button>
+            @if (!hasError()) {
+                <button class="primary" (click)="apply()" [disabled]="loading()">Применить</button>
+            }
+        </div>
+    }
+</div>

@@ -1,40 +1,94 @@
 @use 'variables' as *;
 
+.files-loading {
+    padding: 8px;
+}
 
 table {
     width: 100%;
     border-spacing: 0;
 
     thead {
-        th {
-            text-align: left;
+        tr {
+            th {
+                text-align: left;
+                padding: 8px;
+                border-bottom: 1px solid $grey-light-2;
+                background: #ededed;
+            }
         }
     }
 
     tbody {
         tr {
-            &:hover{
-                td{
-                    background: $grey-light-2;
+            &.clickable-row {
+                cursor: pointer;
+            }
+
+            &:hover {
+                td {
+                    background: #ededed;
                 }
             }
 
             td {
                 text-align: left;
-                padding: 4px;
+                padding: 8px;
                 border-bottom: 1px solid $grey-light-2;
                 vertical-align: center;
 
-                .file-item{
+                .file-item {
                     display: flex;
                     align-items: center;
-                    gap: 5px;
+                    gap: 10px;
                 }
 
                 app-icon {
                     font-size: 18px;
                     height: 18px !important;
                     width: 18px !important;
+                }
+
+                .create-folder-btn {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                    font-size: 14px;
+
+                    &.save {
+                        color: #2e7d32;
+                        &:hover { background: #e8f5e9; }
+                    }
+
+                    &.cancel {
+                        color: #c62828;
+                        &:hover { background: #ffebee; }
+                    }
+                }
+
+                .create-folder-input {
+                    border: 1px solid $grey-light-2;
+                    border-radius: $input-radius;
+                    padding: 4px 8px;
+                    font-size: 13px;
+                    flex: 1;
+                    outline: none;
+
+                    &:focus {
+                        border-color: $primary-color;
+                    }
+                }
+            }
+        }
+
+        tr.create-folder-row {
+            td {
+                background: #f5f5f5;
+
+                .file-item {
+                    gap: 6px;
                 }
             }
         }

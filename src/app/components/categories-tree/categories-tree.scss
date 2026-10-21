@@ -21,6 +21,14 @@
                 color: #ffffff !important;
             }
         }
+
+        .tree-node.is-ancestor {
+            background: rgba($primary-color, 0.12);
+
+            .tree-label {
+                color: $primary-color;
+            }
+        }
     }
 
     .tree-list {

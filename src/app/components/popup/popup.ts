@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { PopupService } from '../../services/popup.service';
 
@@ -11,9 +11,18 @@ import { PopupService } from '../../services/popup.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupComponent {
-    protected readonly popupService: PopupService = inject(PopupService);
+    protected readonly popupService = inject(PopupService);
 
-    protected getInputs(): Record<string, unknown> {
-        return this.popupService.inputs();
+    protected top = computed(() => {
+        const stack = this.popupService.stack();
+        return stack[0] ?? null;
+    });
+
+    protected getInputs(entry: { inputs: Record<string, unknown> }): Record<string, unknown> {
+        return entry.inputs;
+    }
+
+    protected closeTop(): void {
+        this.popupService.resolve();
     }
 }

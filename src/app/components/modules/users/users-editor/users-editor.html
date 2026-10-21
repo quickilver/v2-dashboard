@@ -7,7 +7,7 @@
                 Информация
             </div>
             <div [class.is-active]="isActiveTab('modules')" (click)="changeTab('modules')">
-                Модули
+                Модули ({{ permissionsCount() }})
             </div>
         </div>
 
@@ -24,6 +24,17 @@
                         label="Email"
                         placeholder="Введите email"
                         [(value)]="email"
+                    />
+
+                    <app-input-field
+                        label="Пароль"
+                        type="password"
+                        [placeholder]="
+                            isEditMode()
+                                ? 'Оставьте пустым, чтобы не менять'
+                                : 'Введите пароль'
+                        "
+                        [(value)]="password"
                     />
 
                     <app-checkbox-field label="Полный доступ" [(checked)]="fullAccess" />

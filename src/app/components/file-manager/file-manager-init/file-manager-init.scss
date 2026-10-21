@@ -7,22 +7,57 @@
 }
 
 .file-manager-layout {
-    display: flex;
-    gap: 20px;
-    height: 100%;
-}
-
-.file-manager-sidebar {
     background: #ffffff;
-    width: 350px;
-    min-width: 350px;
-    padding: 10px;
-    overflow-y: auto;
-    box-shadow: $shadow;
-    border-radius: $input-radius;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid $grey-light-2;
+
+    .file-manager-tools {
+        border-bottom: 1px solid $grey-light-2;
+        padding: 10px;
+
+        .file-manager-tools-group {
+            display: flex;
+            gap: 20px;
+
+            .button {
+                display: flex;
+                padding: 5px;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+
+                &:hover{
+                    color: $primary-color;
+                }
+
+                .icon {
+                    font-size: 16px;
+                    height: 16px !important;
+                    width: 16px !important;
+                }
+            }
+        }
+    }
+
+    .file-manager-content {
+        display: flex;
+        flex: 1;
+
+        .file-manager-left {
+            background: #ffffff;
+            width: 350px;
+            min-width: 350px;
+            padding: 10px;
+            overflow-y: auto;
+            border-right: 1px solid $grey-light-2;
+        }
+
+        .file-manager-right {
+            flex: 1;
+            overflow-y: auto;
+        }
+    }
 }
 
-.file-manager-content {
-    flex: 1;
-    overflow-y: auto;
-}
