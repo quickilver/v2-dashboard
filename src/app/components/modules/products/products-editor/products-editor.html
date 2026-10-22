@@ -1,0 +1,129 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">Загрузка...</div>
+    } @else {
+        <div class="tabs top-line">
+            <div
+                [class.is-active]="isActiveTab('info')"
+                (click)="changeTab('info')"
+            >
+                Информация
+            </div>
+            <div
+                [class.is-active]="isActiveTab('categories')"
+                (click)="changeTab('categories')"
+            >
+                Категории
+            </div>
+            <div
+                [class.is-active]="isActiveTab('prices')"
+                (click)="changeTab('prices')"
+            >
+                Цены
+            </div>
+            <div
+                [class.is-active]="isActiveTab('stores')"
+                (click)="changeTab('stores')"
+            >
+                Остатки
+            </div>
+            <div
+                [class.is-active]="isActiveTab('attributes')"
+                (click)="changeTab('attributes')"
+            >
+                Характеристики
+            </div>
+            <div
+                [class.is-active]="isActiveTab('media')"
+                (click)="changeTab('media')"
+            >
+                Медиа
+            </div>
+        </div>
+
+        <div class="editor-form">
+            @if (isActiveTab('info')) {
+                <div class="editor-body">
+                    <app-input-field
+                        label="Название"
+                        placeholder="Введите название товара"
+                        [(value)]="title"
+                    />
+                    <app-input-field
+                        label="Артикул (SKU)"
+                        placeholder="Введите артикул"
+                        [(value)]="sku"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('categories')) {
+                <div class="editor-body">
+                    <div class="field-label">Категории</div>
+                    <app-categories-tree
+                        [selectable]="true"
+                        [multiple]="true"
+                        [(value)]="categories"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('prices')) {
+                <div class="editor-body">
+                    @for (price of prices(); track price.id) {
+                        <div class="inline-field">
+                            <label class="field-label">{{ price.title }} ({{ price.currency }})</label>
+                            <input
+                                type="number"
+                                class="input-field"
+                                step="0.01"
+                                min="0"
+                                placeholder="0.00"
+                                [value]="priceAmounts()[price.id] ?? ''"
+                                (input)="onPriceAmountChange(price.id, $event)"
+                            />
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (isActiveTab('stores')) {
+                <div class="editor-body">
+                    @for (store of stores(); track store.id) {
+                        <div class="inline-field">
+                            <label class="field-label">{{ store.title }}</label>
+                            <input
+                                type="number"
+                                class="input-field"
+                                step="1"
+                                min="0"
+                                placeholder="0"
+                                [value]="storeCounts()[store.id] ?? ''"
+                                (input)="onStoreCountChange(store.id, $event)"
+                            />
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (isActiveTab('attributes')) {
+                <div class="editor-body">
+                    <p class="placeholder-text">Характеристики — в разработке</p>
+                </div>
+            }
+
+            @if (isActiveTab('media')) {
+                <div class="editor-body">
+                    <p class="placeholder-text">Медиа — в разработке</p>
+                </div>
+            }
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="saving()">
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+            </button>
+        </div>
+    }
+</div>

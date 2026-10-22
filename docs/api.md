@@ -138,8 +138,22 @@
 |-------|--------------------|-----------------|--------------------------|
 | GET   | `/products/`       | Список товаров  | `ProductsIndexResponse`  |
 | GET   | `/products/{id}`   | Товар по ID     | `ProductsShowResponse`   |
+| POST  | `/products/`       | Создать товар   | `ProductsStoreResponse`  |
+| PUT   | `/products/{id}`   | Обновить товар  | `ProductsStoreResponse`  |
 
-- **Query (index):** `page`, `per_page`, `search` (в сервисе параметр `query` маппится в `search`), `sort`, `direction`.
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
+- **POST/PUT body:**
+
+```json
+{
+  "title": "Товар",
+  "sku": "SKU-001",
+  "categories": [1, 2],
+  "attribute_values": [{"id": 5, "position": 1}, {"id": 8}],
+  "prices": [{"id": 1, "amount": 1500.00}],
+  "stores": [{"id": 1, "count": 10}]
+}
+```
 
 ---
 

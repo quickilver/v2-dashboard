@@ -6,6 +6,9 @@ import { ProductIndex } from '../../../../models/products/product-short.model';
 import { ProductsIndexResponse } from '../../../../models/responses/products/products-index.response';
 import { MetaModel } from '../../../../models/meta.model';
 import { ConfirmService } from '../../../../services/confirm.service';
+import { PopupService } from '../../../../services/popup.service';
+import { NotificationService } from '../../../../services/notification.service';
+import { ProductsEditorComponent } from '../products-editor/products-editor';
 
 @Component({
     selector: 'app-products-listing',
@@ -18,6 +21,8 @@ import { ConfirmService } from '../../../../services/confirm.service';
 export class ProductsListingComponent implements OnInit {
     private readonly productService = inject(ProductService);
     private readonly confirmService = inject(ConfirmService);
+    private readonly popupService = inject(PopupService);
+    private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
         { key: 'id', title: 'ID', sortable: true, width: '100px' },
@@ -61,11 +66,19 @@ export class ProductsListingComponent implements OnInit {
     }
 
     onRowClick(product: ProductIndex): void {
-        console.log('Row clicked:', product);
+        this.popupService
+            .open('Редактирование товара', ProductsEditorComponent, { id: product.id })
+            .then(() => {
+                this.loadProducts();
+            });
     }
 
     onEdit(product: ProductIndex): void {
-        console.log('Edit product:', product);
+        this.popupService
+            .open('Редактирование товара', ProductsEditorComponent, { id: product.id })
+            .then(() => {
+                this.loadProducts();
+            });
     }
 
     async onDelete(product: ProductIndex): Promise<void> {
@@ -77,8 +90,14 @@ export class ProductsListingComponent implements OnInit {
         );
 
         if (confirmed) {
-            console.log('Delete product:', product);
+            this.notificationService.info('Удаление товаров пока не реализовано');
         }
+    }
+
+    createClick(): void {
+        this.popupService.open('Создание товара', ProductsEditorComponent).then(() => {
+            this.loadProducts();
+        });
     }
 
     onSearch(query: string): void {

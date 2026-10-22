@@ -4,6 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ProductsIndexResponse } from '../models/responses/products/products-index.response';
 import { ProductsShowResponse } from '../models/responses/products/products-show.response';
+import { ProductsStoreResponse } from '../models/responses/products/products-store.response';
+import { ProductCreateRequest } from '../models/products/product-create-request.model';
 
 export interface ProductIndexParams {
     page?: number;
@@ -26,7 +28,7 @@ export class ProductService {
         if (params) {
             if (params.page) httpParams = httpParams.set('page', params.page);
             if (params.per_page) httpParams = httpParams.set('per_page', params.per_page);
-            if (params.query) httpParams = httpParams.set('search', params.query);
+            if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
         }
@@ -37,5 +39,13 @@ export class ProductService {
 
     async show(id: number): Promise<ProductsShowResponse> {
         return firstValueFrom(this.http.get<ProductsShowResponse>(`${this.apiUrl}${id}`));
+    }
+
+    async create(data: ProductCreateRequest): Promise<ProductsStoreResponse> {
+        return firstValueFrom(this.http.post<ProductsStoreResponse>(this.apiUrl, data));
+    }
+
+    async update(id: number, data: Partial<ProductCreateRequest>): Promise<ProductsStoreResponse> {
+        return firstValueFrom(this.http.put<ProductsStoreResponse>(`${this.apiUrl}${id}`, data));
     }
 }

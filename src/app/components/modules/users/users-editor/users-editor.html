@@ -7,7 +7,7 @@
                 Информация
             </div>
             <div [class.is-active]="isActiveTab('modules')" (click)="changeTab('modules')">
-                Модули ({{ permissionsCount() }})
+                Модули <span class="tag">{{ permissionsCount() }}</span>
             </div>
         </div>
 
