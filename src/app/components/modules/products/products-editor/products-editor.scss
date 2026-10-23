@@ -1,68 +1,8 @@
-@use '../../../../../styles/variables' as *;
-@use '../../../../../styles/fields' as *;
+@use 'variables' as *;
+@use 'fields' as *;
 
 :host {
     display: block;
-}
-
-.editor-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.editor-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    color: $grey;
-    font-size: 16px;
-}
-
-.tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid $grey-light-2;
-
-    div {
-        padding: 10px 16px;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        transition: 0.2s ease-in-out;
-        font-size: 14px;
-        color: $main-font-color;
-
-        &:hover {
-            background: $grey-light;
-        }
-
-        &.is-active {
-            border-bottom-color: $primary-color;
-            color: $primary-color;
-            font-weight: 600;
-        }
-    }
-}
-
-.editor-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.editor-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px 0;
-}
-
-.editor-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    padding-top: 16px;
-    border-top: 1px solid $grey-light-2;
 }
 
 .inline-field {

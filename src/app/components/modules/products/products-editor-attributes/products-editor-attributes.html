@@ -1,0 +1,40 @@
+<div class="attributes-add">
+    <app-autocomplete-attributes-field
+        label="Добавить характеристику"
+        [(value)]="newAttribute"
+    />
+    <button class="primary" (click)="addAttribute()">Добавить</button>
+</div>
+
+@if (attributes().length === 0) {
+    <div class="attributes-empty">Нет характеристик</div>
+} @else {
+    <div class="attributes-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Характеристика</th>
+                    <th>Значение</th>
+                    <th class="actions-th"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (attribute of attributes(); track $index; let i = $index) {
+                    <tr>
+                        <td>{{ attribute.title }}</td>
+                        <td>{{ attribute.value }}</td>
+                        <td class="actions-td">
+                            <button
+                                class="value-delete"
+                                (click)="removeAttribute(i)"
+                                title="Удалить"
+                            >
+                                ✕
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

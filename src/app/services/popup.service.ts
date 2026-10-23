@@ -8,6 +8,7 @@ export interface PopupEntry {
     title: string;
     component: any;
     inputs: Record<string, unknown>;
+    dialogClass: string;
 }
 
 @Injectable({
@@ -32,13 +33,19 @@ export class PopupService {
         this._document.body.style.removeProperty('--scrollbar-width');
     }
 
-    open(title: string, component: any, data?: Record<string, unknown>): Promise<void> {
+    open(
+        title: string,
+        component: any,
+        data?: Record<string, unknown>,
+        dialogClass: string = '',
+    ): Promise<void> {
         const id = this._nextId++;
         const entry: PopupEntry = {
             id,
             title,
             component,
             inputs: data ?? {},
+            dialogClass,
         };
 
         this.stack.update((list) => [entry, ...list]);

@@ -2,7 +2,7 @@
     @if (loading()) {
         <div class="editor-loading">Загрузка...</div>
     } @else {
-        <div class="tabs top-line">
+        <div class="tabs">
             <div
                 [class.is-active]="isActiveTab('info')"
                 (click)="changeTab('info')"
@@ -19,19 +19,19 @@
                 [class.is-active]="isActiveTab('prices')"
                 (click)="changeTab('prices')"
             >
-                Цены
+                Цены <span class="tag">{{ pricesCount() }}</span>
             </div>
             <div
                 [class.is-active]="isActiveTab('stores')"
                 (click)="changeTab('stores')"
             >
-                Остатки
+                Остатки <span class="tag">{{ storesTotal() }}</span>
             </div>
             <div
                 [class.is-active]="isActiveTab('attributes')"
                 (click)="changeTab('attributes')"
             >
-                Характеристики
+                Характеристики <span class="tag">{{ attributesCount() }}</span>
             </div>
             <div
                 [class.is-active]="isActiveTab('media')"
@@ -44,6 +44,9 @@
         <div class="editor-form">
             @if (isActiveTab('info')) {
                 <div class="editor-body">
+                    @if (isEditMode()) {
+                        <app-input-field label="ID" [value]="id() ?? ''" [readonly]="true" />
+                    }
                     <app-input-field
                         label="Название"
                         placeholder="Введите название товара"
@@ -108,7 +111,7 @@
 
             @if (isActiveTab('attributes')) {
                 <div class="editor-body">
-                    <p class="placeholder-text">Характеристики — в разработке</p>
+                    <app-products-editor-attributes [(attributes)]="attributes" />
                 </div>
             }
 

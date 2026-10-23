@@ -83,3 +83,42 @@
         cursor: not-allowed;
     }
 }
+
+.popup-dialog {
+    &.with-tabs {
+        .popup-header {
+            padding-bottom: 0 !important;
+            border-bottom: none !important;
+        }
+
+        .popup-body {
+            overflow: hidden !important;
+            display: flex;
+            flex-direction: column;
+
+            > app-products-editor {
+                display: contents;
+            }
+
+            .editor-container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+
+                .tabs{
+                    border-bottom: 1px solid $input-border-color;
+                }
+
+                .editor-form {
+                    flex: 1 1 auto;
+                    min-height: 0;
+                    overflow-y: auto;
+                }
+
+                .editor-actions {
+                    border-top: 1px solid $input-border-color;
+                }
+            }
+        }
+    }
+}

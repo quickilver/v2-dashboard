@@ -67,7 +67,7 @@ export class ProductsListingComponent implements OnInit {
 
     onRowClick(product: ProductIndex): void {
         this.popupService
-            .open('Редактирование товара', ProductsEditorComponent, { id: product.id })
+            .open('Редактирование товара', ProductsEditorComponent, { id: product.id }, 'with-tabs')
             .then(() => {
                 this.loadProducts();
             });
@@ -75,7 +75,7 @@ export class ProductsListingComponent implements OnInit {
 
     onEdit(product: ProductIndex): void {
         this.popupService
-            .open('Редактирование товара', ProductsEditorComponent, { id: product.id })
+            .open('Редактирование товара', ProductsEditorComponent, { id: product.id }, 'with-tabs')
             .then(() => {
                 this.loadProducts();
             });
@@ -95,9 +95,11 @@ export class ProductsListingComponent implements OnInit {
     }
 
     createClick(): void {
-        this.popupService.open('Создание товара', ProductsEditorComponent).then(() => {
-            this.loadProducts();
-        });
+        this.popupService
+            .open('Создание товара', ProductsEditorComponent, {}, 'with-tabs')
+            .then(() => {
+                this.loadProducts();
+            });
     }
 
     onSearch(query: string): void {

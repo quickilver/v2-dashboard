@@ -1,6 +1,6 @@
 @for (entry of popupService.stack(); track entry.id) {
     <div class="popup-overlay" [style.z-index]="1000 + (popupService.stack().length - 1 - $index)">
-        <div class="popup-dialog">
+        <div class="popup-dialog" [class]="entry.dialogClass">
             <div class="popup-header">
                 <div class="popup-title">{{ entry.title }}</div>
                 @if ($first) {

@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    computed,
     inject,
     input,
     model,
@@ -10,6 +11,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
+import { ProductsEditorAttributesComponent } from '../products-editor-attributes/products-editor-attributes';
 import { ProductService } from '../../../../services/product.service';
 import { PriceService } from '../../../../services/price.service';
 import { StoreService } from '../../../../services/store.service';
@@ -17,7 +19,8 @@ import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { PriceModel } from '../../../../models/price.model';
 import { StoreModel } from '../../../../models/store.model';
-import { ProductPriceRequest, ProductStoreRequest, ProductCreateRequest } from '../../../../models/products/product-create-request.model';
+import { ProductAttribute } from '../../../../models/products/product-attribute.model';
+import { ProductPriceRequest, ProductStoreRequest, ProductAttributeValueRequest, ProductCreateRequest } from '../../../../models/products/product-create-request.model';
 
 @Component({
     selector: 'app-products-editor',
@@ -26,6 +29,7 @@ import { ProductPriceRequest, ProductStoreRequest, ProductCreateRequest } from '
         FormsModule,
         InputFieldComponent,
         CategoriesTreeComponent,
+        ProductsEditorAttributesComponent,
     ],
     templateUrl: './products-editor.html',
     styleUrl: './products-editor.scss',
@@ -50,10 +54,26 @@ export class ProductsEditorComponent implements OnInit {
     categories = model<number | number[] | null>(null);
 
     prices = signal<PriceModel[]>([]);
+    attributes = signal<ProductAttribute[]>([]);
     stores = signal<StoreModel[]>([]);
 
-    priceAmounts = signal<Record<number, number>>({});
-    storeCounts = signal<Record<number, number>>({});
+    priceAmounts = signal<Record<number, number | undefined>>({});
+    storeCounts = signal<Record<number, number | undefined>>({});
+
+    pricesCount = computed<number>(() => {
+        const amounts = this.priceAmounts();
+        return this.prices().filter((price) => {
+            const amount = amounts[price.id];
+            return amount !== undefined && amount > 0;
+        }).length;
+    });
+
+    storesTotal = computed<number>(() => {
+        const counts = this.storeCounts();
+        return this.stores().reduce((total, store) => total + (counts[store.id] ?? 0), 0);
+    });
+
+    attributesCount = computed<number>(() => this.attributes().length);
 
     ngOnInit(): void {
         const productId = this.id();
@@ -78,16 +98,18 @@ export class ProductsEditorComponent implements OnInit {
                 this.categories.set(product.categories.map((c) => c.id));
             }
 
-            const priceAmounts: Record<number, number> = {};
+            const priceAmounts: Record<number, number | undefined> = {};
             for (const price of product.prices) {
                 priceAmounts[price.id] = price.amount;
             }
             this.priceAmounts.set(priceAmounts);
 
-            const storeCounts: Record<number, number> = {};
+            const storeCounts: Record<number, number | undefined> = {};
             for (const store of product.stores) {
                 storeCounts[store.id] = store.count;
             }
+
+            this.attributes.set(product.attribute ?? []);
             this.storeCounts.set(storeCounts);
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные товара');
@@ -140,11 +162,18 @@ export class ProductsEditorComponent implements OnInit {
                     count: this.storeCounts()[store.id] ?? 0,
                 }));
 
+            const attributeValues: ProductAttributeValueRequest[] = this.attributes()
+                .filter((attribute) => attribute.value_id > 0)
+                .map((attribute, index) => ({
+                    id: attribute.value_id,
+                    position: index + 1,
+                }));
+
             const data: ProductCreateRequest = {
                 title: this.title().trim(),
                 sku: this.sku().trim(),
                 categories: categoryIds,
-                attribute_values: [],
+                attribute_values: attributeValues,
                 prices,
                 stores,
             };
