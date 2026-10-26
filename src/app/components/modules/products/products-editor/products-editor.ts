@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
+import { CounterFieldComponent } from '../../../fields/counter-field/counter-field';
+import { WyswigFieldComponent } from '../../../fields/wyswig-field/wyswig-field';
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
 import { ProductsEditorAttributesComponent } from '../products-editor-attributes/products-editor-attributes';
 import { ProductService } from '../../../../services/product.service';
@@ -28,6 +30,8 @@ import { ProductPriceRequest, ProductStoreRequest, ProductAttributeValueRequest,
     imports: [
         FormsModule,
         InputFieldComponent,
+        CounterFieldComponent,
+        WyswigFieldComponent,
         CategoriesTreeComponent,
         ProductsEditorAttributesComponent,
     ],
@@ -51,6 +55,7 @@ export class ProductsEditorComponent implements OnInit {
 
     title = model<string>('');
     sku = model<string>('');
+    description = model<string>('');
     categories = model<number | number[] | null>(null);
 
     prices = signal<PriceModel[]>([]);
@@ -75,6 +80,8 @@ export class ProductsEditorComponent implements OnInit {
 
     attributesCount = computed<number>(() => this.attributes().length);
 
+    categoriesCount = computed<number>(() => this.getCategoryIds().length);
+
     ngOnInit(): void {
         const productId = this.id();
         if (productId) {
@@ -93,6 +100,7 @@ export class ProductsEditorComponent implements OnInit {
             const product = response.data;
             this.title.set(product.title);
             this.sku.set(product.sku);
+            this.description.set(product.description ?? '');
 
             if (product.categories && product.categories.length > 0) {
                 this.categories.set(product.categories.map((c) => c.id));
@@ -172,6 +180,7 @@ export class ProductsEditorComponent implements OnInit {
             const data: ProductCreateRequest = {
                 title: this.title().trim(),
                 sku: this.sku().trim(),
+                description: this.description() || null,
                 categories: categoryIds,
                 attribute_values: attributeValues,
                 prices,
@@ -223,10 +232,9 @@ export class ProductsEditorComponent implements OnInit {
         this.priceAmounts.set(amounts);
     }
 
-    onStoreCountChange(storeId: number, event: Event): void {
-        const input = event.target as HTMLInputElement;
+    onStoreCountChange(storeId: number, count: number): void {
         const counts = { ...this.storeCounts() };
-        counts[storeId] = parseInt(input.value, 10) || 0;
+        counts[storeId] = count;
         this.storeCounts.set(counts);
     }
 }

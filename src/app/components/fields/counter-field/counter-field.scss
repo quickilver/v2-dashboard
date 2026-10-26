@@ -1,0 +1,56 @@
+@use 'variables' as *;
+
+.counter {
+    display: inline-flex;
+    align-items: stretch;
+
+    .input-field {
+        width: 64px;
+        padding: 8px;
+        text-align: center;
+        border-radius: 0;
+        -moz-appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &:read-only {
+            background: $grey-light;
+            cursor: not-allowed;
+        }
+    }
+
+    .counter-btn {
+        width: 36px;
+        justify-content: center;
+        padding: 8px 0;
+        font-size: 18px;
+        line-height: 1;
+        border-radius: $input-radius;
+
+        &:first-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+
+        &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+        }
+
+        &:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            background: #ffffff;
+
+            &:hover {
+                background: #ffffff;
+            }
+        }
+    }
+}

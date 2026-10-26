@@ -2,11 +2,13 @@ import {
     ChangeDetectionStrategy,
     Component,
     computed,
+    effect,
     ElementRef,
     HostListener,
     inject,
     input,
     model,
+    output,
     signal,
 } from '@angular/core';
 import { AttributeService } from '../../../services/attribute.service';
@@ -43,6 +45,9 @@ export class AutocompleteAttributesFieldComponent {
         value: '',
     });
 
+    /** Срабатывает по Enter в поле значения, когда нет активного пункта списка. */
+    submit = output<void>();
+
     attributeSearch = signal<string>('');
     attributes = signal<AttributeShortModel[]>([]);
     attributeOpen = signal<boolean>(false);
@@ -72,6 +77,22 @@ export class AutocompleteAttributesFieldComponent {
 
     hasSelectedAttribute = computed<boolean>(() => this.value().attribute_id !== null);
     hasSelectedValue = computed<boolean>(() => this.value().value_id !== null);
+
+    constructor() {
+        effect(() => {
+            const current = this.value();
+            if (current.attribute_id === null && current.attribute_title === '') {
+                this.attributeSearch.set('');
+                this.attributeOpen.set(false);
+                this.attributeActiveIndex.set(-1);
+                this.valueSearch.set('');
+                this.valueOpen.set(false);
+                this.valueActiveIndex.set(-1);
+                this.attributes.set([]);
+                this.values.set([]);
+            }
+        });
+    }
 
     async onAttributeInput(event: Event): Promise<void> {
         const text = (event.target as HTMLInputElement).value;
@@ -179,9 +200,13 @@ export class AutocompleteAttributesFieldComponent {
             event.preventDefault();
             const prev = this.valueActiveIndex() - 1;
             this.valueActiveIndex.set(prev < 0 ? options.length - 1 : prev);
-        } else if (event.key === 'Enter' && this.valueActiveIndex() >= 0) {
+        } else if (event.key === 'Enter') {
             event.preventDefault();
-            this.selectValue(options[this.valueActiveIndex()]);
+            if (this.valueActiveIndex() >= 0) {
+                this.selectValue(options[this.valueActiveIndex()]);
+            } else {
+                this.submit.emit();
+            }
         } else if (event.key === 'Escape') {
             this.valueOpen.set(false);
             this.valueActiveIndex.set(-1);

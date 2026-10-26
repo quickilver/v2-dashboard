@@ -51,4 +51,41 @@ export class ProductsEditorAttributesComponent {
     removeAttribute(index: number): void {
         this.attributes.update((items) => items.filter((_, i) => i !== index));
     }
+
+    /** Защита от повторного коммита: Enter уже переставил, blur не должен коммитить дважды. */
+    private suppressPositionBlur = false;
+
+    onPositionEnter(index: number, event: Event): void {
+        this.suppressPositionBlur = true;
+        this.commitPosition(index, event);
+        (event.target as HTMLInputElement).blur();
+    }
+
+    onPositionBlur(index: number, event: Event): void {
+        if (this.suppressPositionBlur) {
+            this.suppressPositionBlur = false;
+            return;
+        }
+        this.commitPosition(index, event);
+    }
+
+    private commitPosition(index: number, event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const position = Math.round(Number(input.value));
+
+        this.attributes.update((items) => {
+            const clamped = Number.isFinite(position)
+                ? Math.min(Math.max(position, 1), items.length)
+                : index + 1;
+
+            if (clamped === index + 1) {
+                return items.map((item, i) => ({ ...item, position: i + 1 }));
+            }
+
+            const reordered = [...items];
+            const [moved] = reordered.splice(index, 1);
+            reordered.splice(clamped - 1, 0, moved);
+            return reordered.map((item, i) => ({ ...item, position: i + 1 }));
+        });
+    }
 }

@@ -2,6 +2,7 @@
     <app-autocomplete-attributes-field
         label="Добавить характеристику"
         [(value)]="newAttribute"
+        (submit)="addAttribute()"
     />
     <button class="primary" (click)="addAttribute()">Добавить</button>
 </div>
@@ -13,6 +14,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Позиция</th>
                     <th>Характеристика</th>
                     <th>Значение</th>
                     <th class="actions-th"></th>
@@ -21,6 +23,16 @@
             <tbody>
                 @for (attribute of attributes(); track $index; let i = $index) {
                     <tr>
+                        <td>
+                            <input
+                                type="number"
+                                class="position-input"
+                                min="1"
+                                [value]="attribute.position"
+                                (blur)="onPositionBlur(i, $event)"
+                                (keyup.enter)="onPositionEnter(i, $event)"
+                            />
+                        </td>
                         <td>{{ attribute.title }}</td>
                         <td>{{ attribute.value }}</td>
                         <td class="actions-td">

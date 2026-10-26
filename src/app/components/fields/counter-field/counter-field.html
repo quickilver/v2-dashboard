@@ -1,0 +1,32 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <div class="counter">
+        <button
+            type="button"
+            class="counter-btn"
+            (click)="decrement()"
+            [disabled]="value() <= min()"
+            aria-label="Уменьшить значение"
+        >
+            −
+        </button>
+        <input
+            type="number"
+            class="input-field counter-input"
+            [value]="value()"
+            [readonly]="!editable()"
+            (input)="onInput($event)"
+        />
+        <button
+            type="button"
+            class="counter-btn"
+            (click)="increment()"
+            [disabled]="max() !== null && value() >= max()!"
+            aria-label="Увеличить значение"
+        >
+            +
+        </button>
+    </div>
+</div>

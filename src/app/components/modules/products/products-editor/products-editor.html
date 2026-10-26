@@ -10,10 +10,16 @@
                 Информация
             </div>
             <div
+                [class.is-active]="isActiveTab('description')"
+                (click)="changeTab('description')"
+            >
+                Описание
+            </div>
+            <div
                 [class.is-active]="isActiveTab('categories')"
                 (click)="changeTab('categories')"
             >
-                Категории
+                Категории <span class="tag">{{ categoriesCount() }}</span>
             </div>
             <div
                 [class.is-active]="isActiveTab('prices')"
@@ -60,6 +66,16 @@
                 </div>
             }
 
+            @if (isActiveTab('description')) {
+                <div class="editor-body editor-body--full">
+                    <app-wyswig-field
+                        label="Описание"
+                        placeholder="Введите описание товара"
+                        [(value)]="description"
+                    />
+                </div>
+            }
+
             @if (isActiveTab('categories')) {
                 <div class="editor-body">
                     <div class="field-label">Категории</div>
@@ -95,14 +111,11 @@
                     @for (store of stores(); track store.id) {
                         <div class="inline-field">
                             <label class="field-label">{{ store.title }}</label>
-                            <input
-                                type="number"
-                                class="input-field"
-                                step="1"
-                                min="0"
-                                placeholder="0"
-                                [value]="storeCounts()[store.id] ?? ''"
-                                (input)="onStoreCountChange(store.id, $event)"
+                            <app-counter-field
+                                [min]="0"
+                                [editable]="true"
+                                [value]="storeCounts()[store.id] ?? 0"
+                                (valueChange)="onStoreCountChange(store.id, $event)"
                             />
                         </div>
                     }

@@ -16,6 +16,7 @@ export interface ProductStoreRequest {
 export interface ProductCreateRequest {
     title: string;
     sku: string;
+    description?: string | null;
     categories: number[];
     attribute_values: ProductAttributeValueRequest[];
     prices: ProductPriceRequest[];
