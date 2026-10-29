@@ -108,6 +108,9 @@ export class CategoriesTreeComponent implements OnInit {
     }
 
     isAncestor(categoryId: number): boolean {
+        if (this.ancestors().includes(categoryId)) {
+            return true;
+        }
         return this.selectedPaths().some((path) => {
             const index = path.indexOf(categoryId);
             return index >= 0 && index < path.length - 1;
@@ -174,7 +177,7 @@ export class CategoriesTreeComponent implements OnInit {
             const { CategoriesEditorComponent } =
                 await import('../modules/categories/categories-editor/categories-editor');
             this.popupService
-                .open('Редактирование категории', CategoriesEditorComponent, { id: category.id })
+                .open('Редактирование категории', CategoriesEditorComponent, { id: category.id }, 'with-tabs')
                 .then(() => {
                     this.load();
                 });

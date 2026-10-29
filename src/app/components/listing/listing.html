@@ -61,6 +61,15 @@
                                                     : col.labels?.false || 'Нет'
                                             }}
                                         </td>
+                                    } @else if (col.type === 'link') {
+                                        <td>
+                                            <a
+                                                class="cell-link"
+                                                (click)="$event.stopPropagation(); onCellClick(row, col)"
+                                            >
+                                                {{ row[col.key] }}
+                                            </a>
+                                        </td>
                                     } @else {
                                         <td>{{ row[col.key] }}</td>
                                     }

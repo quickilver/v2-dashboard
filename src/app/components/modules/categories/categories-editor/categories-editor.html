@@ -2,17 +2,29 @@
     @if (loading()) {
         <div class="editor-loading">Загрузка...</div>
     } @else {
-        <div class="tabs top-line">
-            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+
+        <div class="tabs">
+            <div
+                [class.is-active]="isActiveTab('info')"
+                (click)="changeTab('info')"
+            >
                 Информация
             </div>
-            <div [class.is-active]="isActiveTab('parent')" (click)="changeTab('parent')">
+            <div
+                [class.is-active]="isActiveTab('parent')"
+                (click)="changeTab('parent')"
+            >
                 Родительская категория
             </div>
         </div>
+
         <div class="editor-form">
             @if (isActiveTab('info')) {
                 <div class="editor-body">
+                    @if (isEditMode()) {
+                        <app-input-field label="ID" [value]="id() ?? ''" [readonly]="true" />
+                    }
+
                     <app-input-field
                         label="GUID"
                         placeholder="Введите GUID категории"
@@ -43,8 +55,9 @@
             }
 
             @if (isActiveTab('parent')) {
-                <div class="current-category">Выбранная категория: {{ parent() }}</div>
-                <app-categories-tree [parentId]="0" [selectable]="true" [(value)]="parent" />
+                <div class="editor-body">
+                    <app-categories-tree [parentId]="0" [selectable]="true" [ancestors]="ancestorIds()" [(value)]="parent" />
+                </div>
             }
         </div>
 

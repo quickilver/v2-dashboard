@@ -1,4 +1,25 @@
-.current-category {
-    margin-bottom: 20px;
-    font-weight: 600;
+@use 'variables' as *;
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px;
+    font-size: 13px;
+    color: #888;
+    flex-wrap: wrap;
+
+    .breadcrumb-item {
+        color: #555;
+        cursor: default;
+
+        &:hover {
+            color: $primary-color;
+            cursor: pointer;
+        }
+    }
+
+    .breadcrumb-separator {
+        color: #ccc;
+    }
 }

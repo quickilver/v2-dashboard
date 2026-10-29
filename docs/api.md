@@ -218,6 +218,38 @@
 
 ---
 
+## Логи
+
+Базовый путь: `/logs/` — сервис `LogService`.
+
+| Метод | Путь           | Описание      | Ответ               |
+|-------|----------------|---------------|---------------------|
+| GET   | `/logs/`       | Список логов  | `LogsIndexResponse` |
+| GET   | `/logs/{id}`   | Лог по ID     | `LogsShowResponse`  |
+
+- **Query (index):** `page`, `per_page`, `sort`, `direction`, `event`, `model_type`, `user_id`.
+- **Пример ответа `GET /logs/{id}`:**
+
+```json
+{
+  "data": {
+    "id": 1,
+    "event": "updated",
+    "model_type": "App\\Models\\Store",
+    "model_id": 15,
+    "user_id": 2,
+    "old_values": { "title": "Старое название" },
+    "new_values": { "title": "Новое название" },
+    "created_at": "2026-10-27T12:30:00.000000Z",
+    "user": { "id": 2, "name": "Иван", "email": "ivan@example.com" }
+  }
+}
+```
+
+- **Значения `event`:** `created`, `updated`, `deleted`, `restored`.
+
+---
+
 ## Локальные ресурсы (не API)
 
 - **Иконки:** `IconService` загружает SVG из `/assets/icons/{name}.svg` (не через API).

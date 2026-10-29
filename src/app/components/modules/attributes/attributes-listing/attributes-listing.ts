@@ -16,7 +16,7 @@ import { AttributeIndexParams } from '../../../../models/params/attribute-index.
     standalone: true,
     imports: [ListingComponent],
     templateUrl: './attributes-listing.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AttributesListingComponent implements OnInit {
     private readonly attributeService = inject(AttributeService);
@@ -32,15 +32,15 @@ export class AttributesListingComponent implements OnInit {
             title: 'Отображение',
             sortable: true,
             type: 'boolean',
-            labels: { true: 'Да', false: 'Нет' },
+            labels: { true: 'Да', false: 'Нет' }
         },
         {
             key: 'is_filter',
             title: 'Фильтр',
             sortable: true,
             type: 'boolean',
-            labels: { true: 'Да', false: 'Нет' },
-        },
+            labels: { true: 'Да', false: 'Нет' }
+        }
     ]);
 
     attributes = signal<AttributeShortModel[]>([]);
@@ -65,7 +65,7 @@ export class AttributesListingComponent implements OnInit {
                 per_page: this.pageSize(),
                 query: this.currentSearch,
                 sort: this.currentSort,
-                direction: this.currentDirection,
+                direction: this.currentDirection
             };
 
             const response: AttributesIndexResponse = await this.attributeService.index(params);
@@ -84,7 +84,12 @@ export class AttributesListingComponent implements OnInit {
 
     onEdit(attribute: AttributeShortModel): void {
         this.popupService
-            .open('Редактирование характеристики', AttributesEditorComponent, { id: attribute.id })
+            .open(
+                'Редактирование характеристики',
+                AttributesEditorComponent,
+                { id: attribute.id },
+                'with-tabs'
+            )
             .then(() => {
                 this.loadAttributes();
             });
@@ -95,7 +100,7 @@ export class AttributesListingComponent implements OnInit {
             'Удаление характеристики',
             `Вы уверены, что хотите удалить характеристику "${attribute.title}"?`,
             'Удалить',
-            'Отмена',
+            'Отмена'
         );
 
         if (confirmed) {
@@ -110,7 +115,12 @@ export class AttributesListingComponent implements OnInit {
     }
 
     createClick(): void {
-        this.popupService.open('Создание характеристики', AttributesEditorComponent).then(() => {
+        this.popupService.open(
+            'Создание характеристики',
+            AttributesEditorComponent,
+            {},
+            'with-tabs'
+        ).then(() => {
             this.loadAttributes();
         });
     }

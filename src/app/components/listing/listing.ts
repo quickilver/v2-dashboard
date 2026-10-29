@@ -38,6 +38,7 @@ export class ListingComponent {
     pageChange = output<number>();
     searchChange = output<string | number>();
     rowClick = output<any>();
+    cellClick = output<{ row: any; column: ListingColumn }>();
     editClick = output<any>();
     deleteClick = output<any>();
     createClick = output();
@@ -104,6 +105,10 @@ export class ListingComponent {
 
     onRowClick(item: any): void {
         this.rowClick.emit(item);
+    }
+
+    onCellClick(item: any, column: ListingColumn): void {
+        this.cellClick.emit({ row: item, column });
     }
 
     onEditClick(item: any): void {

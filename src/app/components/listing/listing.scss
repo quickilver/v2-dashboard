@@ -110,6 +110,16 @@
                             cursor: default;
                         }
 
+                        .cell-link {
+                            color: $primary-color;
+                            cursor: pointer;
+                            text-decoration: none;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+
                         &:last-child {
                             td {
                                 border-bottom: none;

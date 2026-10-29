@@ -3,6 +3,6 @@ export interface ListingColumn {
     title: string;
     sortable?: boolean;
     width?: string;
-    type?: 'text' | 'boolean';
+    type?: 'text' | 'boolean' | 'link';
     labels?: { true: string; false: string };
 }

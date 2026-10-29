@@ -2,15 +2,13 @@
     @if (loading()) {
         <div class="editor-loading">Загрузка...</div>
     } @else {
-        <div class="tabs top-line">
+        <div class="tabs">
             <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
                 Информация
             </div>
-            @if (isEditMode()) {
-                <div [class.is-active]="isActiveTab('values')" (click)="changeTab('values')">
-                    Значения<span class="tag">{{ values().length }}</span>
-                </div>
-            }
+            <div [class.is-active]="isActiveTab('values')" (click)="changeTab('values')">
+                Значения<span class="tag">{{ values().length }}</span>
+            </div>
         </div>
 
         <div class="editor-form">

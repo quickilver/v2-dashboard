@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    computed,
     inject,
     input,
     model,
@@ -12,6 +13,7 @@ import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-
 import { CategoriesService } from '../../../../services/categories.service';
 import { PopupService } from '../../../../services/popup.service';
 import { Category } from '../../../../models/category.model';
+import { CategoryAncestor } from '../../../../models/category-ancestor.model';
 import { NotificationService } from '../../../../services/notification.service';
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
 
@@ -35,6 +37,9 @@ export class CategoriesEditorComponent implements OnInit {
     loading = signal<boolean>(false);
     saving = signal<boolean>(false);
     tab = signal<string>('info');
+
+    ancestors = signal<CategoryAncestor[]>([]);
+    ancestorIds = computed<number[]>(() => this.ancestors().map((a) => a.id));
 
     guid = model<string>('');
     title = model<string>('');
@@ -64,6 +69,7 @@ export class CategoriesEditorComponent implements OnInit {
             this.display.set(category.display);
             this.position.set(category.position);
             this.parent.set(category.parent_id);
+            this.ancestors.set(category.ancestors ?? []);
             this.isEditMode.set(true);
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные категории');

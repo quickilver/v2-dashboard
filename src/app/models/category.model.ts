@@ -1,3 +1,5 @@
+import { CategoryAncestor } from './category-ancestor.model';
+
 export interface Category {
     id: number;
     guid: string;
@@ -6,6 +8,7 @@ export interface Category {
     parent_id: number | null;
     display: boolean;
     position: number;
+    ancestors?: CategoryAncestor[];
     created_at: string;
     updated_at: string;
 }
