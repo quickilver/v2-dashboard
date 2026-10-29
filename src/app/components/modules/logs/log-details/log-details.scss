@@ -1,0 +1,111 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.log-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .log-loading {
+        padding: 20px;
+        text-align: center;
+        color: $grey;
+    }
+
+    .log-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+
+        .log-event {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+
+            &.event-created {
+                background: #52c41a;
+            }
+
+            &.event-updated {
+                background: $primary-color;
+            }
+
+            &.event-deleted {
+                background: #f5222d;
+            }
+
+            &.event-restored {
+                background: #1890ff;
+            }
+        }
+
+        .log-date {
+            color: $grey;
+            font-size: 13px;
+        }
+    }
+
+    .log-section {
+        border: 1px solid $input-border-color;
+        border-radius: $input-radius;
+        overflow: hidden;
+
+        &-title {
+            padding: 8px 12px;
+            font-weight: 600;
+            font-size: 13px;
+            background: $input-background-color;
+            border-bottom: 1px solid $input-border-color;
+        }
+
+        .log-row {
+            display: flex;
+            gap: 12px;
+            padding: 8px 12px;
+            border-bottom: 1px solid $grey-light-2;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .log-label {
+                flex-shrink: 0;
+                width: 140px;
+                color: $grey;
+                font-size: 13px;
+            }
+
+            .log-value {
+                font-size: 14px;
+                word-break: break-word;
+
+                .log-sub {
+                    color: $grey;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    .log-json {
+        margin: 0;
+        padding: 12px;
+        max-height: 300px;
+        overflow: auto;
+        font-size: 13px;
+        background: $input-background-color;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .log-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

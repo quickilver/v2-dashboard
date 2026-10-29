@@ -1,0 +1,52 @@
+<div class="log-details">
+    @if (loading()) {
+        <div class="log-loading">Загрузка...</div>
+    } @else {
+        @if (log(); as log) {
+            <div class="log-header">
+                <div class="log-event" [class]="'event-' + log.event">
+                    {{ logEventLabel[log.event] }}
+                </div>
+                <div class="log-date">{{ log.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
+            </div>
+
+            <div class="log-section">
+                <div class="log-row">
+                    <span class="log-label">ID записи</span>
+                    <span class="log-value">{{ log.id }}</span>
+                </div>
+                <div class="log-row">
+                    <span class="log-label">Сущность</span>
+                    <span class="log-value">{{ formatModelType(log.model_type) }}</span>
+                </div>
+                <div class="log-row">
+                    <span class="log-label">ID сущности</span>
+                    <span class="log-value">{{ log.model_id }}</span>
+                </div>
+                <div class="log-row">
+                    <span class="log-label">Пользователь</span>
+                    <span class="log-value">
+                        {{ log.user?.name ?? ('ID: ' + log.user_id) }}
+                        @if (log.user?.email) {
+                            <span class="log-sub">({{ log.user.email }})</span>
+                        }
+                    </span>
+                </div>
+            </div>
+
+            <div class="log-section">
+                <div class="log-section-title">Старые значения</div>
+                <pre class="log-json">{{ formatJson(log.old_values) }}</pre>
+            </div>
+
+            <div class="log-section">
+                <div class="log-section-title">Новые значения</div>
+                <pre class="log-json">{{ formatJson(log.new_values) }}</pre>
+            </div>
+        }
+    }
+
+    <div class="log-actions">
+        <button (click)="onClose()">Закрыть</button>
+    </div>
+</div>

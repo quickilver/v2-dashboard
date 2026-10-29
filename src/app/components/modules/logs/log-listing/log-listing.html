@@ -1,0 +1,15 @@
+<app-listing
+    [columns]="columns()"
+    [data]="rows()"
+    [loading]="loading()"
+    [meta]="meta()"
+    [pageSize]="pageSize()"
+    [page]="page()"
+    title="Логи"
+    [actionsColumn]="false"
+    [searchable]="false"
+    (rowClick)="onRowClick($event)"
+    (cellClick)="onCellClick($event)"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+/>
