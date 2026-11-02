@@ -1,74 +1,44 @@
 @use 'variables' as *;
 
 .field-container {
-    .field-inputs {
-        display: flex;
+    display: flex;
+    flex-direction: column;
+
+    .label-field {
+        font-size: 14px;
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+}
+
+.autocomplete-wrapper {
+    position: relative;
+
+    .input-field {
         width: 100%;
+        box-sizing: border-box;
+        background: $input-background-color;
+        border: 1px solid $input-border-color;
+        padding: 8px 12px;
+        border-radius: $input-radius;
+        outline: none;
+        transition: 0.3s ease-in-out;
+    }
+}
 
+.autocomplete-menu {
+    max-height: 220px;
+    overflow-y: auto;
 
-        .autocomplete-wrapper {
-            width: 50%;
-            position: relative;
+    .autocomplete-item {
+        &--info {
+            cursor: default;
+            color: $grey;
+            justify-content: center;
 
-            .input-field {
-                width: 100%;
+            &:hover {
+                background-color: transparent;
             }
-
-            &.is-attribute {
-                .input-field {
-                    border-right: none;
-                    border-top-right-radius: 0;
-                    border-bottom-right-radius: 0;
-                }
-            }
-
-            &.is-value {
-                .input-field {
-                    border-top-left-radius: 0;
-                    border-bottom-left-radius: 0;
-                }
-            }
-        }
-
-        .label-field {
-            font-size: 14px;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        .attribute-header {
-            width: 50%;
-            display: flex;
-            border: 1px solid $input-border-color;
-            border-radius: $input-radius;
-            padding: 0 4px 0 12px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            background: $grey-light;
-            min-height: 36px;
-
-            &.is-attribute {
-                border-right: none;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
-            }
-
-            &.is-value {
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-            }
-
-            .attribute-clear {
-                cursor: pointer;
-                background-color: $primary-color;
-                padding: 3px;
-                color: #ffffff;
-                border-radius: $input-radius;
-                width: 25px;
-                text-align: center;
-            }
-
         }
     }
 }

@@ -1,52 +1,75 @@
-<div class="log-details">
+<div class="editor-container">
     @if (loading()) {
-        <div class="log-loading">Загрузка...</div>
+        <div class="editor-loading">
+            <app-skeleton [count]="4" width="100%" [height]="24" [gap]="12" />
+        </div>
     } @else {
         @if (log(); as log) {
-            <div class="log-header">
-                <div class="log-event" [class]="'event-' + log.event">
-                    {{ logEventLabel[log.event] }}
-                </div>
-                <div class="log-date">{{ log.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
-            </div>
 
-            <div class="log-section">
-                <div class="log-row">
-                    <span class="log-label">ID записи</span>
-                    <span class="log-value">{{ log.id }}</span>
+
+            <div class="tabs">
+                <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                    Информация
                 </div>
-                <div class="log-row">
-                    <span class="log-label">Сущность</span>
-                    <span class="log-value">{{ formatModelType(log.model_type) }}</span>
-                </div>
-                <div class="log-row">
-                    <span class="log-label">ID сущности</span>
-                    <span class="log-value">{{ log.model_id }}</span>
-                </div>
-                <div class="log-row">
-                    <span class="log-label">Пользователь</span>
-                    <span class="log-value">
-                        {{ log.user?.name ?? ('ID: ' + log.user_id) }}
-                        @if (log.user?.email) {
-                            <span class="log-sub">({{ log.user.email }})</span>
-                        }
-                    </span>
+                <div [class.is-active]="isActiveTab('changes')" (click)="changeTab('changes')">
+                    Значения
+                    @if (newValuesCount()) {
+                        <span class="tag">{{ newValuesCount() }}</span>
+                    }
                 </div>
             </div>
 
-            <div class="log-section">
-                <div class="log-section-title">Старые значения</div>
-                <pre class="log-json">{{ formatJson(log.old_values) }}</pre>
-            </div>
 
-            <div class="log-section">
-                <div class="log-section-title">Новые значения</div>
-                <pre class="log-json">{{ formatJson(log.new_values) }}</pre>
+            <div class="editor-form">
+                @if (isActiveTab('info')) {
+                    <div class="log-header">
+                        <div class="log-event" [class]="'event-' + log.event">
+                            {{ log.event }}
+                        </div>
+                        <div class="log-date">{{ log.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
+                    </div>
+                    <div class="log-section">
+                        <div class="log-row">
+                            <span class="log-label">ID записи</span>
+                            <span class="log-value">{{ log.id }}</span>
+                        </div>
+                        <div class="log-row">
+                            <span class="log-label">Сущность</span>
+                            <span class="log-value">{{ log.model_type }}</span>
+                        </div>
+                        <div class="log-row">
+                            <span class="log-label">ID сущности</span>
+                            <span class="log-value">{{ log.model_id }}</span>
+                        </div>
+                        <div class="log-row">
+                            <span class="log-label">Пользователь</span>
+                            <span class="log-value">
+                            {{ log.user.name }}
+                                @if (log.user.email) {
+                                    <span class="log-sub">({{ log.user.email }})</span>
+                                }
+                        </span>
+                        </div>
+                    </div>
+                }
+
+                @if (isActiveTab('changes')) {
+                    <div class="log-changes">
+                        <div class="log-changes-before">
+                            <div class="log-section-title">Старые значения</div>
+                            <pre class="log-json">{{ log.old_values | json }}</pre>
+                        </div>
+                        <div class="log-changes-after">
+                            <div class="log-section-title">Новые значения</div>
+                            <pre class="log-json">{{ log.new_values | json }}</pre>
+                        </div>
+                    </div>
+                }
             </div>
         }
     }
 
-    <div class="log-actions">
+    <div class="editor-actions">
         <button (click)="onClose()">Закрыть</button>
     </div>
 </div>

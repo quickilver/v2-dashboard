@@ -1,0 +1,13 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <select class="select-field" [disabled]="disabled()" (change)="handleChange($event)">
+        <option value="" [selected]="value() === null">{{ placeholder() }}</option>
+        @for (option of options(); track option.value) {
+            <option [value]="option.value" [selected]="option.value === value()">
+                {{ option.label }}
+            </option>
+        }
+    </select>
+</div>

@@ -1,0 +1,37 @@
+<div class="receive-form">
+    <app-select-field
+        label="Склад"
+        placeholder="Выберите склад"
+        [options]="storeOptions()"
+        [disabled]="loading()"
+        [(value)]="storeId"
+    />
+
+    <app-select-field
+        label="Цена"
+        placeholder="Выберите тип цены"
+        [options]="priceOptions()"
+        [(value)]="priceId"
+    />
+
+    <app-autocomplete-suppliers-field
+        label="Контрагент"
+        placeholder="Начните вводить контрагента"
+        [(value)]="supplier"
+    />
+
+    <app-input-field
+        label="Сколько оплачено"
+        placeholder="Введите сумму оплаты"
+        type="number"
+        [value]="payed()"
+        (valueChange)="onPayedChange($event)"
+    />
+
+    <app-textarea-field
+        label="Комментарий"
+        placeholder="Введите комментарий"
+        [rows]="4"
+        [(value)]="comment"
+    />
+</div>

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+} from '@angular/core';
 import { FileManagerService } from '../../../services/file-manager.service';
 import { FileManagerDirectoryEntry } from '../../../models/responses/file-manager/file-manager-directory-entry.model';
 import { FileManagerFileEntry } from '../../../models/responses/file-manager/file-manager-file-entry.model';
@@ -17,13 +25,17 @@ export class FileManagerFilesComponent {
 
     readonly path = input<string>('');
     readonly rootPath = input<string>('');
+    readonly selectable = input<boolean>(false);
     readonly navigate = output<string>();
+    readonly folderCreated = output<void>();
+    readonly fileSelected = output<FileManagerFileEntry>();
 
     readonly directories = signal<FileManagerDirectoryEntry[]>([]);
     readonly files = signal<FileManagerFileEntry[]>([]);
     readonly loading = signal<boolean>(false);
     readonly creatingFolder = signal<boolean>(false);
     readonly newFolderName = signal<string>('');
+    readonly selectedPath = signal<string | null>(null);
 
     get parentPath(): string {
         const p = this.path();
@@ -40,6 +52,7 @@ export class FileManagerFilesComponent {
     constructor() {
         effect(() => {
             this.path();
+            this.selectedPath.set(null);
             this.load();
         });
     }
@@ -73,6 +86,7 @@ export class FileManagerFilesComponent {
             await this.fileManagerService.createFolder(name, this.path());
             this.cancelCreateFolder();
             await this.load();
+            this.folderCreated.emit();
         } catch {
             // error handled by interceptor or notification
         }
@@ -93,6 +107,16 @@ export class FileManagerFilesComponent {
 
     navigateTo(dir: FileManagerDirectoryEntry): void {
         this.navigate.emit(dir.path);
+    }
+
+    selectFile(file: FileManagerFileEntry): void {
+        if (!this.selectable()) return;
+        this.selectedPath.set(file.path);
+        this.fileSelected.emit(file);
+    }
+
+    isFileSelected(file: FileManagerFileEntry): boolean {
+        return this.selectedPath() === file.path;
     }
 
     formatSize(bytes: number): string {

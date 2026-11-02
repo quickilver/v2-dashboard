@@ -26,7 +26,10 @@ export class FileManagerService {
 
     async createFolder(name: string, path: string = ''): Promise<FileManagerCreateFolderResponse> {
         return firstValueFrom(
-            this.http.post<FileManagerCreateFolderResponse>(`${this.apiUrl}/folder`, { name, path }),
+            this.http.post<FileManagerCreateFolderResponse>(`${this.apiUrl}/folder`, {
+                name,
+                path,
+            }),
         );
     }
 
@@ -39,5 +42,10 @@ export class FileManagerService {
         return firstValueFrom(
             this.http.post<FileManagerUploadResponse>(`${this.apiUrl}/upload`, formData),
         );
+    }
+
+    publicUrl(path: string): string {
+        const baseUrl = environment.apiUrl.replace(/\/api\/?$/, '');
+        return `${baseUrl}/storage/${path.replace(/^\/+/, '')}`;
     }
 }

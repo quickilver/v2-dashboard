@@ -1,0 +1,116 @@
+<div class="filters-title">Фильтры</div>
+<div class="products-filters">
+    <div class="filters-group filters-search">
+        <app-input-field
+            class="filters-search"
+            placeholder="Поиск по названию, артикулу или описанию"
+            [value]="filters().query"
+            (valueChange)="onQueryChange($event)"
+        />
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('categories')">
+            <span>
+                Категории
+                @if (categoriesCount()) {
+                    <span class="filters-count">{{ categoriesCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('categories')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+        @if (isExpanded('categories')) {
+            <div class="filters-group-content">
+                <app-categories-tree
+                    [selectable]="true"
+                    [multiple]="true"
+                    [value]="filters().categories"
+                    (valueChange)="onCategoriesChange($event)"
+                />
+            </div>
+        }
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('stores')">
+            <span>
+                Склады
+                @if (storesCount()) {
+                    <span class="filters-count">{{ storesCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('stores')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+        @if (isExpanded('stores')) {
+            <div class="filters-group-content filters-stores">
+                @for (store of stores(); track store.id) {
+                    <label class="filters-option">
+                        <input
+                            type="checkbox"
+                            [checked]="isStoreSelected(store.id)"
+                            (change)="onStoreToggle(store.id, $event)"
+                        />
+                        <span>{{ store.title }}</span>
+                    </label>
+                } @empty {
+                    <div class="filters-empty">Нет складов</div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('prices')">
+            <span>
+                Цены
+                @if (pricesCount()) {
+                    <span class="filters-count">{{ pricesCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('prices')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+        @if (isExpanded('prices')) {
+            <div class="filters-group-content filters-prices">
+                @for (price of prices(); track price.id) {
+                    <div class="filters-price">
+                        <div class="filters-price-title">
+                            {{ price.title }} ({{ price.currency }})
+                        </div>
+                        <div class="filters-price-range">
+                            <input
+                                type="number"
+                                class="filters-price-input"
+                                placeholder="от"
+                                min="0"
+                                [value]="getPriceFilter(price.id)?.min ?? ''"
+                                (change)="onPriceRangeChange(price.id, 'min', $event)"
+                            />
+                            <span class="filters-price-separator">—</span>
+                            <input
+                                type="number"
+                                class="filters-price-input"
+                                placeholder="до"
+                                min="0"
+                                [value]="getPriceFilter(price.id)?.max ?? ''"
+                                (change)="onPriceRangeChange(price.id, 'max', $event)"
+                            />
+                        </div>
+                    </div>
+                } @empty {
+                    <div class="filters-empty">Нет типов цен</div>
+                }
+            </div>
+        }
+    </div>
+
+    <app-products-filters-attributes
+        [value]="filters().attributes"
+        (valueChange)="onAttributesChange($event)"
+    />
+</div>

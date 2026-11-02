@@ -12,14 +12,13 @@ src/app/components/modules/logs/
 └── log-details/      # попап просмотра лога
     ├── log-details.ts
     ├── log-details.html
-    ├── log-details.scss
-    └── log-helpers.ts
+    └── log-details.scss
 ```
 
 ## Маршрут
 
-| Путь    | Компонент           |
-|---------|---------------------|
+| Путь    | Компонент             |
+| ------- | --------------------- |
 | `/logs` | `LogListingComponent` |
 
 Определён в `src/app/app.routes.ts`.
@@ -30,13 +29,13 @@ src/app/components/modules/logs/
 
 Селектор `app-log-listing`. Таблица логов на базе переиспользуемого `ListingComponent`.
 
-- **Колонки:** `id`, `event` (локализованное название события), `model_type` (короткое имя без namespace), `model_id`, `user` (имя + email пользователя), `created_at` (локализованная дата).
+- **Колонки:** `id`, `event` (сырое значение события), `model_type` (полное имя модели), `model_id`, `user` (имя пользователя или `ID: {user_id}`), `created_at` (сырая дата).
 - **Состояние (signals):** `logs`, `rows` (computed — подготовленные строки для таблицы), `loading`, `meta`, `pageSize` (50), `page` (1).
 - **Методы:**
-  - `loadLogs()` — загрузка списка через `LogService.index()` с параметрами пагинации/сортировки;
-  - `onRowClick(row)` — открывает попап просмотра лога;
-  - `onDetails(log)` — попап «Просмотр лога» с `{ id }`;
-  - `onSort(sort)` / `onPageChange(page)` — смена сортировки/страницы и перезагрузка.
+    - `loadLogs()` — загрузка списка через `LogService.index()` с параметрами пагинации/сортировки;
+    - `onRowClick(row)` — открывает попап просмотра лога;
+    - `onDetails(log)` — попап «Просмотр лога» с `{ id }`;
+    - `onSort(sort)` / `onPageChange(page)` — смена сортировки/страницы и перезагрузка.
 
 > Листинг только для просмотра: `actionsColumn` и «Создать» скрыты.
 
@@ -45,30 +44,22 @@ src/app/components/modules/logs/
 Селектор `app-log-details`. Попап детального просмотра одного лога.
 
 - **Вход:** `id: number`.
-- **Состояние (signals):** `loading`, `log`.
-- **Метод:** `onClose()` — закрытие попапа; `loadLog(id)` — загрузка через `LogService.show()`.
+- **Состояние (signals):** `loading`, `log`, `tab`.
+- **Методы:** `onClose()` — закрытие попапа; `loadLog(id)` — загрузка через `LogService.show()`; `isActiveTab()` / `changeTab()` — переключение вкладок.
 
-Отображает:
-- бейдж события (`created` — зелёный, `updated` — фиолетовый, `deleted` — красный, `restored` — синий) и дату;
-- основные поля (`id`, сущность, `model_id`, пользователь);
-- блоки **Старые значения** и **Новые значения** — `old_values` / `new_values` как JSON (pretty-printed).
+Отображает две вкладки:
 
-## Хелперы (`log-helpers.ts`)
-
-| Экспорт                | Назначение                                           |
-|------------------------|------------------------------------------------------|
-| `LogEventLabel`        | Словарь `LogEvent` → русское название события        |
-| `formatModelType()`    | Убирает namespace: `App\Models\Store` → `Store`      |
-| `formatJson()`         | JSON с отступами; `null`/`undefined` → `—`           |
+- **Информация** — бейдж события (сырое значение), дата, `id`, `model_type`, `model_id`, пользователь;
+- **Значения** — блоки **Старые значения** и **Новые значения** (`old_values` / `new_values`) через пайп `json` (сырые данные).
 
 ## Модели
 
-| Модель                | Файл                                             | Назначение                        |
-|-----------------------|--------------------------------------------------|-----------------------------------|
-| `LogModel`            | `src/app/models/log.model.ts`                    | Полная модель лога                |
-| `LogIndexParams`      | `src/app/models/params/log-index.params.ts`      | Параметры запроса списка          |
-| `LogsIndexResponse`   | `src/app/models/responses/logs/logs-index.response.ts` | Ответ списка (`data`, `meta`) |
-| `LogsShowResponse`    | `src/app/models/responses/logs/logs-show.response.ts`  | Ответ одного лога           |
+| Модель              | Файл                                                   | Назначение                    |
+| ------------------- | ------------------------------------------------------ | ----------------------------- |
+| `LogModel`          | `src/app/models/log.model.ts`                          | Полная модель лога            |
+| `LogIndexParams`    | `src/app/models/params/log-index.params.ts`            | Параметры запроса списка      |
+| `LogsIndexResponse` | `src/app/models/responses/logs/logs-index.response.ts` | Ответ списка (`data`, `meta`) |
+| `LogsShowResponse`  | `src/app/models/responses/logs/logs-show.response.ts`  | Ответ одного лога             |
 
 ### `LogModel`
 
@@ -76,7 +67,7 @@ src/app/components/modules/logs/
 interface LogModel {
     id: number;
     event: 'updated' | 'created' | 'deleted' | 'restored';
-    model_type: string;   // например "App\Models\Store"
+    model_type: string; // например "App\Models\Store"
     model_id: number;
     user_id: number;
     old_values: Record<string, unknown> | null;
@@ -90,10 +81,10 @@ interface LogModel {
 
 `LogService` (`src/app/services/log.service.ts`), базовый путь `/logs/`.
 
-| Метод  | HTTP | Путь          | Описание     |
-|--------|------|---------------|--------------|
-| `index`| GET  | `/logs/`      | Список логов |
-| `show` | GET  | `/logs/{id}`  | Лог по ID    |
+| Метод   | HTTP | Путь         | Описание     |
+| ------- | ---- | ------------ | ------------ |
+| `index` | GET  | `/logs/`     | Список логов |
+| `show`  | GET  | `/logs/{id}` | Лог по ID    |
 
 - **Query (index):** `page`, `per_page`, `sort`, `direction`, `event`, `model_type`, `user_id`.
 

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 
+export type CounterFieldSize = 'small' | 'regular' | 'big';
+
 @Component({
     selector: 'app-counter-field',
     standalone: true,
@@ -16,13 +18,13 @@ export class CounterFieldComponent {
     editable = input<boolean>(true);
     /** Шаг изменения при клике по минусу/плюсу. */
     step = input<number>(1);
+    /** Размер счётчика. */
+    size = input<CounterFieldSize>('regular');
 
     value = model<number>(0);
 
     decrement(): void {
-        this.value.update((current) =>
-            Math.max(this.min(), (current - this.step())),
-        );
+        this.value.update((current) => Math.max(this.min(), current - this.step()));
     }
 
     increment(): void {

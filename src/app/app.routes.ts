@@ -10,6 +10,9 @@ import { UsersListingComponent } from './components/modules/users/users-listing/
 import { SettingsListingComponent } from './components/modules/settings/settings-listing/settings-listing';
 import { PagesListingComponent } from './components/modules/pages/pages-listing/pages-listing';
 import { LogListingComponent } from './components/modules/logs/log-listing/log-listing';
+import { StatusesListingComponent } from './components/modules/statuses/statuses-listing/statuses-listing';
+import { SuppliersListingComponent } from './components/modules/suppliers/suppliers-listing/suppliers-listing';
+import { ReceivesListingComponent } from './components/modules/receives/receives-listing/receives-listing';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -21,7 +24,10 @@ export const routes: Routes = [
     { path: 'catalog/prices', component: PricesListingComponent },
     { path: 'catalog/attributes', component: AttributesListingComponent },
     { path: 'users', component: UsersListingComponent },
+    { path: 'receives', component: ReceivesListingComponent },
     { path: 'settings', component: SettingsListingComponent },
+    { path: 'suppliers', component: SuppliersListingComponent },
     { path: 'content/pages', component: PagesListingComponent },
+    { path: 'orders/statuses', component: StatusesListingComponent },
     { path: 'logs', component: LogListingComponent },
 ];

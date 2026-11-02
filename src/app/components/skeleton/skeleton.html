@@ -1,0 +1,5 @@
+<div class="skeleton-container" [style]="containerStyle()">
+    @for (item of items(); track $index) {
+        <div class="skeleton-item" [style]="itemStyles()[$index]"></div>
+    }
+</div>

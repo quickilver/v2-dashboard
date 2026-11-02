@@ -13,11 +13,12 @@ import { StoreService } from '../../../../services/store.service';
 import { PopupService } from '../../../../services/popup.service';
 import { StoreModel } from '../../../../models/store.model';
 import { NotificationService } from '../../../../services/notification.service';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-store-editor',
     standalone: true,
-    imports: [InputFieldComponent, CheckboxFieldComponent],
+    imports: [InputFieldComponent, CheckboxFieldComponent, SkeletonComponent],
     templateUrl: './store-editor.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

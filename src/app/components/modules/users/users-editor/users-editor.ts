@@ -17,11 +17,12 @@ import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { UserModel } from '../../../../models/user.model';
 import { ModuleModel } from '../../../../models/module.model';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-users-editor',
     standalone: true,
-    imports: [FormsModule, InputFieldComponent, CheckboxFieldComponent],
+    imports: [FormsModule, InputFieldComponent, CheckboxFieldComponent, SkeletonComponent],
     templateUrl: './users-editor.html',
     styleUrl: './users-editor.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

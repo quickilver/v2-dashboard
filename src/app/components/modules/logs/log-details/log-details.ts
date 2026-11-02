@@ -1,22 +1,23 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    computed,
     inject,
     input,
     signal,
     OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { LogService } from '../../../../services/log.service';
 import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { LogModel } from '../../../../models/log.model';
-import { LogEventLabel, formatModelType, formatJson } from './log-helpers';
 
 @Component({
     selector: 'app-log-details',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, SkeletonComponent],
     templateUrl: './log-details.html',
     styleUrl: './log-details.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,10 +31,9 @@ export class LogDetailsComponent implements OnInit {
 
     loading = signal<boolean>(false);
     log = signal<LogModel | null>(null);
+    tab = signal<string>('info');
 
-    protected readonly logEventLabel = LogEventLabel;
-    protected readonly formatModelType = formatModelType;
-    protected readonly formatJson = formatJson;
+    newValuesCount = computed<number>(() => Object.keys(this.log()?.new_values ?? {}).length);
 
     ngOnInit(): void {
         const logId = this.id();
@@ -52,6 +52,14 @@ export class LogDetailsComponent implements OnInit {
         } finally {
             this.loading.set(false);
         }
+    }
+
+    isActiveTab(tab: string): boolean {
+        return this.tab() === tab;
+    }
+
+    changeTab(tab: string): void {
+        this.tab.set(tab);
     }
 
     onClose(): void {

@@ -1,5 +1,15 @@
-@use '../../../../../styles/variables' as *;
+@use 'variables' as *;
 
 :host {
     display: block;
+}
+
+.products-listing-container{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+
+    > app-listing {
+        width: 100%;
+    }
 }

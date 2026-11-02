@@ -1,15 +1,22 @@
-@for (entry of popupService.stack(); track entry.id) {
-    <div class="popup-overlay" [style.z-index]="1000 + (popupService.stack().length - 1 - $index)">
-        <div class="popup-dialog" [class]="entry.dialogClass">
-            <div class="popup-header">
-                <div class="popup-title">{{ entry.title }}</div>
-                @if ($first) {
-                    <button class="popup-close" (click)="popupService.resolve()">✕</button>
-                }
+@if (popupService.stack().length) {
+    <div class="popup-overlay">
+        @for (entry of popupService.stack(); track entry.id; let i = $index) {
+            <div
+                class="popup-dialog"
+                [class]="entry.dialogClass"
+                [class.is-behind]="i > 0"
+                [style.z-index]="popupService.stack().length - i"
+            >
+                <div class="popup-header">
+                    <div class="popup-title">{{ entry.title }}</div>
+                    @if (i === 0) {
+                        <button class="popup-close" (click)="popupService.resolve()">✕</button>
+                    }
+                </div>
+                <div class="popup-body">
+                    <ng-container *ngComponentOutlet="entry.component; inputs: getInputs(entry)" />
+                </div>
             </div>
-            <div class="popup-body">
-                <ng-container *ngComponentOutlet="entry.component; inputs: getInputs(entry)" />
-            </div>
-        </div>
+        }
     </div>
 }

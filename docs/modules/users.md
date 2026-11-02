@@ -17,9 +17,9 @@ src/app/components/modules/users/
 
 ## Маршрут
 
-| Путь      | Компонент               |
-|-----------|-------------------------|
-| `/users`  | `UsersListingComponent` |
+| Путь     | Компонент               |
+| -------- | ----------------------- |
+| `/users` | `UsersListingComponent` |
 
 Определён в `src/app/app.routes.ts`.
 
@@ -33,12 +33,12 @@ src/app/components/modules/users/
 - **Состояние (signals):** `users`, `loading`, `meta`, `pageSize` (50), `page` (1).
 - **Приватные поля:** `currentSearch`, `currentSort`, `currentDirection`.
 - **Методы:**
-  - `loadUsers()` — загрузка списка через `UserService.index()` с параметрами пагинации/поиска/сортировки;
-  - `onRowClick(user)` — открывает редактирование;
-  - `onEdit(user)` — попап «Редактирование пользователя» с `{ id }`, после закрытия перезагружает список;
-  - `createClick()` — попап «Создание пользователя» без `id`, после закрытия перезагружает список;
-  - `onDelete(user)` — подтверждение через `ConfirmService` (удаление пока не реализовано, только `console.log`);
-  - `onSort(sort)` / `onPageChange(page)` — смена сортировки/страницы и перезагрузка.
+    - `loadUsers()` — загрузка списка через `UserService.index()` с параметрами пагинации/поиска/сортировки;
+    - `onRowClick(user)` — открывает редактирование;
+    - `onEdit(user)` — попап «Редактирование пользователя» с `{ id }`, после закрытия перезагружает список;
+    - `createClick()` — попап «Создание пользователя» без `id`, после закрытия перезагружает список;
+    - `onDelete(user)` — подтверждение через `ConfirmService` (удаление пока не реализовано, только `console.log`);
+    - `onSort(sort)` / `onPageChange(page)` — смена сортировки/страницы и перезагрузка.
 
 ### `UsersEditorComponent`
 
@@ -50,13 +50,13 @@ src/app/components/modules/users/
 - **Данные:** `modules` (список модулей), `permissions` (id доступных модулей).
 - **Computed:** `permissionsCount` (кол-во доступных модулей), `flatModules` (модули с вложенными дочерними).
 - **Методы:**
-  - `loadModules()` — загрузка модулей через `ModuleService.index()`;
-  - `loadUser(id)` — загрузка данных пользователя через `UserService.show()`, включая нормализацию прав;
-  - `normalizePermissions(permissions)` — приводит `number[]` или `{ id }[]` к `number[]`;
-  - `onSave()` — создание (`create`) или обновление (`update`); пароль отправляется только если заполнен;
-  - `onCancel()` — закрытие попапа;
-  - `toggleModule(moduleId)` — включение/выключение права на модуль;
-  - `isActiveTab(tab)` / `changeTab(tab)` — переключение вкладок.
+    - `loadModules()` — загрузка модулей через `ModuleService.index()`;
+    - `loadUser(id)` — загрузка данных пользователя через `UserService.show()`, включая нормализацию прав;
+    - `normalizePermissions(permissions)` — приводит `number[]` или `{ id }[]` к `number[]`;
+    - `onSave()` — создание (`create`) или обновление (`update`); пароль отправляется только если заполнен;
+    - `onCancel()` — закрытие попапа;
+    - `toggleModule(moduleId)` — включение/выключение права на модуль;
+    - `isActiveTab(tab)` / `changeTab(tab)` — переключение вкладок.
 
 ## Вкладки редактора
 
@@ -65,14 +65,14 @@ src/app/components/modules/users/
 
 ## Модели
 
-| Модель                | Файл                                              | Назначение                          |
-|-----------------------|---------------------------------------------------|-------------------------------------|
-| `UserModel`           | `src/app/models/user.model.ts`                    | Полная модель пользователя          |
-| `UserShort`           | `src/app/models/users/user-short.model.ts`        | Краткая модель для списка           |
-| `UserIndexParams`     | `src/app/models/params/user-index.params.ts`      | Параметры запроса списка            |
-| `UsersIndexResponse`  | `src/app/models/responses/users/users-index.response.ts` | Ответ списка (`data`, `meta`) |
-| `UsersShowResponse`   | `src/app/models/responses/users/users-show.response.ts`  | Ответ одного пользователя     |
-| `ModuleModel`         | `src/app/models/module.model.ts`                  | Модуль (для прав доступа)           |
+| Модель               | Файл                                                     | Назначение                    |
+| -------------------- | -------------------------------------------------------- | ----------------------------- |
+| `UserModel`          | `src/app/models/user.model.ts`                           | Полная модель пользователя    |
+| `UserShort`          | `src/app/models/users/user-short.model.ts`               | Краткая модель для списка     |
+| `UserIndexParams`    | `src/app/models/params/user-index.params.ts`             | Параметры запроса списка      |
+| `UsersIndexResponse` | `src/app/models/responses/users/users-index.response.ts` | Ответ списка (`data`, `meta`) |
+| `UsersShowResponse`  | `src/app/models/responses/users/users-show.response.ts`  | Ответ одного пользователя     |
+| `ModuleModel`        | `src/app/models/module.model.ts`                         | Модуль (для прав доступа)     |
 
 ### `UserModel`
 
@@ -95,13 +95,13 @@ interface UserModel {
 
 `UserService` (`src/app/services/user.service.ts`), базовый путь `/users/`.
 
-| Метод    | HTTP   | Путь           | Описание             |
-|----------|--------|----------------|----------------------|
-| `index`  | GET    | `/users/`      | Список пользователей |
-| `show`   | GET    | `/users/{id}`  | Пользователь по ID   |
-| `create` | POST   | `/users/`      | Создать пользователя |
-| `update` | PUT    | `/users/{id}`  | Обновить пользователя|
-| `delete` | DELETE | `/users/{id}`  | Удалить пользователя |
+| Метод    | HTTP   | Путь          | Описание              |
+| -------- | ------ | ------------- | --------------------- |
+| `index`  | GET    | `/users/`     | Список пользователей  |
+| `show`   | GET    | `/users/{id}` | Пользователь по ID    |
+| `create` | POST   | `/users/`     | Создать пользователя  |
+| `update` | PUT    | `/users/{id}` | Обновить пользователя |
+| `delete` | DELETE | `/users/{id}` | Удалить пользователя  |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 - **Тело create/update:** `name`, `email`, `full_access`, `permissions`, `password` (опционально).

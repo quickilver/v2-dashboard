@@ -68,7 +68,11 @@ export class PagesListingComponent implements OnInit {
     }
 
     async onCreate(): Promise<void> {
-        await this.popupService.open('Создание страницы', PagesEditorComponent);
+        await this.popupService.open(
+            'Создание страницы',
+            PagesEditorComponent,
+            {},
+            'with-tabs');
         this.loadPages();
     }
 
@@ -77,9 +81,12 @@ export class PagesListingComponent implements OnInit {
     }
 
     async onEdit(page: PageModel): Promise<void> {
-        await this.popupService.open('Редактирование страницы', PagesEditorComponent, {
-            id: page.id,
-        });
+        await this.popupService.open(
+            'Редактирование страницы',
+            PagesEditorComponent,
+            { id: page.id },
+            'with-tabs'
+            );
         this.loadPages();
     }
 

@@ -1,0 +1,50 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">
+            <app-skeleton [count]="6" width="100%" [height]="36" [gap]="12" />
+        </div>
+    } @else {
+        <div class="tabs">
+            <div [class.is-active]="isActiveTab('form')" (click)="changeTab('form')">Форма</div>
+            <div [class.is-active]="isActiveTab('products')" (click)="changeTab('products')">
+                Товары <span class="tag">{{ products().length }}</span>
+            </div>
+        </div>
+
+        <div class="editor-form">
+            @if (isActiveTab('form')) {
+                <div class="editor-body">
+                    <app-receive-form
+                        [(storeId)]="storeId"
+                        [(priceId)]="priceId"
+                        [(supplier)]="supplier"
+                        [(payed)]="payed"
+                        [(comment)]="comment"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('products')) {
+                <div class="editor-body editor-body--products">
+                    <app-receive-products-search (productSelected)="onProductSelected($event)" />
+                    <app-receive-products-list
+                        [products]="products()"
+                        [(counts)]="counts"
+                        [(purchases)]="purchases"
+                        [(newPrices)]="newPrices"
+                        (productRemoved)="onProductRemoved($event)"
+                    />
+                </div>
+            }
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="!canSubmit()">
+                {{
+                    saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Оформить поступление'
+                }}
+            </button>
+        </div>
+    }
+</div>

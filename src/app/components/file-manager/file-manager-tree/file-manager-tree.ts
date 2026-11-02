@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+} from '@angular/core';
 import { FileManagerService } from '../../../services/file-manager.service';
 import { FileManagerDirectoryEntry } from '../../../models/responses/file-manager/file-manager-directory-entry.model';
 import { IconComponent } from '../../icon/icon';
@@ -8,17 +17,15 @@ import { IconComponent } from '../../icon/icon';
     templateUrl: './file-manager-tree.html',
     styleUrl: './file-manager-tree.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        IconComponent,
-        FileManagerTreeComponent,
-    ],
-    standalone: true
+    imports: [IconComponent, FileManagerTreeComponent],
+    standalone: true,
 })
 export class FileManagerTreeComponent {
     private readonly fileManagerService = inject(FileManagerService);
 
     readonly path = input<string>('');
     readonly expandToPath = input<string>('');
+    readonly refresh = input<number>(0);
     readonly navigate = output<string>();
 
     readonly directories = signal<FileManagerDirectoryEntry[]>([]);
@@ -43,6 +50,7 @@ export class FileManagerTreeComponent {
     constructor() {
         effect(() => {
             this.path();
+            this.refresh();
             this.load();
         });
 
@@ -52,7 +60,7 @@ export class FileManagerTreeComponent {
             const dirs = this.directories();
             if (!segment || !dirs.length) return;
 
-            const dir = dirs.find(d => d.name === segment);
+            const dir = dirs.find((d) => d.name === segment);
             if (dir && !this.isExpanded(dir.name)) {
                 const set = new Set(this.expanded());
                 set.add(dir.name);

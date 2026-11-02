@@ -1,0 +1,110 @@
+@use 'variables' as *;
+
+.media-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 220px;
+    padding: 12px;
+    background: #ffffff;
+    border: 1px solid $input-border-color;
+    border-radius: $input-radius;
+    box-shadow: $shadow;
+
+    .media-settings-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+
+        .media-settings-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: $main-font-color;
+        }
+
+        .media-settings-close {
+            padding: 0 4px;
+            color: $grey;
+            background: none;
+            border: none;
+            cursor: pointer;
+
+            &:hover {
+                color: $main-font-color;
+            }
+        }
+    }
+
+    .media-settings-field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 13px;
+        color: $main-font-color;
+
+        input {
+            width: 90px;
+            padding: 4px 8px;
+            font-size: 13px;
+            color: $main-font-color;
+            background: $input-background-color;
+            border: 1px solid $input-border-color;
+            border-radius: $input-radius;
+            outline: none;
+
+            &:focus {
+                border-color: $primary-color;
+            }
+        }
+    }
+
+    .media-settings-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: $main-font-color;
+        cursor: pointer;
+    }
+
+    .media-settings-actions {
+        display: flex;
+        gap: 8px;
+
+        button {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 13px;
+            color: $main-font-color;
+            background: $grey-light;
+            border: none;
+            border-radius: $input-radius;
+            cursor: pointer;
+            justify-content: center;
+
+            &:hover {
+                background: $grey-light-2;
+            }
+
+            &.primary {
+                color: #ffffff;
+                background: $primary-color;
+
+                &:hover {
+                    background: $primary-dark-color;
+                }
+            }
+
+            &.danger {
+                color: #ffffff;
+                background: #c62828;
+
+                &:hover {
+                    background: #a01f1f;
+                }
+            }
+        }
+    }
+}

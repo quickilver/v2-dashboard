@@ -16,6 +16,7 @@ import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { AttributeValuesStoreModel } from '../../../../models/attributes/attribute-values-store.model';
 import { AttributeStoreModel } from '../../../../models/attributes/attribute-store.model';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-attributes-editor',
@@ -25,6 +26,7 @@ import { AttributeStoreModel } from '../../../../models/attributes/attribute-sto
         InputFieldComponent,
         CheckboxFieldComponent,
         AttributeValuesTabComponent,
+        SkeletonComponent,
     ],
     templateUrl: './attributes-editor.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

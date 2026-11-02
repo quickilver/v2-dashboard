@@ -53,4 +53,32 @@
             }
         }
     }
+
+    &--small {
+        .input-field {
+            width: 44px;
+            padding: 4px 6px;
+            font-size: 13px;
+        }
+
+        .counter-btn {
+            width: 26px;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+    }
+
+    &--big {
+        .input-field {
+            width: 88px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .counter-btn {
+            width: 46px;
+            padding: 12px 0;
+            font-size: 22px;
+        }
+    }
 }

@@ -8,26 +8,28 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: right;
     z-index: 1000;
-    transition: .3s ease-in-out;
-
-    +.popup-overlay {
-        background-color: transparent;
-        transform: translateX(-60px) scale(.95)
-    }
+    transition: 0.3s ease-in-out;
 
     .popup-dialog {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
         display: flex;
         flex-direction: column;
-        height: calc(100% - 20px);
         background-color: #ffffff;
         border-radius: 8px;
         max-width: 1000px;
         width: calc(100% - 20px);
-        margin: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+        box-shadow: $shadow;
+
+        &.is-behind {
+            transform: translateX(-60px) scale(0.95);
+            pointer-events: none;
+        }
 
         .popup-header {
             display: flex;

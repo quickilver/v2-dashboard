@@ -1,0 +1,23 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+
+    <div class="file-picker">
+        <div class="file-picker-value" [class.is-empty]="!value()">
+            @if (value(); as file) {
+                <app-icon name="file" [size]="16" />
+                <span class="file-picker-name">{{ file.name }}</span>
+                <button type="button" class="file-picker-clear" (click)="clear()" title="Очистить">
+                    ✕
+                </button>
+            } @else {
+                <span>{{ placeholder() }}</span>
+            }
+        </div>
+
+        <button type="button" class="file-picker-button" (click)="openFileManager()">
+            {{ buttonLabel() }}
+        </button>
+    </div>
+</div>

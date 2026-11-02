@@ -5,4 +5,5 @@ export interface ListingColumn {
     width?: string;
     type?: 'text' | 'boolean' | 'link';
     labels?: { true: string; false: string };
+    formatter?: (row: any) => string;
 }

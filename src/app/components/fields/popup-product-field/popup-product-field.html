@@ -1,0 +1,74 @@
+<div class="popup-product-field">
+    <aside class="categories-panel">
+        <app-categories-tree
+            [selectable]="true"
+            [multiple]="false"
+            [value]="categoryId()"
+            (valueChange)="onCategoryChange($event)"
+        />
+    </aside>
+
+    <section class="products-panel">
+        @if (showSelected()) {
+            <div class="panel-title">Выбранные товары</div>
+        }
+
+        @if (loading()) {
+            <div class="panel-loading">
+                <app-skeleton [count]="6" width="100%" [height]="20" [gap]="12" />
+            </div>
+        } @else if (!showSelected() && !categoryId()) {
+            <div class="panel-empty">Выберите категорию</div>
+        } @else if (products().length === 0) {
+            <div class="panel-empty">
+                {{ showSelected() ? 'Товары не выбраны' : 'В категории нет товаров' }}
+            </div>
+        } @else {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-check"></th>
+                        <th class="col-id">ID</th>
+                        <th>Название</th>
+                        <th class="col-sku">Артикул</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (product of products(); track product.id) {
+                        <tr
+                            [class.is-selected]="isSelected(product.id)"
+                            (click)="toggleProduct(product)"
+                        >
+                            <td class="col-check">
+                                <input
+                                    type="checkbox"
+                                    [checked]="isSelected(product.id)"
+                                    (click)="$event.stopPropagation()"
+                                    (change)="toggleProduct(product)"
+                                />
+                            </td>
+                            <td class="col-id">{{ product.id }}</td>
+                            <td>{{ product.title }}</td>
+                            <td class="col-sku">{{ product.sku }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+</div>
+
+<div class="popup-product-actions">
+    <button
+        type="button"
+        class="selected-count"
+        [class.is-active]="showSelected()"
+        (click)="showSelectedProducts()"
+    >
+        Выбрано: {{ selectedProducts().length }}
+    </button>
+    <div class="buttons">
+        <button type="button" (click)="onCancel()">Отмена</button>
+        <button type="button" class="primary" (click)="onConfirm()">Добавить</button>
+    </div>
+</div>

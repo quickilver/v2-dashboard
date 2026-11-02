@@ -2,7 +2,7 @@
     @if (label()) {
         <label class="label-field">{{ label() }}</label>
     }
-    <div class="counter">
+    <div class="counter" [class]="'counter--' + size()">
         <button
             type="button"
             class="counter-btn"

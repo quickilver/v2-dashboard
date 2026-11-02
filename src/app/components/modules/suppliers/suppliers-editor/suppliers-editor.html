@@ -1,0 +1,29 @@
+@if (loading()) {
+    <div class="editor-loading">
+        <app-skeleton [count]="3" width="100%" [height]="36" [gap]="12" />
+    </div>
+} @else {
+    <div class="editor-form">
+        <div class="editor-body">
+            <app-input-field
+                label="Название"
+                placeholder="Введите название контрагента"
+                [(value)]="title"
+            />
+
+            <app-textarea-field
+                label="Описание"
+                placeholder="Введите описание контрагента"
+                [rows]="6"
+                [(value)]="description"
+            />
+        </div>
+    </div>
+
+    <div class="editor-actions">
+        <button (click)="onCancel()">Отмена</button>
+        <button class="primary" (click)="onSave()" [disabled]="saving()">
+            {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+        </button>
+    </div>
+}

@@ -1,0 +1,42 @@
+<div class="field-container" (mouseleave)="close()">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+
+    <div class="autocomplete-wrapper">
+        <input
+            type="text"
+            class="input-field"
+            [placeholder]="placeholder()"
+            [value]="search()"
+            (input)="onInput($event)"
+            (keydown)="onKeydown($event)"
+            (focus)="isOpen.set(search().length > 0)"
+            autocomplete="off"
+        />
+
+        @if (isOpen()) {
+            @if (loading()) {
+                <ul class="autocomplete-menu">
+                    <li class="autocomplete-item autocomplete-item--info">Загрузка...</li>
+                </ul>
+            } @else if (filteredSuppliers().length > 0) {
+                <ul class="autocomplete-menu">
+                    @for (supplier of filteredSuppliers(); track supplier.id; let i = $index) {
+                        <li
+                            class="autocomplete-item"
+                            [class.active]="activeIndex() === i"
+                            (click)="selectSupplier(supplier)"
+                        >
+                            {{ supplier.title }}
+                        </li>
+                    }
+                </ul>
+            } @else {
+                <ul class="autocomplete-menu">
+                    <li class="autocomplete-item autocomplete-item--info">Ничего не найдено</li>
+                </ul>
+            }
+        }
+    </div>
+</div>

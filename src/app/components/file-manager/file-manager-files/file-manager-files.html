@@ -1,10 +1,10 @@
 <table>
     <thead>
-    <tr>
-        <th>Название</th>
-        <th class="column-time">Время создания/изменения</th>
-        <th class="column-size">Размер</th>
-    </tr>
+        <tr>
+            <th>Название</th>
+            <th class="column-time">Время создания/изменения</th>
+            <th class="column-size">Размер</th>
+        </tr>
     </thead>
     <tbody>
         @if (loading()) {
@@ -55,7 +55,7 @@
                         <td>
                             <div class="file-item">
                                 <app-icon name="folder" />
-                                <span>{{ dir.name }}</span>
+                                <strong>{{ dir.name }}</strong>
                             </div>
                         </td>
                         <td class="column-time">{{ formatDate(dir.created_at) }}</td>
@@ -65,7 +65,11 @@
             }
             @if (files().length) {
                 @for (file of files(); track file.path) {
-                    <tr>
+                    <tr
+                        [class.clickable-row]="selectable()"
+                        [class.is-selected]="isFileSelected(file)"
+                        (click)="selectFile(file)"
+                    >
                         <td>
                             <div class="file-item">
                                 <app-icon name="file" />

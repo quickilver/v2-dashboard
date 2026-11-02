@@ -6,6 +6,10 @@ import { ProductsIndexResponse } from '../models/responses/products/products-ind
 import { ProductsShowResponse } from '../models/responses/products/products-show.response';
 import { ProductsStoreResponse } from '../models/responses/products/products-store.response';
 import { ProductCreateRequest } from '../models/products/product-create-request.model';
+import {
+    ProductAttributeFilter,
+    ProductPriceFilter,
+} from '../models/products/product-filters.model';
 
 export interface ProductIndexParams {
     page?: number;
@@ -13,6 +17,10 @@ export interface ProductIndexParams {
     query?: string;
     sort?: string;
     direction?: 'asc' | 'desc';
+    categories?: number[];
+    stores?: number[];
+    prices?: ProductPriceFilter[];
+    attributes?: ProductAttributeFilter[];
 }
 
 @Injectable({
@@ -31,6 +39,26 @@ export class ProductService {
             if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
+            if (params.categories?.length)
+                httpParams = httpParams.set('categories', params.categories.join(','));
+            if (params.stores?.length)
+                httpParams = httpParams.set('stores', params.stores.join(','));
+            params.attributes?.forEach((attribute, index) => {
+                httpParams = httpParams.set(`attributes[${index}][id]`, attribute.id);
+                attribute.values.forEach((valueId, valueIndex) => {
+                    httpParams = httpParams.set(
+                        `attributes[${index}][values][${valueIndex}]`,
+                        valueId,
+                    );
+                });
+            });
+            params.prices?.forEach((price, index) => {
+                httpParams = httpParams.set(`prices[${index}][id]`, price.id);
+                if (price.min !== null)
+                    httpParams = httpParams.set(`prices[${index}][min]`, price.min);
+                if (price.max !== null)
+                    httpParams = httpParams.set(`prices[${index}][max]`, price.max);
+            });
         }
         return firstValueFrom(
             this.http.get<ProductsIndexResponse>(this.apiUrl, { params: httpParams }),

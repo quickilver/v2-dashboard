@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, WritableSignal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-type PopupResolver = () => void;
+type PopupResolver = (result?: unknown) => void;
 
 export interface PopupEntry {
     id: number;
@@ -33,12 +33,12 @@ export class PopupService {
         this._document.body.style.removeProperty('--scrollbar-width');
     }
 
-    open(
+    open<T = void>(
         title: string,
         component: any,
         data?: Record<string, unknown>,
         dialogClass: string = '',
-    ): Promise<void> {
+    ): Promise<T | undefined> {
         const id = this._nextId++;
         const entry: PopupEntry = {
             id,
@@ -54,8 +54,8 @@ export class PopupService {
             this._lockScroll();
         }
 
-        return new Promise((resolve) => {
-            this._resolvers.set(id, () => {
+        return new Promise<T | undefined>((resolve) => {
+            this._resolvers.set(id, (result) => {
                 this.stack.update((list) => list.filter((e) => e.id !== id));
                 this._resolvers.delete(id);
 
@@ -63,19 +63,19 @@ export class PopupService {
                     this._unlockScroll();
                 }
 
-                resolve();
+                resolve(result as T | undefined);
             });
         });
     }
 
-    resolve(): void {
+    resolve(result?: unknown): void {
         const stack = this.stack();
         if (stack.length === 0) return;
 
         const top = stack[0];
         const resolver = this._resolvers.get(top.id);
         if (resolver) {
-            resolver();
+            resolver(result);
         }
     }
 }

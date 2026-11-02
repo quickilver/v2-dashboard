@@ -18,6 +18,20 @@
         border-radius: $input-radius;
         outline: none;
         transition: 0.3s ease-in-out;
+        width: 100%;
+
+        &.input-field--small {
+            padding: 4px 6px;
+            font-size: 13px;
+        }
+
+        &.input-field--big {
+            padding: 12px 16px;
+            font-size: 16px;
+        }
+
+        input {
+        }
     }
 
     .wyswig-field {

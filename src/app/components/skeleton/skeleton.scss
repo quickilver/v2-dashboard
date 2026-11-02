@@ -1,0 +1,46 @@
+@use '../../../styles/variables' as *;
+
+:host {
+    display: block;
+}
+
+.skeleton-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.skeleton-item {
+    position: relative;
+    overflow: hidden;
+    background: $grey-light;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.65) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-item::after {
+        animation: none;
+    }
+}

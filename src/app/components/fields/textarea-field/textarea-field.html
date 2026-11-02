@@ -1,0 +1,13 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <textarea
+        class="textarea-field"
+        [rows]="rows()"
+        [placeholder]="placeholder()"
+        [value]="value()"
+        [readonly]="readonly()"
+        (input)="handleInput($event)"
+    ></textarea>
+</div>

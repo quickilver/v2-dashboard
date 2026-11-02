@@ -1,0 +1,29 @@
+@if (loading()) {
+    <div class="editor-loading">
+        <app-skeleton [count]="4" width="100%" [height]="36" [gap]="12" />
+    </div>
+} @else {
+    <div class="editor-form">
+        <div class="editor-body">
+            <app-input-field
+                label="Название"
+                placeholder="Введите название статуса"
+                [(value)]="title"
+            />
+
+            <app-input-field
+                label="Позиция"
+                placeholder="Введите позицию"
+                type="number"
+                [(value)]="position"
+            />
+        </div>
+    </div>
+
+    <div class="editor-actions">
+        <button (click)="onCancel()">Отмена</button>
+        <button class="primary" (click)="onSave()" [disabled]="saving()">
+            {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+        </button>
+    </div>
+}

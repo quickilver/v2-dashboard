@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, model, signal } from '@angular/core';
 import { ProductAttribute } from '../../../../models/products/product-attribute.model';
 import {
-    AutocompleteAttributesFieldComponent,
+    AutocompleteAttributesValuesFieldComponent,
     AttributeFieldValue,
-} from '../../../fields/autocomplete-attributes-field/autocomplete-attributes-field';
+} from '../../../fields/autocomplete-attributes-values-field/autocomplete-attributes-values-field';
 
 @Component({
     selector: 'app-products-editor-attributes',
     standalone: true,
-    imports: [AutocompleteAttributesFieldComponent],
+    imports: [AutocompleteAttributesValuesFieldComponent],
     templateUrl: './products-editor-attributes.html',
     styleUrl: './products-editor-attributes.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

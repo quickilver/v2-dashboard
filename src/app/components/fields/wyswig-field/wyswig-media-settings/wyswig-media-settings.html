@@ -1,0 +1,28 @@
+<div class="media-settings">
+    <div class="media-settings-header">
+        <span class="media-settings-title">Изображение</span>
+        <button type="button" class="media-settings-close" (click)="close.emit()" title="Закрыть">
+            ✕
+        </button>
+    </div>
+
+    <label class="media-settings-field">
+        <span>Ширина, px</span>
+        <input type="number" min="1" [value]="widthValue()" (change)="onWidthChange($event)" />
+    </label>
+
+    <label class="media-settings-field">
+        <span>Высота, px</span>
+        <input type="number" min="1" [value]="heightValue()" (change)="onHeightChange($event)" />
+    </label>
+
+    <label class="media-settings-checkbox">
+        <input type="checkbox" [checked]="lockRatio()" (change)="toggleLockRatio()" />
+        <span>Сохранять пропорции</span>
+    </label>
+
+    <div class="media-settings-actions">
+        <button type="button" class="primary" (click)="close.emit()">Сохранить</button>
+        <button type="button" class="danger" (click)="remove.emit()">Удалить</button>
+    </div>
+</div>

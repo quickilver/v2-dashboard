@@ -2,6 +2,7 @@ import { Component, input, output, signal, computed, ChangeDetectionStrategy } f
 import { IconComponent } from '../icon/icon';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { DropdownFieldComponent } from '../fields/dropdown-field/dropdown-field';
+import { SkeletonComponent } from '../skeleton/skeleton';
 import { DropdownOption } from '../../models/dropdown.model';
 import { ListingColumn } from '../../models/listing.model';
 import { MetaModel } from '../../models/meta.model';
@@ -14,7 +15,7 @@ export interface SortState {
 @Component({
     selector: 'app-listing',
     standalone: true,
-    imports: [IconComponent, InputFieldComponent, DropdownFieldComponent],
+    imports: [IconComponent, InputFieldComponent, DropdownFieldComponent, SkeletonComponent],
     templateUrl: './listing.html',
     styleUrl: './listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -117,6 +118,15 @@ export class ListingComponent {
 
     onDeleteClick(item: any): void {
         this.deleteClick.emit(item);
+    }
+
+    getCellValue(row: any, column: ListingColumn): string {
+        if (column.formatter) {
+            return column.formatter(row);
+        }
+
+        const value = row[column.key];
+        return value === null || value === undefined ? '' : String(value);
     }
 
     getRowActions(item: any): DropdownOption[] {

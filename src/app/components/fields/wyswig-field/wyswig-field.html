@@ -6,15 +6,12 @@
     <div class="wyswig-field">
         <div class="toolbar">
             <div class="buttons">
-
-                <button type="button" (click)="executeCommand('bold')" title="Bold">
-                    <b style="font-family: serif">B</b>
-                </button>
+                <button type="button" (click)="executeCommand('bold')" title="Bold">Жирный</button>
                 <button type="button" (click)="executeCommand('italic')" title="Italic">
-                    <i style="font-family: serif">I</i>
+                    Курсив
                 </button>
                 <button type="button" (click)="executeCommand('underline')" title="Underline">
-                    <u style="font-family: serif">U</u>
+                    Подчеркивание
                 </button>
 
                 <div class="divider"></div>
@@ -22,7 +19,11 @@
                 <button type="button" (click)="executeCommand('justifyLeft')" title="Align Left">
                     L
                 </button>
-                <button type="button" (click)="executeCommand('justifyCenter')" title="Align Center">
+                <button
+                    type="button"
+                    (click)="executeCommand('justifyCenter')"
+                    title="Align Center"
+                >
                     C
                 </button>
                 <button type="button" (click)="executeCommand('justifyRight')" title="Align Right">
@@ -31,11 +32,15 @@
 
                 <div class="divider"></div>
 
+                <button type="button" (click)="insertFile()" title="Вставить файл">Файл</button>
+
+                <div class="divider"></div>
+
                 <select (change)="changeFontSize($any($event.target).value)" title="Font Size">
-                    <option value="1">Small</option>
-                    <option value="3" selected>Normal</option>
-                    <option value="5">Large</option>
-                    <option value="7">Huge</option>
+                    <option value="1">Маленький</option>
+                    <option value="3" selected>Обычный</option>
+                    <option value="5">Большой</option>
+                    <option value="7">Огромный</option>
                 </select>
             </div>
             <app-dropdown-field label="Нейросеть" [options]="aiOptions" />
@@ -48,6 +53,24 @@
             [attr.placeholder]="placeholder()"
             (input)="value.set($any($event.target).innerHTML)"
             (blur)="value.set($any($event.target).innerHTML)"
+            (keyup)="saveSelection()"
+            (mouseup)="saveSelection()"
+            (click)="onEditorClick($event)"
         ></div>
+
+        @if (selectedImage()) {
+            <app-wyswig-media-settings
+                class="image-panel"
+                [width]="imageWidth()"
+                [height]="imageHeight()"
+                [lockRatio]="lockRatio()"
+                [ratio]="imageRatio()"
+                (widthChange)="onImageWidthChange($event)"
+                (heightChange)="onImageHeightChange($event)"
+                (lockRatioChange)="onLockRatioChange($event)"
+                (close)="closeImagePanel()"
+                (remove)="removeImage()"
+            />
+        }
     </div>
 </div>

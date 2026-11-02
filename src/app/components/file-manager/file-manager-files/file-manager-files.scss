@@ -25,6 +25,12 @@ table {
                 cursor: pointer;
             }
 
+            &.is-selected {
+                td {
+                    background: #ede4fb;
+                }
+            }
+
             &:hover {
                 td {
                     background: #ededed;
@@ -59,12 +65,16 @@ table {
 
                     &.save {
                         color: #2e7d32;
-                        &:hover { background: #e8f5e9; }
+                        &:hover {
+                            background: #e8f5e9;
+                        }
                     }
 
                     &.cancel {
                         color: #c62828;
-                        &:hover { background: #ffebee; }
+                        &:hover {
+                            background: #ffebee;
+                        }
                     }
                 }
 

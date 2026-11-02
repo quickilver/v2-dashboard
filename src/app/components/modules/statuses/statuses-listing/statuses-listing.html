@@ -1,0 +1,17 @@
+<app-listing
+    [columns]="columns()"
+    [data]="statuses()"
+    [loading]="loading()"
+    [meta]="meta()"
+    [pageSize]="pageSize()"
+    [page]="page()"
+    title="Статусы"
+    [actionsColumn]="true"
+    (rowClick)="onRowClick($event)"
+    (searchChange)="onSearch($event.toString())"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+    (editClick)="onEdit($event)"
+    (deleteClick)="onDelete($event)"
+    (createClick)="createClick()"
+/>

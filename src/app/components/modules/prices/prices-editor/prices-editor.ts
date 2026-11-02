@@ -12,11 +12,12 @@ import { PriceService } from '../../../../services/price.service';
 import { PopupService } from '../../../../services/popup.service';
 import { PriceModel } from '../../../../models/price.model';
 import { NotificationService } from '../../../../services/notification.service';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-prices-editor',
     standalone: true,
-    imports: [InputFieldComponent],
+    imports: [InputFieldComponent, SkeletonComponent],
     templateUrl: './prices-editor.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

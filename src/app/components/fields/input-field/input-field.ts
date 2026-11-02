@@ -1,4 +1,6 @@
-import { Component, Input, input, InputSignal, model, ModelSignal } from '@angular/core';
+import { Component, input, InputSignal, model, ModelSignal } from '@angular/core';
+
+export type InputFieldSize = 'small' | 'regular' | 'big';
 
 @Component({
     selector: 'app-input-field',
@@ -12,6 +14,7 @@ export class InputFieldComponent {
     placeholder: InputSignal<string> = input<string>('');
     type: InputSignal<string> = input<string>('text');
     readonly: InputSignal<boolean> = input<boolean>(false);
+    size: InputSignal<InputFieldSize> = input<InputFieldSize>('regular');
     value: ModelSignal<string | number> = model<string | number>('');
 
     handleInput(event: Event): void {

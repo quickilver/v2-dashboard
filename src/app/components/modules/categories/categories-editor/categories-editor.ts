@@ -16,11 +16,12 @@ import { Category } from '../../../../models/category.model';
 import { CategoryAncestor } from '../../../../models/category-ancestor.model';
 import { NotificationService } from '../../../../services/notification.service';
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-categories-editor',
     standalone: true,
-    imports: [InputFieldComponent, CheckboxFieldComponent, CategoriesTreeComponent],
+    imports: [InputFieldComponent, CheckboxFieldComponent, CategoriesTreeComponent, SkeletonComponent],
     templateUrl: './categories-editor.html',
     styleUrl: './categories-editor.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

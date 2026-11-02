@@ -5,6 +5,8 @@
     <input
         [type]="type()"
         class="input-field"
+        [class.input-field--small]="size() === 'small'"
+        [class.input-field--big]="size() === 'big'"
         [placeholder]="placeholder()"
         [value]="value()"
         [readonly]="readonly()"

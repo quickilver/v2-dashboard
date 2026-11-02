@@ -9,11 +9,13 @@ import { ConfirmService } from '../../../../services/confirm.service';
 import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { ProductsEditorComponent } from '../products-editor/products-editor';
+import { ProductsFiltersComponent } from '../products-filters/products-filters';
+import { ProductFilters } from '../../../../models/products/product-filters.model';
 
 @Component({
     selector: 'app-products-listing',
     standalone: true,
-    imports: [ListingComponent],
+    imports: [ListingComponent, ProductsFiltersComponent],
     templateUrl: './products-listing.html',
     styleUrl: './products-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +42,14 @@ export class ProductsListingComponent implements OnInit {
     private currentSort: string = '';
     private currentDirection: 'asc' | 'desc' = 'asc';
 
+    filters = signal<ProductFilters>({
+        query: '',
+        categories: [],
+        stores: [],
+        prices: [],
+        attributes: [],
+    });
+
     ngOnInit(): void {
         this.loadProducts();
     }
@@ -53,6 +63,10 @@ export class ProductsListingComponent implements OnInit {
                 query: this.currentSearch,
                 sort: this.currentSort,
                 direction: this.currentDirection,
+                categories: this.filters().categories,
+                stores: this.filters().stores,
+                prices: this.filters().prices,
+                attributes: this.filters().attributes,
             };
 
             const response: ProductsIndexResponse = await this.productService.index(params);
@@ -104,6 +118,13 @@ export class ProductsListingComponent implements OnInit {
 
     onSearch(query: string): void {
         this.currentSearch = query;
+        this.page.set(1);
+        this.loadProducts();
+    }
+
+    onFiltersChange(filters: ProductFilters): void {
+        this.filters.set(filters);
+        this.currentSearch = filters.query;
         this.page.set(1);
         this.loadProducts();
     }

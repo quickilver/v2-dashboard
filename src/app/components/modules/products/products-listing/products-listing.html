@@ -1,17 +1,20 @@
-<app-listing
-    [columns]="columns()"
-    [data]="products()"
-    [loading]="loading()"
-    [meta]="meta()"
-    [pageSize]="pageSize()"
-    [page]="page()"
-    title="Товары"
-    [actionsColumn]="true"
-    (rowClick)="onRowClick($event)"
-    (searchChange)="onSearch($event.toString())"
-    (sortChange)="onSort($event)"
-    (pageChange)="onPageChange($event)"
-    (editClick)="onEdit($event)"
-    (deleteClick)="onDelete($event)"
-    (createClick)="createClick()"
-/>
+<div class="products-listing-container">
+    <app-products-filters [filters]="filters()" (filtersChange)="onFiltersChange($event)" />
+    <app-listing
+        [columns]="columns()"
+        [data]="products()"
+        [loading]="loading()"
+        [meta]="meta()"
+        [pageSize]="pageSize()"
+        [page]="page()"
+        title="Товары"
+        [actionsColumn]="true"
+        [searchable]="false"
+        (rowClick)="onRowClick($event)"
+        (sortChange)="onSort($event)"
+        (pageChange)="onPageChange($event)"
+        (editClick)="onEdit($event)"
+        (deleteClick)="onDelete($event)"
+        (createClick)="createClick()"
+    />
+</div>

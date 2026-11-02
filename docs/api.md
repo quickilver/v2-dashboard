@@ -13,13 +13,13 @@
 
 Большинство `index`-эндпоинтов поддерживают:
 
-| Параметр    | Тип                | Описание                          |
-|-------------|--------------------|-----------------------------------|
-| `page`      | number             | Номер страницы                    |
-| `per_page`  | number             | Элементов на страницу             |
-| `query`     | string             | Поиск (у товаров — `search`)      |
-| `sort`      | string             | Поле сортировки                   |
-| `direction` | `asc` \| `desc`    | Направление сортировки            |
+| Параметр    | Тип             | Описание                     |
+| ----------- | --------------- | ---------------------------- |
+| `page`      | number          | Номер страницы               |
+| `per_page`  | number          | Элементов на страницу        |
+| `query`     | string          | Поиск (у товаров — `search`) |
+| `sort`      | string          | Поле сортировки              |
+| `direction` | `asc` \| `desc` | Направление сортировки       |
 
 ---
 
@@ -44,13 +44,13 @@
 
 Базовый путь: `/attributes/` — сервис `AttributeService`.
 
-| Метод  | Путь              | Описание              | Ответ                     |
-|--------|-------------------|-----------------------|---------------------------|
-| GET    | `/attributes/`    | Список атрибутов      | `AttributesIndexResponse` |
-| GET    | `/attributes/{id}`| Атрибут по ID         | `AttributesShowResponse`  |
-| POST   | `/attributes/`    | Создать атрибут       | `AttributeShortModel`     |
-| PUT    | `/attributes/{id}`| Обновить атрибут      | `AttributeShortModel`     |
-| DELETE | `/attributes/{id}`| Удалить атрибут       | —                         |
+| Метод  | Путь               | Описание         | Ответ                     |
+| ------ | ------------------ | ---------------- | ------------------------- |
+| GET    | `/attributes/`     | Список атрибутов | `AttributesIndexResponse` |
+| GET    | `/attributes/{id}` | Атрибут по ID    | `AttributesShowResponse`  |
+| POST   | `/attributes/`     | Создать атрибут  | `AttributeShortModel`     |
+| PUT    | `/attributes/{id}` | Обновить атрибут | `AttributeShortModel`     |
+| DELETE | `/attributes/{id}` | Удалить атрибут  | —                         |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 
@@ -60,13 +60,13 @@
 
 Базовый путь: `/categories/` — сервис `CategoriesService`.
 
-| Метод  | Путь                | Описание              | Ответ                       |
-|--------|---------------------|-----------------------|-----------------------------|
-| GET    | `/categories/`      | Список категорий      | `CategoriesIndexResponse`   |
-| GET    | `/categories/{id}`  | Категория по ID       | `CategoriesShowResponse`    |
-| POST   | `/categories/`      | Создать категорию     | `CategoriesCreateResponse`  |
-| PUT    | `/categories/{id}`  | Обновить категорию    | `CategoriesUpdateResponse`  |
-| DELETE | `/categories/{id}`  | Удалить категорию     | —                           |
+| Метод  | Путь               | Описание           | Ответ                      |
+| ------ | ------------------ | ------------------ | -------------------------- |
+| GET    | `/categories/`     | Список категорий   | `CategoriesIndexResponse`  |
+| GET    | `/categories/{id}` | Категория по ID    | `CategoriesShowResponse`   |
+| POST   | `/categories/`     | Создать категорию  | `CategoriesCreateResponse` |
+| PUT    | `/categories/{id}` | Обновить категорию | `CategoriesUpdateResponse` |
+| DELETE | `/categories/{id}` | Удалить категорию  | —                          |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `parent_id`.
 
@@ -76,11 +76,11 @@
 
 Базовый путь: `/files` — сервис `FileManagerService`.
 
-| Метод | Путь             | Описание                    | Ответ                              |
-|-------|------------------|-----------------------------|------------------------------------|
-| GET   | `/files`         | Содержимое директории       | `FileManagerDirectoryResponse`     |
-| POST  | `/files/folder`  | Создать папку               | `FileManagerCreateFolderResponse`  |
-| POST  | `/files/upload`  | Загрузить файл (multipart)  | `FileManagerUploadResponse`        |
+| Метод | Путь            | Описание                   | Ответ                             |
+| ----- | --------------- | -------------------------- | --------------------------------- |
+| GET   | `/files`        | Содержимое директории      | `FileManagerDirectoryResponse`    |
+| POST  | `/files/folder` | Создать папку              | `FileManagerCreateFolderResponse` |
+| POST  | `/files/upload` | Загрузить файл (multipart) | `FileManagerUploadResponse`       |
 
 - **GET `/files`** — query `path` (путь директории, по умолчанию пустой).
 - **POST `/files/folder`** — тело `{ name, path }`.
@@ -92,9 +92,9 @@
 
 Базовый путь: `/modules/` — сервис `ModuleService`.
 
-| Метод | Путь          | Описание        | Ответ                  |
-|-------|---------------|-----------------|------------------------|
-| GET   | `/modules/`   | Список модулей  | `ModulesIndexResponse` |
+| Метод | Путь        | Описание       | Ответ                  |
+| ----- | ----------- | -------------- | ---------------------- |
+| GET   | `/modules/` | Список модулей | `ModulesIndexResponse` |
 
 ---
 
@@ -102,13 +102,13 @@
 
 Базовый путь: `/pages/` — сервис `PageService`.
 
-| Метод  | Путь            | Описание          | Ответ                 |
-|--------|-----------------|-------------------|-----------------------|
-| GET    | `/pages/`       | Список страниц    | `PagesIndexResponse`  |
-| GET    | `/pages/{id}`   | Страница по ID    | `PagesShowResponse`   |
-| POST   | `/pages/`       | Создать страницу  | `PageModel`           |
-| PUT    | `/pages/{id}`   | Обновить страницу | `PageModel`           |
-| DELETE | `/pages/{id}`   | Удалить страницу  | —                     |
+| Метод  | Путь          | Описание          | Ответ                |
+| ------ | ------------- | ----------------- | -------------------- |
+| GET    | `/pages/`     | Список страниц    | `PagesIndexResponse` |
+| GET    | `/pages/{id}` | Страница по ID    | `PagesShowResponse`  |
+| POST   | `/pages/`     | Создать страницу  | `PageModel`          |
+| PUT    | `/pages/{id}` | Обновить страницу | `PageModel`          |
+| DELETE | `/pages/{id}` | Удалить страницу  | —                    |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 
@@ -118,13 +118,13 @@
 
 Базовый путь: `/prices/` — сервис `PriceService`.
 
-| Метод  | Путь             | Описание        | Ответ                  |
-|--------|------------------|-----------------|------------------------|
-| GET    | `/prices/`       | Список цен      | `PricesIndexResponse`  |
-| GET    | `/prices/{id}`   | Цена по ID      | `PricesShowResponse`   |
-| POST   | `/prices/`       | Создать цену    | `PriceModel`           |
-| PUT    | `/prices/{id}`   | Обновить цену   | `PriceModel`           |
-| DELETE | `/prices/{id}`   | Удалить цену    | —                      |
+| Метод  | Путь           | Описание      | Ответ                 |
+| ------ | -------------- | ------------- | --------------------- |
+| GET    | `/prices/`     | Список цен    | `PricesIndexResponse` |
+| GET    | `/prices/{id}` | Цена по ID    | `PricesShowResponse`  |
+| POST   | `/prices/`     | Создать цену  | `PriceModel`          |
+| PUT    | `/prices/{id}` | Обновить цену | `PriceModel`          |
+| DELETE | `/prices/{id}` | Удалить цену  | —                     |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 
@@ -134,26 +134,38 @@
 
 Базовый путь: `/products/` — сервис `ProductService`.
 
-| Метод | Путь               | Описание        | Ответ                    |
-|-------|--------------------|-----------------|--------------------------|
-| GET   | `/products/`       | Список товаров  | `ProductsIndexResponse`  |
-| GET   | `/products/{id}`   | Товар по ID     | `ProductsShowResponse`   |
-| POST  | `/products/`       | Создать товар   | `ProductsStoreResponse`  |
-| PUT   | `/products/{id}`   | Обновить товар  | `ProductsStoreResponse`  |
+| Метод | Путь             | Описание       | Ответ                   |
+| ----- | ---------------- | -------------- | ----------------------- |
+| GET   | `/products/`     | Список товаров | `ProductsIndexResponse` |
+| GET   | `/products/{id}` | Товар по ID    | `ProductsShowResponse`  |
+| POST  | `/products/`     | Создать товар  | `ProductsStoreResponse` |
+| PUT   | `/products/{id}` | Обновить товар | `ProductsStoreResponse` |
 
-- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `categories`, `stores`, `attributes`, `prices`.
+    - `categories`, `stores` — списки ID через запятую.
+    - `attributes[0][id]=1&attributes[0][values][0]=5&attributes[0][values][1]=6` — характеристика и массив ID выбранных значений (если `values` не передан — фильтр по наличию характеристики).
+    - `prices[0][id]=1&prices[0][min]=100&prices[0][max]=500` — диапазон суммы по типу цены.
 - **POST/PUT body:**
 
 ```json
 {
-  "title": "Товар",
-  "sku": "SKU-001",
-  "categories": [1, 2],
-  "attribute_values": [{"id": 5, "position": 1}, {"id": 8}],
-  "prices": [{"id": 1, "amount": 1500.00}],
-  "stores": [{"id": 1, "count": 10}]
+    "title": "Товар",
+    "sku": "SKU-001",
+    "categories": [1, 2],
+    "attribute_values": [
+        { "id": 5, "position": 1 },
+        { "attribute_id": 3, "value": "Красный", "position": 2 },
+        { "attribute_title": "Материал", "value": "Хлопок", "position": 3 }
+    ],
+    "prices": [{ "id": 1, "amount": 1500.0 }],
+    "stores": [{ "id": 1, "count": 10 }]
 }
 ```
+
+- **`attribute_values`** поддерживает три варианта записи:
+    - `{ "id": 5 }` — существующее значение атрибута;
+    - `{ "attribute_id": 3, "value": "Красный" }` — новое значение для существующего атрибута (создаётся при отсутствии);
+    - `{ "attribute_title": "Материал", "value": "Хлопок" }` — новый атрибут со значением (атрибут создаётся по `title`, если не найден).
 
 ---
 
@@ -161,15 +173,88 @@
 
 Базовый путь: `/settings/` — сервис `SettingService`.
 
-| Метод  | Путь               | Описание           | Ответ                   |
-|--------|--------------------|--------------------|-------------------------|
-| GET    | `/settings/`       | Список настроек    | `SettingsIndexResponse` |
-| GET    | `/settings/{id}`   | Настройка по ID    | `SettingsShowResponse`  |
-| POST   | `/settings/`       | Создать настройку  | `SettingModel`          |
-| PUT    | `/settings/{id}`   | Обновить настройку | `SettingModel`          |
-| DELETE | `/settings/{id}`   | Удалить настройку  | —                       |
+| Метод  | Путь             | Описание           | Ответ                   |
+| ------ | ---------------- | ------------------ | ----------------------- |
+| GET    | `/settings/`     | Список настроек    | `SettingsIndexResponse` |
+| GET    | `/settings/{id}` | Настройка по ID    | `SettingsShowResponse`  |
+| POST   | `/settings/`     | Создать настройку  | `SettingModel`          |
+| PUT    | `/settings/{id}` | Обновить настройку | `SettingModel`          |
+| DELETE | `/settings/{id}` | Удалить настройку  | —                       |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group`.
+
+---
+
+## Статусы
+
+Базовый путь: `/statuses/` — сервис `StatusService`.
+
+| Метод  | Путь             | Описание        | Ответ                    |
+| ------ | ---------------- | --------------- | ------------------------ |
+| GET    | `/statuses/`     | Список статусов | `StatusesIndexResponse`  |
+| GET    | `/statuses/{id}` | Статус по ID    | `StatusesShowResponse`   |
+| POST   | `/statuses/`     | Создать статус  | `StatusesCreateResponse` |
+| PUT    | `/statuses/{id}` | Обновить статус | `StatusesUpdateResponse` |
+| DELETE | `/statuses/{id}` | Удалить статус  | —                        |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
+- **Тело запроса:** `{ "title": "Новый", "position": 1 }`.
+
+---
+
+## Поступления
+
+Базовый путь: `/receives/` — сервис `ReceiveService`.
+
+| Метод  | Путь             | Описание             | Ответ                    |
+| ------ | ---------------- | -------------------- | ------------------------ |
+| GET    | `/receives/`     | Список поступлений   | `ReceivesIndexResponse`  |
+| GET    | `/receives/{id}` | Поступление по ID    | `ReceivesShowResponse`   |
+| POST   | `/receives/`     | Создать поступление  | `ReceivesCreateResponse` |
+| PUT    | `/receives/{id}` | Обновить поступление | `ReceivesUpdateResponse` |
+| DELETE | `/receives/{id}` | Удалить поступление  | —                        |
+
+- **Query (index):** `page`, `per_page`, `sort`, `direction`.
+- **Тело запроса:**
+
+```json
+{
+    "store_id": 1,
+    "supplier_id": 3,
+    "comment": "Поставка",
+    "payed": 1500,
+    "products": [
+        { "product_id": 1, "count": 10, "purchase_price": 250, "price_id": 2, "new_value": 1200 }
+    ]
+}
+```
+
+- `store_id` — склад, `supplier_id` — контрагент, `payed` — оплаченная сумма (целое число).
+- `products[].count` — количество, `products[].purchase_price` — закупочная цена за единицу (целое число).
+- `products[].price_id` — тип цены, `products[].new_value` — новая цена (необязательно).
+- `old_value` не передаётся: сервер сам берёт текущую цену товара по `price_id`.
+- При сохранении: цена товара по `price_id` обновляется на `new_value`, к остатку товара на складе `store_id` прибавляется `count`.
+- При обновлении и удалении поступления изменения цены и остатка откатываются.
+- Менеджер (`user_id`) проставляется автоматически из авторизованного пользователя.
+- **Ответ:** `ReceiveModel` с `user`, `store`, `supplier`, `products`, `total_count`, `total_price`.
+
+---
+
+## Контрагенты
+
+Базовый путь: `/suppliers/` — сервис `SupplierService`.
+
+| Метод  | Путь              | Описание             | Ответ                     |
+| ------ | ----------------- | -------------------- | ------------------------- |
+| GET    | `/suppliers/`     | Список контрагентов  | `SuppliersIndexResponse`  |
+| GET    | `/suppliers/{id}` | Контрагент по ID     | `SuppliersShowResponse`   |
+| POST   | `/suppliers/`     | Создать контрагента  | `SuppliersCreateResponse` |
+| PUT    | `/suppliers/{id}` | Обновить контрагента | `SuppliersUpdateResponse` |
+| DELETE | `/suppliers/{id}` | Удалить контрагента  | —                         |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
+- **Тело запроса:** `{ "title": "ООО Ромашка", "description": "Описание" }`.
+- `title` — обязательное, `description` — необязательное (nullable).
 
 ---
 
@@ -177,13 +262,13 @@
 
 Базовый путь: `/stores/` — сервис `StoreService`.
 
-| Метод  | Путь             | Описание         | Ответ                  |
-|--------|------------------|------------------|------------------------|
-| GET    | `/stores/`       | Список магазинов | `StoresIndexResponse`  |
-| GET    | `/stores/{id}`   | Магазин по ID    | `StoresShowResponse`   |
-| POST   | `/stores/`       | Создать магазин  | `StoreModel`           |
-| PUT    | `/stores/{id}`   | Обновить магазин | `StoreModel`           |
-| DELETE | `/stores/{id}`   | Удалить магазин  | —                      |
+| Метод  | Путь           | Описание         | Ответ                 |
+| ------ | -------------- | ---------------- | --------------------- |
+| GET    | `/stores/`     | Список магазинов | `StoresIndexResponse` |
+| GET    | `/stores/{id}` | Магазин по ID    | `StoresShowResponse`  |
+| POST   | `/stores/`     | Создать магазин  | `StoreModel`          |
+| PUT    | `/stores/{id}` | Обновить магазин | `StoreModel`          |
+| DELETE | `/stores/{id}` | Удалить магазин  | —                     |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 
@@ -193,13 +278,13 @@
 
 Базовый путь: `/users/` — сервис `UserService`.
 
-| Метод  | Путь            | Описание             | Ответ                 |
-|--------|-----------------|----------------------|-----------------------|
-| GET    | `/users/`       | Список пользователей | `UsersIndexResponse`  |
-| GET    | `/users/{id}`   | Пользователь по ID   | `UsersShowResponse`   |
-| POST   | `/users/`       | Создать пользователя | `UserModel`           |
-| PUT    | `/users/{id}`   | Обновить пользователя| `UserModel`           |
-| DELETE | `/users/{id}`   | Удалить пользователя | —                     |
+| Метод  | Путь          | Описание              | Ответ                |
+| ------ | ------------- | --------------------- | -------------------- |
+| GET    | `/users/`     | Список пользователей  | `UsersIndexResponse` |
+| GET    | `/users/{id}` | Пользователь по ID    | `UsersShowResponse`  |
+| POST   | `/users/`     | Создать пользователя  | `UserModel`          |
+| PUT    | `/users/{id}` | Обновить пользователя | `UserModel`          |
+| DELETE | `/users/{id}` | Удалить пользователя  | —                    |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
 
@@ -209,10 +294,10 @@
 
 Базовый путь: `/open-router/` — сервис `OpenRouterService`.
 
-| Метод | Путь                        | Описание                    | Ответ              |
-|-------|-----------------------------|-----------------------------|--------------------|
-| POST  | `/open-router/formatting`   | Форматирование текста       | `{ "data": string }` |
-| POST  | `/open-router/refactoring`  | Рефакторинг текста          | `{ "data": string }` |
+| Метод | Путь                       | Описание              | Ответ                |
+| ----- | -------------------------- | --------------------- | -------------------- |
+| POST  | `/open-router/formatting`  | Форматирование текста | `{ "data": string }` |
+| POST  | `/open-router/refactoring` | Рефакторинг текста    | `{ "data": string }` |
 
 - **Тело запроса:** `{ "text": "..." }`.
 
@@ -222,27 +307,27 @@
 
 Базовый путь: `/logs/` — сервис `LogService`.
 
-| Метод | Путь           | Описание      | Ответ               |
-|-------|----------------|---------------|---------------------|
-| GET   | `/logs/`       | Список логов  | `LogsIndexResponse` |
-| GET   | `/logs/{id}`   | Лог по ID     | `LogsShowResponse`  |
+| Метод | Путь         | Описание     | Ответ               |
+| ----- | ------------ | ------------ | ------------------- |
+| GET   | `/logs/`     | Список логов | `LogsIndexResponse` |
+| GET   | `/logs/{id}` | Лог по ID    | `LogsShowResponse`  |
 
 - **Query (index):** `page`, `per_page`, `sort`, `direction`, `event`, `model_type`, `user_id`.
 - **Пример ответа `GET /logs/{id}`:**
 
 ```json
 {
-  "data": {
-    "id": 1,
-    "event": "updated",
-    "model_type": "App\\Models\\Store",
-    "model_id": 15,
-    "user_id": 2,
-    "old_values": { "title": "Старое название" },
-    "new_values": { "title": "Новое название" },
-    "created_at": "2026-10-27T12:30:00.000000Z",
-    "user": { "id": 2, "name": "Иван", "email": "ivan@example.com" }
-  }
+    "data": {
+        "id": 1,
+        "event": "updated",
+        "model_type": "App\\Models\\Store",
+        "model_id": 15,
+        "user_id": 2,
+        "old_values": { "title": "Старое название" },
+        "new_values": { "title": "Новое название" },
+        "created_at": "2026-10-27T12:30:00.000000Z",
+        "user": { "id": 2, "name": "Иван", "email": "ivan@example.com" }
+    }
 }
 ```
 

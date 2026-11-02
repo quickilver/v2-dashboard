@@ -1,0 +1,69 @@
+<div class="filters-group">
+    <div class="filters-group-title" (click)="toggle()">
+        <span>
+            Характеристики
+            @if (count()) {
+                <span class="filters-count">{{ count() }}</span>
+            }
+        </span>
+        <span class="filters-group-arrow" [class.is-open]="expanded()">
+            <app-icon name="chevron-down" [size]="16" />
+        </span>
+    </div>
+
+    @if (expanded()) {
+        <div class="filters-group-content filters-attributes">
+            <app-autocomplete-attributes-field
+                placeholder="Поиск характеристики"
+                [excludeIds]="selectedIds()"
+                (selected)="select($event)"
+            />
+        </div>
+    }
+</div>
+@for (filter of filters(); track filter.id) {
+    <div class="filters-group filters-attribute-group">
+        <div class="filters-group-title" (click)="toggleGroup(filter.id)">
+            <div>
+                {{ filter.title }}
+                @if (filter.selectedValues.length) {
+                    <span class="filters-count">
+                                    {{ filter.selectedValues.length }}
+                                </span>
+                }
+            </div>
+            <div class="filters-attribute-actions">
+                <button
+                    type="button"
+                    class="filters-attribute-remove"
+                    (click)="remove(filter.id); $event.stopPropagation()"
+                    title="Убрать фильтр"
+                >✕</button>
+                <span class="filters-group-arrow" [class.is-open]="isExpanded(filter.id)">
+                    <app-icon name="chevron-down" [size]="16" />
+                </span>
+            </div>
+        </div>
+
+        @if (isExpanded(filter.id)) {
+            <div class="filters-group-content filters-attribute-values">
+                @if (filter.loading) {
+                    <div class="filters-empty">Загрузка...</div>
+                } @else if (filter.values.length > 0) {
+                    @for (item of filter.values; track item.id) {
+                        <label class="filters-option">
+                            <input
+                                type="checkbox"
+                                [checked]="isValueSelected(filter.id, item.id)"
+                                (change)="onValueToggle(filter.id, item.id, $event)"
+                            />
+                            <span>{{ item.value }}</span>
+                        </label>
+                    }
+                } @else {
+                    <div class="filters-empty">Нет значений</div>
+                }
+            </div>
+        }
+    </div>
+}

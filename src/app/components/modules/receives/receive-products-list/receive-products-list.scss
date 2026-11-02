@@ -1,0 +1,86 @@
+@use '../../../../../styles/variables' as *;
+
+:host {
+    display: block;
+}
+
+.products-empty {
+    padding: 40px;
+    text-align: center;
+    color: $grey;
+    font-size: 14px;
+}
+
+.table {
+    tbody {
+        td {
+            padding: 6px 15px 6px 0;
+
+            &:first-child {
+                padding-left: 15px;
+            }
+        }
+    }
+
+    .actions-td {
+        width: 30px;
+
+        button {
+            padding: 4px 8px;
+        }
+    }
+
+    .col-id {
+        width: 30px;
+    }
+
+    .col-count {
+        width: 120px;
+    }
+
+    .col-title {
+        .is-sku {
+            color: $primary-color;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    }
+
+    .col-purchase {
+        width: 100px;
+    }
+
+    .col-new-price {
+        width: 100px;
+    }
+
+    .col-total {
+        width: 100px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    tfoot {
+        td {
+            padding: 12px 15px 12px 0;
+            font-weight: bold;
+
+            &:first-child {
+                padding-left: 15px;
+            }
+        }
+
+        .footer-label {
+            text-align: right;
+        }
+
+        .footer-count,
+        .footer-total {
+            &.footer-count {
+                text-align: center;
+            }
+
+            white-space: nowrap;
+        }
+    }
+}

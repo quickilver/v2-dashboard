@@ -16,6 +16,7 @@
                         <app-file-manager-tree
                             [path]="fullPath(dir)"
                             [expandToPath]="childExpandPath()"
+                            [refresh]="refresh()"
                             (navigate)="onNavigate($event)"
                         />
                     </div>

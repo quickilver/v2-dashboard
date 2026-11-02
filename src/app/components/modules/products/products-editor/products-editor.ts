@@ -22,7 +22,11 @@ import { NotificationService } from '../../../../services/notification.service';
 import { PriceModel } from '../../../../models/price.model';
 import { StoreModel } from '../../../../models/store.model';
 import { ProductAttribute } from '../../../../models/products/product-attribute.model';
-import { ProductPriceRequest, ProductStoreRequest, ProductAttributeValueRequest, ProductCreateRequest } from '../../../../models/products/product-create-request.model';
+import { ProductAttributeValueRequest } from '../../../../models/products/product-attribute-value-request.model';
+import { ProductPriceRequest } from '../../../../models/products/product-price-request.model';
+import { ProductStoreRequest } from '../../../../models/products/product-store-request.model';
+import { ProductCreateRequest } from '../../../../models/products/product-create-request.model';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-products-editor',
@@ -34,6 +38,7 @@ import { ProductPriceRequest, ProductStoreRequest, ProductAttributeValueRequest,
         WyswigFieldComponent,
         CategoriesTreeComponent,
         ProductsEditorAttributesComponent,
+        SkeletonComponent,
     ],
     templateUrl: './products-editor.html',
     styleUrl: './products-editor.scss',
@@ -171,11 +176,29 @@ export class ProductsEditorComponent implements OnInit {
                 }));
 
             const attributeValues: ProductAttributeValueRequest[] = this.attributes()
-                .filter((attribute) => attribute.value_id > 0)
-                .map((attribute, index) => ({
-                    id: attribute.value_id,
-                    position: index + 1,
-                }));
+                .filter((attribute) => attribute.value.trim().length > 0)
+                .map((attribute) => {
+                    if (attribute.value_id > 0) {
+                        return {
+                            id: attribute.value_id,
+                            position: attribute.position,
+                        };
+                    }
+
+                    if (attribute.id > 0) {
+                        return {
+                            attribute_id: attribute.id,
+                            value: attribute.value.trim(),
+                            position: attribute.position,
+                        };
+                    }
+
+                    return {
+                        attribute_title: attribute.title.trim(),
+                        value: attribute.value.trim(),
+                        position: attribute.position,
+                    };
+                });
 
             const data: ProductCreateRequest = {
                 title: this.title().trim(),

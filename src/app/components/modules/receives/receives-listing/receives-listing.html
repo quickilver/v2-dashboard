@@ -1,0 +1,18 @@
+<app-listing
+    [columns]="columns()"
+    [data]="rows()"
+    [loading]="loading()"
+    [meta]="meta()"
+    [pageSize]="pageSize()"
+    [page]="page()"
+    title="Поступления"
+    [actionsColumn]="true"
+    [searchable]="false"
+    (rowClick)="onRowClick($event)"
+    (cellClick)="onCellClick($event)"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+    (editClick)="onEdit($event)"
+    (deleteClick)="onDelete($event)"
+    (createClick)="createClick()"
+/>

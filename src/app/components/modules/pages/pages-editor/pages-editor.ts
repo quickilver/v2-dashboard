@@ -14,11 +14,12 @@ import { PageService } from '../../../../services/page.service';
 import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { PageModel } from '../../../../models/page.model';
+import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
     selector: 'app-pages-editor',
     standalone: true,
-    imports: [InputFieldComponent, CheckboxFieldComponent, WyswigFieldComponent],
+    imports: [InputFieldComponent, CheckboxFieldComponent, WyswigFieldComponent, SkeletonComponent],
     templateUrl: './pages-editor.html',
     styleUrl: './pages-editor.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

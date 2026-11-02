@@ -10,7 +10,6 @@ import { NotificationService } from '../../../../services/notification.service';
 import { LogDetailsComponent } from '../log-details/log-details';
 import { UsersEditorComponent } from '../../users/users-editor/users-editor';
 import { LogIndexParams } from '../../../../models/params/log-index.params';
-import { LogEventLabel, formatModelType } from '../log-details/log-helpers';
 import { LogRow } from './log-row.model';
 
 @Component({
@@ -83,13 +82,19 @@ export class LogListingComponent implements OnInit {
                     'Редактирование пользователя',
                     UsersEditorComponent,
                     { id: event.row.user_id },
+                    'with-tabs'
                 );
                 break;
         }
     }
 
     onDetails(log: LogModel): void {
-        this.popupService.open('Просмотр лога', LogDetailsComponent, { id: log.id });
+        this.popupService.open(
+            'Просмотр лога',
+            LogDetailsComponent,
+            { id: log.id },
+            'with-tabs'
+        );
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
@@ -107,13 +112,11 @@ export class LogListingComponent implements OnInit {
     private toRow(log: LogModel): LogRow {
         return {
             id: log.id,
-            event: LogEventLabel[log.event] ?? log.event,
-            model_type: formatModelType(log.model_type),
+            event: log.event,
+            model_type: log.model_type,
             model_id: log.model_id,
             user_id: log.user_id,
-            user: log.user?.name
-                ? log.user?.name
-                : 'ID: ' + log.user_id,
+            user: log.user?.name ?? 'ID: ' + log.user_id,
             created_at: new Date(log.created_at).toLocaleString('ru-RU'),
         };
     }
