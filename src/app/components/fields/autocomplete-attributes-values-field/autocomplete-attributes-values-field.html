@@ -1,0 +1,103 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+    <div class="field-inputs">
+        @if (hasSelectedAttribute()) {
+            <div class="attribute-header is-attribute">
+                <span class="attribute-title">{{ value().attribute_title }}</span>
+                <span
+                    type="button"
+                    class="attribute-clear"
+                    (click)="clearAttribute()"
+                    title="Убрать выбор"
+                >
+                    ✕
+                </span>
+            </div>
+        } @else {
+            <div class="autocomplete-wrapper is-attribute">
+                <input
+                    type="text"
+                    class="input-field"
+                    [placeholder]="attributePlaceholder()"
+                    [value]="attributeSearch()"
+                    (input)="onAttributeInput($event)"
+                    (keydown)="onAttributeKeydown($event)"
+                    (focus)="attributeOpen.set(attributeSearch().length > 0)"
+                    autocomplete="off"
+                />
+
+                @if (attributeOpen()) {
+                    @if (attributeLoading()) {
+                        <ul class="autocomplete-menu">
+                            <li class="autocomplete-item autocomplete-item--info">Загрузка...</li>
+                        </ul>
+                    } @else if (filteredAttributes().length > 0) {
+                        <ul class="autocomplete-menu">
+                            @for (attribute of filteredAttributes();
+                                track attribute.id;
+                                let i = $index) {
+                                <li
+                                    class="autocomplete-item"
+                                    [class.active]="attributeActiveIndex() === i"
+                                    (click)="selectAttribute(attribute)"
+                                >
+                                    {{ attribute.title }}
+                                </li>
+                            }
+                        </ul>
+                    } @else {
+                        <ul class="autocomplete-menu">
+                            <li class="autocomplete-item autocomplete-item--info">
+                                Ничего не найдено
+                            </li>
+                        </ul>
+                    }
+                }
+            </div>
+        }
+
+        @if (hasSelectedValue()) {
+            <div class="attribute-header is-value">
+                <span class="attribute-title">{{ value().value }}</span>
+                <span
+                    type="button"
+                    class="attribute-clear"
+                    (click)="clearValue()"
+                    title="Убрать выбор"
+                >
+                    ✕
+                </span>
+            </div>
+        } @else {
+            <div class="autocomplete-wrapper is-value">
+                <input
+                    type="text"
+                    class="input-field"
+                    [placeholder]="valuePlaceholder()"
+                    [value]="valueSearch()"
+                    (input)="onValueInput($event)"
+                    (keydown)="onValueKeydown($event)"
+                    (focus)="valueOpen.set(values().length > 0)"
+                    autocomplete="off"
+                />
+
+                @if (valueOpen() && filteredValues().length > 0) {
+                    <ul class="autocomplete-menu">
+                        @for (item of filteredValues(); track item.id; let i = $index) {
+                            <li
+                                class="autocomplete-item"
+                                [class.active]="valueActiveIndex() === i"
+                                (click)="selectValue(item)"
+                            >
+                                {{ item.value }}
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+
+    </div>
+</div>
