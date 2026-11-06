@@ -23,7 +23,7 @@ export class SettingService {
             if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
-            if (params.group) httpParams = httpParams.set('group', params.group);
+            if (params.group_id) httpParams = httpParams.set('group_id', params.group_id);
         }
         return firstValueFrom(
             this.http.get<SettingsIndexResponse>(this.apiUrl, { params: httpParams }),

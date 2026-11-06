@@ -42,7 +42,7 @@ export class ReceivesEditorComponent implements OnInit {
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
     saving = signal<boolean>(false);
-    tab = signal<string>('form');
+    tab = signal<string>('info');
 
     storeId = model<number | null>(null);
     priceId = model<number | null>(null);

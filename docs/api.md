@@ -98,6 +98,49 @@
 
 ---
 
+## Бэкапы баз данных
+
+Базовый путь: `/backups/` — сервис `BackupService`.
+
+| Метод | Путь                | Описание                 | Ответ         |
+| ----- | ------------------- | ------------------------ | ------------- |
+| GET   | `/backups/`         | Список бэкапов           | `BackupsIndexResponse` |
+| POST  | `/backups/`         | Создать новый бэкап      | `BackupModel` |
+| GET   | `/backups/{file}/download` | Скачать файл бэкапа | бинарный поток |
+| POST  | `/backups/restore`  | Восстановить базу из дампа | —            |
+
+**GET `/backups/`** — список файлов дампов в `database/backups`. Ответ:
+
+```json
+{
+  "data": [
+    {
+      "name": "dump_2026-11-03_17-19-23.sql.gz",
+      "size": 12582912,
+      "size_human": "12.00 MB",
+      "extension": "gz",
+      "path": "database/backups/dump_2026-11-03_17-19-23.sql.gz"
+    }
+  ]
+}
+```
+
+**POST `/backups/`** — тело `{ "compress": true, "no_ssl": true }` (оба опциональны).
+
+**GET `/backups/{file}/download`** — отдаёт файл дампа на скачивание (`Content-Disposition: attachment`). `{file}` — имя файла из `database/backups/` (без слэшей).
+
+**POST `/backups/restore`** — тело:
+
+```json
+{ "file": "dump_2026-11-03_17-19-23.sql.gz", "create_database": false, "no_ssl": true }
+```
+
+- `file` — имя файла из `database/backups/` или абсолютный путь (обязательный);
+- `create_database` — создать БД, если её нет;
+- `no_ssl` — отключить TLS/SSL при подключении к БД.
+
+---
+
 ## Страницы
 
 Базовый путь: `/pages/` — сервис `PageService`.
@@ -166,6 +209,43 @@
     - `{ "id": 5 }` — существующее значение атрибута;
     - `{ "attribute_id": 3, "value": "Красный" }` — новое значение для существующего атрибута (создаётся при отсутствии);
     - `{ "attribute_title": "Материал", "value": "Хлопок" }` — новый атрибут со значением (атрибут создаётся по `title`, если не найден).
+
+### Изображения товара
+
+Изображения синхронизируются вместе с товаром через `POST /products/` и `PUT /products/{id}` — отдельного эндпоинта нет.
+
+- Если файлов нет, тело отправляется как JSON:
+
+```json
+{
+    "title": "Товар",
+    "pictures": [
+        { "id": 3, "position": 1, "is_main": true },
+        { "id": 1, "position": 2, "is_main": false }
+    ]
+}
+```
+
+- Если есть новые файлы — `multipart/form-data`. Скалярные поля передаются как есть, массивы/объекты — JSON-строками, файлы — `pictures[i][file]`:
+
+```
+title=Товар
+pictures[0][id]=3
+pictures[0][position]=1
+pictures[0][is_main]=1
+pictures[1][file]=<binary>
+pictures[1][position]=2
+pictures[1][is_main]=0
+```
+
+> Для `PUT` с файлами используется `POST /products/{id}` с полем `_method=PUT` (Laravel не парсит multipart в PUT).
+
+**Правила синхронизации:**
+
+- запись с `id` — существующее изображение (обновляются `position` и `is_main`);
+- запись с `file` — новое изображение: конвертируется в `webp`, сохраняется в `storage/app/public/products/{id}/`, для каждого размера из `ProductPicture::PREVIEW_SIZES` создаётся превью с префиксом (`preview-<name>.webp`);
+- изображения, отсутствующие в списке, удаляются вместе с файлами;
+- ровно одно изображение всегда помечается главным (`is_main`).
 
 ---
 

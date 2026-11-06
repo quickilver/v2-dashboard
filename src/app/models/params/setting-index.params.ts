@@ -4,5 +4,5 @@ export interface SettingIndexParams {
     query?: string;
     sort?: string;
     direction?: 'asc' | 'desc';
-    group?: string;
+    group_id?: number;
 }

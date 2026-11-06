@@ -25,10 +25,13 @@ export class PricesListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'currency', title: 'Валюта', sortable: true },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'currency', title: 'Валюта', sortable: true, isDefault: true },
+        { key: 'guid', title: 'GUID', sortable: false },
     ]);
+
+    columnsStorageKey = 'prices';
 
     prices = signal<PriceModel[]>([]);
     loading = signal<boolean>(false);

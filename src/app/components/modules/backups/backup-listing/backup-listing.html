@@ -1,0 +1,19 @@
+@if (restoring()) {
+    <div class="backup-restore-bar">
+        Восстановление базы из <strong>{{ restoring() }}</strong>...
+    </div>
+}
+<app-listing
+    [columns]="columns()"
+    [availableColumns]="columns()"
+    [columnsStorageKey]="columnsStorageKey"
+    [data]="rows()"
+    [loading]="loading()"
+    title="Бэкапы базы данных"
+    [searchable]="false"
+    [actionsColumn]="false"
+    (createClick)="onCreateBackup()"
+    (rowClick)="onRowClick($event)"
+    (cellClick)="onCellClick($event)"
+/>
+

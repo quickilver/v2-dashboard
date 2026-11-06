@@ -13,6 +13,8 @@ import { LogListingComponent } from './components/modules/logs/log-listing/log-l
 import { StatusesListingComponent } from './components/modules/statuses/statuses-listing/statuses-listing';
 import { SuppliersListingComponent } from './components/modules/suppliers/suppliers-listing/suppliers-listing';
 import { ReceivesListingComponent } from './components/modules/receives/receives-listing/receives-listing';
+import { BackupListingComponent } from './components/modules/backups/backup-listing/backup-listing';
+import { AccountsListingComponent } from './components/modules/accounts/accounts-listing/accounts-listing';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -30,4 +32,6 @@ export const routes: Routes = [
     { path: 'content/pages', component: PagesListingComponent },
     { path: 'orders/statuses', component: StatusesListingComponent },
     { path: 'logs', component: LogListingComponent },
+    { path: 'backups', component: BackupListingComponent },
+    { path: 'accounts', component: AccountsListingComponent },
 ];

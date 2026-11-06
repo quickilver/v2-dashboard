@@ -45,7 +45,7 @@
                 [class.is-active]="isActiveTab('media')"
                 (click)="changeTab('media')"
             >
-                Медиа
+                Медиа <span class="tag">{{ picturesCount() }}</span>
             </div>
         </div>
 
@@ -80,7 +80,6 @@
 
             @if (isActiveTab('categories')) {
                 <div class="editor-body">
-                    <div class="field-label">Категории</div>
                     <app-categories-tree
                         [selectable]="true"
                         [multiple]="true"
@@ -132,7 +131,7 @@
 
             @if (isActiveTab('media')) {
                 <div class="editor-body">
-                    <p class="placeholder-text">Медиа — в разработке</p>
+                    <app-products-editor-media [(pictures)]="pictures" />
                 </div>
             }
         </div>

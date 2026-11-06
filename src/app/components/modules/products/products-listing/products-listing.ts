@@ -27,10 +27,29 @@ export class ProductsListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '100px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'sku', title: 'Артикул', sortable: true },
+        {
+            key: 'picture',
+            title: 'Фото',
+            sortable: false,
+            type: 'image',
+            width: '80px',
+            isDefault: true,
+            imageUrl: (row: ProductIndex) => row.picture?.preview_url ?? row.picture?.url ?? '',
+        },
+        { key: 'id', title: 'ID', sortable: true, width: '100px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'sku', title: 'Артикул', sortable: true, isDefault: true },
+        {
+            key: 'total_count',
+            title: 'Кол-во',
+            sortable: false,
+            width: '100px',
+            isDefault: true,
+            formatter: (row: ProductIndex) => String(row.total_count ?? 0),
+        },
     ]);
+
+    columnsStorageKey = 'products';
 
     products = signal<ProductIndex[]>([]);
     loading = signal<boolean>(false);

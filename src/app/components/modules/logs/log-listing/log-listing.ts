@@ -25,13 +25,15 @@ export class LogListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'event', title: 'Событие', sortable: true },
-        { key: 'model_type', title: 'Сущность', sortable: true },
-        { key: 'model_id', title: 'ID', sortable: true, width: '100px' },
-        { key: 'user', title: 'Пользователь', type: 'link' },
-        { key: 'created_at', title: 'Дата', sortable: true },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'event', title: 'Событие', sortable: true, isDefault: true },
+        { key: 'model_type', title: 'Сущность', sortable: true, isDefault: true },
+        { key: 'model_id', title: 'ID', sortable: true, width: '100px', isDefault: true },
+        { key: 'user', title: 'Пользователь', type: 'link', isDefault: true },
+        { key: 'created_at', title: 'Дата', sortable: true, isDefault: true },
     ]);
+
+    columnsStorageKey = 'logs';
 
     logs = signal<LogModel[]>([]);
     loading = signal<boolean>(false);

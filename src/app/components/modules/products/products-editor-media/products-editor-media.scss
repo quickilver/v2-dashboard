@@ -1,0 +1,126 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.media-upload {
+    margin-bottom: 20px;
+}
+
+.media-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 30px;
+    border: 2px dashed $grey-light-2;
+    border-radius: $input-radius;
+    background: $input-background-color;
+    color: $grey;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        border-color: $primary-color;
+        color: $primary-color;
+    }
+
+    &.is-uploading {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .media-dropzone-hint {
+        font-size: 12px;
+        color: $grey;
+    }
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.media-item {
+    position: relative;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    border-radius: $input-radius;
+    overflow: hidden;
+    background: $grey-light;
+    cursor: grab;
+
+    &.is-main {
+        border-color: $primary-color;
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    .media-item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .media-item-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        padding: 2px 8px;
+        font-size: 11px;
+        color: #ffffff;
+        background: $primary-color;
+        border-radius: $input-radius;
+    }
+
+    .media-item-actions {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    &:hover .media-item-actions {
+        opacity: 1;
+    }
+
+    .media-item-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        font-size: 12px;
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        border-radius: $input-radius;
+        cursor: pointer;
+
+        &:hover {
+            background: $primary-color;
+        }
+
+        &--danger:hover {
+            background: #d4380d;
+        }
+    }
+}
+
+.media-empty {
+    padding: 20px;
+    text-align: center;
+    color: $grey;
+    font-size: 14px;
+}

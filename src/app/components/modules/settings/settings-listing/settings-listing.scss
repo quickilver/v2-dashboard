@@ -1,17 +1,107 @@
 @use 'variables' as *;
 
-.settings-list {
+.settings-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.settings-groups {
+    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    background: #ffffff;
+    border-radius: $input-radius;
+    box-shadow: $shadow;
+    overflow: hidden;
+    position: sticky;
+    top: 20px;
+
+    .settings-groups-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .settings-groups-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-height: 50px;
+        font-size: 14px;
+        color: $main-font-color;
+        padding: 0 15px;
+        cursor: pointer;
+        border-top: 1px solid $grey-light-2;
+        transition: background-color 0.15s ease,
+        color 0.15s ease;
+
+        &:hover {
+            background: $grey-light;
+        }
+
+        &:first-child {
+            border-top: none;
+        }
+
+        &.is-active {
+            background: $primary-light-color;
+            color: $primary-dark-color;
+        }
+
+        .settings-groups-count {
+            display: inline-block;
+            min-width: 25px;
+            padding: 4px 6px;
+            font-weight: normal;
+            text-align: center;
+            color: #ffffff;
+            background: $grey;
+            border-radius: $input-radius;
+        }
+
+        &.is-active .settings-groups-count {
+            background: $primary-color;
+        }
+    }
+}
+
+.settings-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: $shadow;
+    border-radius: $input-radius;
 
     .settings-group {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px dashed $grey-light-2;
+        scroll-margin-top: 20px;
+
+        &:first-child{
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .settings-group-title {
+            margin-bottom: 20px;
+            font-size: 16px;
+
+            span {
+                font-weight: bold;
+                border-bottom: 2px $primary-color solid;
+            }
+        }
 
         .settings-group-body {
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: $shadow;
-            border-radius: $input-radius;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -21,21 +111,8 @@
                 align-items: center;
                 justify-content: space-between;
 
-                .setting-field{
+                .setting-field {
                     flex: 1;
-                }
-
-                &:hover {
-                    .settings-list-actions {
-                        opacity: 1;
-                    }
-                }
-
-                .settings-list-actions {
-                    display: flex;
-                    gap: 4px;
-                    opacity: 0;
-                    transition: opacity 0.15s;
                 }
             }
         }

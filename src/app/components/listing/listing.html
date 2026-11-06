@@ -4,6 +4,13 @@
         <div class="title">{{ title() }}</div>
         <div class="actions">
             <ng-content select="[header-actions]" />
+            @if (settingsColumns().length > 0) {
+                <app-listing-columns-settings
+                    [available]="settingsColumns()"
+                    [visibleKeys]="visibleColumnKeys()"
+                    (changed)="onColumnsChanged($event)"
+                />
+            }
             <button class="primary" (click)="onCreateClick()">Создать</button>
         </div>
     </div>
@@ -33,7 +40,7 @@
                 <table>
                     <thead>
                         <tr>
-                            @for (col of columns(); track trackByColumn($index, col)) {
+                            @for (col of displayColumns(); track trackByColumn($index, col)) {
                                 <th
                                     [class.sortable]="col.sortable"
                                     [class.active]="sortState()?.key === col.key"
@@ -54,7 +61,7 @@
                     <tbody>
                         @for (row of data(); track trackByFn($index, row)) {
                             <tr (click)="onRowClick(row)" class="data-row">
-                                @for (col of columns(); track trackByColumn($index, col)) {
+                                @for (col of displayColumns(); track trackByColumn($index, col)) {
                                     @if (col.type === 'boolean') {
                                         <td>
                                             {{
@@ -62,6 +69,15 @@
                                                     ? col.labels?.true || 'Да'
                                                     : col.labels?.false || 'Нет'
                                             }}
+                                        </td>
+                                    } @else if (col.type === 'image') {
+                                        <td class="cell-image">
+                                            @if (getImageUrl(row, col)) {
+                                                <img
+                                                    [src]="getImageUrl(row, col)"
+                                                    [alt]="col.title"
+                                                />
+                                            }
                                         </td>
                                     } @else if (col.type === 'link') {
                                         <td>
@@ -90,7 +106,7 @@
                         } @empty {
                             <tr>
                                 <td
-                                    [attr.colspan]="columns().length + (actionsColumn() ? 1 : 0)"
+                                    [attr.colspan]="displayColumns().length + (actionsColumn() ? 1 : 0)"
                                     class="empty"
                                 >
                                     Нет данных

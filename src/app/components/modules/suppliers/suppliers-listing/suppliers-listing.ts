@@ -25,10 +25,12 @@ export class SuppliersListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'description', title: 'Описание', sortable: false },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'description', title: 'Описание', sortable: false, isDefault: true },
     ]);
+
+    columnsStorageKey = 'suppliers';
 
     suppliers = signal<SupplierModel[]>([]);
     loading = signal<boolean>(false);

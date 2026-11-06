@@ -32,14 +32,14 @@
                 border-radius: $input-radius;
                 cursor: pointer;
             }
+        }
 
-            .filters-group-arrow {
-                display: flex;
-                transition: transform 0.2s ease;
+        .filters-group-arrow {
+            display: flex;
+            transition: transform 0.2s ease;
 
-                &.is-open {
-                    transform: rotate(180deg);
-                }
+            &.is-open {
+                transform: rotate(180deg);
             }
         }
 

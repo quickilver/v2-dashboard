@@ -25,23 +25,28 @@ export class AttributesListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'title', title: 'Название', sortable: true },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
         {
             key: 'is_display',
             title: 'Отображение',
             sortable: true,
             type: 'boolean',
-            labels: { true: 'Да', false: 'Нет' }
+            labels: { true: 'Да', false: 'Нет' },
+            isDefault: true,
         },
         {
             key: 'is_filter',
             title: 'Фильтр',
             sortable: true,
             type: 'boolean',
-            labels: { true: 'Да', false: 'Нет' }
-        }
+            labels: { true: 'Да', false: 'Нет' },
+            isDefault: true,
+        },
+        { key: 'guid', title: 'GUID', sortable: false },
     ]);
+
+    columnsStorageKey = 'attributes';
 
     attributes = signal<AttributeShortModel[]>([]);
     loading = signal<boolean>(false);

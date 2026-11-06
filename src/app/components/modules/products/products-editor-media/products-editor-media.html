@@ -1,0 +1,65 @@
+<div class="media-upload">
+    <label
+        class="media-dropzone"
+        (dragover)="onDragOver($event)"
+        (drop)="onDropFiles($event)"
+    >
+        <input
+            type="file"
+            accept="image/*"
+            multiple
+            hidden
+            (change)="onFilesSelected($event)"
+        />
+        <span>Перетащите изображения сюда или нажмите для выбора</span>
+        <span class="media-dropzone-hint">JPEG, PNG, GIF, WEBP, BMP</span>
+    </label>
+</div>
+
+@if (hasPictures()) {
+    <div class="media-grid">
+        @for (picture of pictures(); track $index; let i = $index) {
+            <div
+                class="media-item"
+                [class.is-main]="picture.is_main"
+                draggable="true"
+                (dragstart)="onDragStart(i)"
+                (dragover)="onDragOver($event)"
+                (drop)="onDrop(i)"
+            >
+                <img
+                    class="media-item-image"
+                    [src]="imageUrl(picture)"
+                    [alt]="'Изображение ' + (i + 1)"
+                />
+
+                @if (picture.is_main) {
+                    <span class="media-item-badge">Главная</span>
+                }
+
+                <div class="media-item-actions">
+                    @if (!picture.is_main) {
+                        <button
+                            type="button"
+                            class="media-item-action"
+                            title="Сделать главной"
+                            (click)="onSetMain(picture)"
+                        >
+                            ★
+                        </button>
+                    }
+                    <button
+                        type="button"
+                        class="media-item-action media-item-action--danger"
+                        title="Удалить"
+                        (click)="onDelete(picture)"
+                    >
+                        ✕
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+} @else {
+    <div class="media-empty">Изображений пока нет</div>
+}

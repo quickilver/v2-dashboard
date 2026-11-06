@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as *;
+@use 'variables' as *;
 
 .listing-container {
     display: flex;
@@ -118,6 +118,30 @@
                             &:hover {
                                 text-decoration: underline;
                             }
+                        }
+
+                        .cell-image {
+                            padding-top: 0;
+                            padding-bottom: 0;
+
+                            img {
+                                display: block;
+                                width: 50px;
+                                height: 50px;
+                                object-fit: cover;
+                                border-radius: $input-radius;
+                                background: $grey-light;
+                            }
+
+                            .listing-no-image {
+                                width: 50px;
+                                height: 50px;
+                                font-size: 50px;
+                            }
+                        }
+
+                        .cell-image-empty {
+                            color: $grey;
                         }
 
                         &:last-child {

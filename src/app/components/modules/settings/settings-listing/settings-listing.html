@@ -1,27 +1,50 @@
-<div class="settings-list">
-    @for (group of groupedSettings(); track group[0]) {
-        <div class="settings-group">
-            @if (group[0]) {
-                <h3 class="settings-group-title">{{ group[0] }}</h3>
-            }
-            <div class="settings-group-body">
-                @for (setting of group[1]; track setting.id) {
-                    <div class="settings-list-item">
-                        <app-setting-field
-                            class="setting-field"
-                            [title]="setting.title"
-                            [type]="setting.type === 'checkbox' ? 'checkbox' : 'text'"
-                            [value]="setting.type === 'checkbox' ? (setting.value === '1' || setting.value === 'true') : setting.value ?? ''"
-                            [alias]="setting.alias"
-                            [options]="setting.options"
-                        />
-                    </div>
-                }
-            </div>
-        </div>
-    }
+<div class="header">
+    <div class="title">
+        Настройки
+    </div>
 </div>
 
-@if (settings().length === 0) {
-    <div class="settings-empty">Нет настроек</div>
-}
+<div class="settings-layout">
+    <aside class="settings-groups">
+        <ul class="settings-groups-list">
+            @for (group of groupedSettings(); track group.key; let i = $index) {
+                <li
+                    class="settings-groups-item"
+                    [class.is-active]="activeGroupIndex() === i"
+                    (click)="scrollToGroup(i)"
+                >
+                    {{ group.title }}
+                    <span class="settings-groups-count">{{ group.settings.length }}</span>
+                </li>
+            }
+        </ul>
+    </aside>
+
+    <div class="settings-content" #groupsContainer>
+        @for (group of groupedSettings(); track group.key; let i = $index) {
+            <section class="settings-group" [attr.data-group-index]="i">
+                <div class="settings-group-title">
+                    <span>{{ group.title }}</span>
+                </div>
+                <div class="settings-group-body">
+                    @for (setting of group.settings; track setting.id) {
+                        <div class="settings-list-item">
+                            <app-setting-field
+                                class="setting-field"
+                                [title]="setting.title"
+                                [type]="getFieldType(setting)"
+                                [value]="getFieldValue(setting)"
+                                [alias]="setting.alias"
+                                [options]="setting.options"
+                            />
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (settings().length === 0) {
+            <div class="settings-empty">Нет настроек</div>
+        }
+    </div>
+</div>

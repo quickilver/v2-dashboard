@@ -3,7 +3,12 @@ export interface SettingModel {
     title: string;
     alias: string;
     type: string;
-    group: string | null;
+    group_id: number | null;
+    group?: {
+        id: number;
+        title: string;
+        position: number;
+    } | null;
     options: any | null;
     value: string | null;
     created_at: string;

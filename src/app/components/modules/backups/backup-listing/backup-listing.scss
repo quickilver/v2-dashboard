@@ -1,0 +1,8 @@
+@use 'variables' as *;
+
+.backup-restore-bar {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: $primary-light-color;
+    color: $main-font-color;
+}

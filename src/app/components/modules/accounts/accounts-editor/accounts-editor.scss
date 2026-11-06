@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+.orders-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: $grey;
+    font-size: 14px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -3,6 +3,7 @@
         <label class="label-field">{{ label() }}</label>
     }
     <input
+        #inputElement
         [type]="type()"
         class="input-field"
         [class.input-field--small]="size() === 'small'"

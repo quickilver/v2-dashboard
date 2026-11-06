@@ -22,10 +22,12 @@ export class UsersListingComponent implements OnInit {
     private readonly confirmService = inject(ConfirmService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '100px' },
-        { key: 'name', title: 'Имя', sortable: true },
-        { key: 'email', title: 'Email', sortable: true }
+        { key: 'id', title: 'ID', sortable: true, width: '100px', isDefault: true },
+        { key: 'name', title: 'Имя', sortable: true, isDefault: true },
+        { key: 'email', title: 'Email', sortable: true, isDefault: true },
     ]);
+
+    columnsStorageKey = 'users';
 
     users = signal<UserShort[]>([]);
     loading = signal<boolean>(false);

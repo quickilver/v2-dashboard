@@ -5,14 +5,14 @@
         </div>
     } @else {
         <div class="tabs">
-            <div [class.is-active]="isActiveTab('form')" (click)="changeTab('form')">Форма</div>
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">Информация</div>
             <div [class.is-active]="isActiveTab('products')" (click)="changeTab('products')">
                 Товары <span class="tag">{{ products().length }}</span>
             </div>
         </div>
 
         <div class="editor-form">
-            @if (isActiveTab('form')) {
+            @if (isActiveTab('info')) {
                 <div class="editor-body">
                     <app-receive-form
                         [(storeId)]="storeId"

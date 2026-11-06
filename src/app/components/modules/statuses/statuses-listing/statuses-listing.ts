@@ -25,10 +25,12 @@ export class StatusesListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'position', title: 'Позиция', sortable: true, width: '120px' },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'position', title: 'Позиция', sortable: true, width: '120px', isDefault: true },
     ]);
+
+    columnsStorageKey = 'statuses';
 
     statuses = signal<StatusModel[]>([]);
     loading = signal<boolean>(false);

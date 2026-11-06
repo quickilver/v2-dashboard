@@ -1,0 +1,42 @@
+<div class="columns-settings">
+    <button type="button" class="columns-settings-toggle" (click)="toggleOpen()">
+        <app-icon name="columns" [size]="20" class="toggle-icon" />
+        Колонки
+    </button>
+
+    @if (isOpen()) {
+        <div class="columns-settings-panel">
+            <div class="columns-settings-header">
+                <span>Настройка колонок</span>
+                <button type="button" class="columns-settings-close" (click)="close()">✕</button>
+            </div>
+
+            <ul class="columns-settings-list">
+                @for (column of orderedColumns(); track column.key; let i = $index) {
+                    <li
+                        class="columns-settings-item"
+                        [class.is-visible]="isVisible(column.key)"
+                        [attr.draggable]="isVisible(column.key)"
+                        (dragstart)="onDragStart(i)"
+                        (dragover)="onDragOver($event)"
+                        (drop)="onDrop(i)"
+                    >
+                        <span class="columns-settings-handle">
+                            @if (isVisible(column.key)) {
+                                <app-icon name="sortable" [size]="16" class="sortable-icon" />
+                            }
+                        </span>
+                        <label class="columns-settings-label">
+                            <input
+                                type="checkbox"
+                                [checked]="isVisible(column.key)"
+                                (change)="toggleColumn(column.key)"
+                            />
+                            {{ column.title }}
+                        </label>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

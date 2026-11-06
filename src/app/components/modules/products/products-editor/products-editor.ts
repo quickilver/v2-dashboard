@@ -14,6 +14,7 @@ import { CounterFieldComponent } from '../../../fields/counter-field/counter-fie
 import { WyswigFieldComponent } from '../../../fields/wyswig-field/wyswig-field';
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
 import { ProductsEditorAttributesComponent } from '../products-editor-attributes/products-editor-attributes';
+import { ProductsEditorMediaComponent } from '../products-editor-media/products-editor-media';
 import { ProductService } from '../../../../services/product.service';
 import { PriceService } from '../../../../services/price.service';
 import { StoreService } from '../../../../services/store.service';
@@ -26,6 +27,8 @@ import { ProductAttributeValueRequest } from '../../../../models/products/produc
 import { ProductPriceRequest } from '../../../../models/products/product-price-request.model';
 import { ProductStoreRequest } from '../../../../models/products/product-store-request.model';
 import { ProductCreateRequest } from '../../../../models/products/product-create-request.model';
+import { ProductPictureItem } from '../../../../models/products/product-picture-item.model';
+import { ProductPictureModel } from '../../../../models/products/product-picture.model';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 
 @Component({
@@ -38,6 +41,7 @@ import { SkeletonComponent } from '../../../skeleton/skeleton';
         WyswigFieldComponent,
         CategoriesTreeComponent,
         ProductsEditorAttributesComponent,
+        ProductsEditorMediaComponent,
         SkeletonComponent,
     ],
     templateUrl: './products-editor.html',
@@ -66,6 +70,7 @@ export class ProductsEditorComponent implements OnInit {
     prices = signal<PriceModel[]>([]);
     attributes = signal<ProductAttribute[]>([]);
     stores = signal<StoreModel[]>([]);
+    pictures = signal<ProductPictureItem[]>([]);
 
     priceAmounts = signal<Record<number, number | undefined>>({});
     storeCounts = signal<Record<number, number | undefined>>({});
@@ -84,6 +89,8 @@ export class ProductsEditorComponent implements OnInit {
     });
 
     attributesCount = computed<number>(() => this.attributes().length);
+
+    picturesCount = computed<number>(() => this.pictures().length);
 
     categoriesCount = computed<number>(() => this.getCategoryIds().length);
 
@@ -124,6 +131,7 @@ export class ProductsEditorComponent implements OnInit {
 
             this.attributes.set(product.attribute ?? []);
             this.storeCounts.set(storeCounts);
+            this.pictures.set(this.mapPictures(product.pictures ?? []));
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные товара');
         } finally {
@@ -211,9 +219,9 @@ export class ProductsEditorComponent implements OnInit {
             };
 
             if (this.isEditMode()) {
-                await this.productService.update(this.id()!, data);
+                await this.productService.update(this.id()!, data, this.buildPicturesPayload());
             } else {
-                await this.productService.create(data);
+                await this.productService.create(data, this.buildPicturesPayload());
             }
 
             this.notificationService.success('Товар успешно сохранён');
@@ -223,6 +231,31 @@ export class ProductsEditorComponent implements OnInit {
         } finally {
             this.saving.set(false);
         }
+    }
+
+    /**
+     * Преобразует сохранённые изображения товара в элементы редактора.
+     */
+    private mapPictures(pictures: ProductPictureModel[]): ProductPictureItem[] {
+        return [...pictures]
+            .sort((a, b) => a.position - b.position)
+            .map((picture) => ({
+                id: picture.id,
+                file: null,
+                previewUrl: picture.preview_url ?? picture.url ?? '',
+                is_main: picture.is_main,
+                position: picture.position,
+            }));
+    }
+
+    /**
+     * Формирует список изображений для отправки вместе с товаром.
+     */
+    private buildPicturesPayload(): ProductPictureItem[] {
+        return this.pictures().map((picture, index) => ({
+            ...picture,
+            position: index + 1,
+        }));
     }
 
     private getCategoryIds(): number[] {

@@ -6,6 +6,7 @@ import { ProductsIndexResponse } from '../models/responses/products/products-ind
 import { ProductsShowResponse } from '../models/responses/products/products-show.response';
 import { ProductsStoreResponse } from '../models/responses/products/products-store.response';
 import { ProductCreateRequest } from '../models/products/product-create-request.model';
+import { ProductPictureItem } from '../models/products/product-picture-item.model';
 import {
     ProductAttributeFilter,
     ProductPriceFilter,
@@ -69,11 +70,81 @@ export class ProductService {
         return firstValueFrom(this.http.get<ProductsShowResponse>(`${this.apiUrl}${id}`));
     }
 
-    async create(data: ProductCreateRequest): Promise<ProductsStoreResponse> {
-        return firstValueFrom(this.http.post<ProductsStoreResponse>(this.apiUrl, data));
+    async create(
+        data: ProductCreateRequest,
+        pictures: ProductPictureItem[] = [],
+    ): Promise<ProductsStoreResponse> {
+        return firstValueFrom(
+            this.http.post<ProductsStoreResponse>(this.apiUrl, this.buildPayload(data, pictures)),
+        );
     }
 
-    async update(id: number, data: Partial<ProductCreateRequest>): Promise<ProductsStoreResponse> {
-        return firstValueFrom(this.http.put<ProductsStoreResponse>(`${this.apiUrl}${id}`, data));
+    async update(
+        id: number,
+        data: Partial<ProductCreateRequest>,
+        pictures: ProductPictureItem[] = [],
+    ): Promise<ProductsStoreResponse> {
+        const payload = this.buildPayload(data, pictures);
+
+        // Laravel не парсит multipart для PUT — используем POST с _method.
+        if (payload instanceof FormData) {
+            payload.append('_method', 'PUT');
+
+            return firstValueFrom(
+                this.http.post<ProductsStoreResponse>(`${this.apiUrl}${id}`, payload),
+            );
+        }
+
+        return firstValueFrom(
+            this.http.put<ProductsStoreResponse>(`${this.apiUrl}${id}`, payload),
+        );
+    }
+
+    /**
+     * Собирает тело запроса: JSON, если файлов нет, иначе multipart/form-data.
+     */
+    private buildPayload(
+        data: Partial<ProductCreateRequest>,
+        pictures: ProductPictureItem[],
+    ): Record<string, unknown> | FormData {
+        const hasFiles = pictures.some((picture) => picture.file !== null);
+
+        if (!hasFiles) {
+            return {
+                ...data,
+                pictures: pictures.map((picture, index) => ({
+                    id: picture.id,
+                    position: index + 1,
+                    is_main: picture.is_main,
+                })),
+            };
+        }
+
+        const formData = new FormData();
+
+        Object.entries(data).forEach(([key, value]) => {
+            if (value === null || value === undefined) return;
+
+            if (Array.isArray(value) || typeof value === 'object') {
+                formData.append(key, JSON.stringify(value));
+            } else {
+                formData.append(key, String(value));
+            }
+        });
+
+        pictures.forEach((picture, index) => {
+            if (picture.id !== null) {
+                formData.append(`pictures[${index}][id]`, String(picture.id));
+            }
+
+            if (picture.file !== null) {
+                formData.append(`pictures[${index}][file]`, picture.file);
+            }
+
+            formData.append(`pictures[${index}][position]`, String(index + 1));
+            formData.append(`pictures[${index}][is_main]`, picture.is_main ? '1' : '0');
+        });
+
+        return formData;
     }
 }

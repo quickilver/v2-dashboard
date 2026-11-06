@@ -2,6 +2,8 @@
     <app-products-filters [filters]="filters()" (filtersChange)="onFiltersChange($event)" />
     <app-listing
         [columns]="columns()"
+        [availableColumns]="columns()"
+        [columnsStorageKey]="columnsStorageKey"
         [data]="products()"
         [loading]="loading()"
         [meta]="meta()"

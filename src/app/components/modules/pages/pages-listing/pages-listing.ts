@@ -9,7 +9,7 @@ import { MetaModel } from '../../../../models/meta.model';
 import { ConfirmService } from '../../../../services/confirm.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { PopupService } from '../../../../services/popup.service';
-import { PagesEditorComponent } from './../pages-editor/pages-editor';
+import { PagesEditorComponent } from '../pages-editor/pages-editor';
 
 @Component({
     selector: 'app-pages-listing',
@@ -26,11 +26,13 @@ export class PagesListingComponent implements OnInit {
     private readonly popupService = inject(PopupService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '100px' },
-        { key: 'title', title: 'Название', sortable: true },
-        { key: 'alias', title: 'Алиас', sortable: true },
-        { key: 'display', title: 'Отображение', type: 'boolean', sortable: true },
+        { key: 'id', title: 'ID', sortable: true, width: '100px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'alias', title: 'Алиас', sortable: true, isDefault: true },
+        { key: 'display', title: 'Отображение', type: 'boolean', sortable: true, isDefault: true },
     ]);
+
+    columnsStorageKey = 'pages';
 
     pages = signal<PageModel[]>([]);
     loading = signal<boolean>(false);

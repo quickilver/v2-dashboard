@@ -36,14 +36,15 @@ export class ReceivesListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px' },
-        { key: 'store', title: 'Склад', sortable: false },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'store', title: 'Склад', sortable: false, isDefault: true },
         {
             key: 'supplier',
             title: 'Контрагент',
             sortable: false,
             type: 'link',
             formatter: (row: ReceiveRow) => row.supplier?.title ?? '—',
+            isDefault: true,
         },
         {
             key: 'user',
@@ -51,11 +52,14 @@ export class ReceivesListingComponent implements OnInit {
             sortable: false,
             type: 'link',
             formatter: (row: ReceiveRow) => row.user?.name ?? '—',
+            isDefault: true,
         },
-        { key: 'total_count', title: 'Кол-во', sortable: false, width: '100px' },
-        { key: 'total_price', title: 'Сумма', sortable: false, width: '140px' },
-        { key: 'created_at', title: 'Дата', sortable: true, width: '170px' },
+        { key: 'total_count', title: 'Кол-во', sortable: false, width: '100px', isDefault: true },
+        { key: 'total_price', title: 'Сумма', sortable: false, width: '140px', isDefault: true },
+        { key: 'created_at', title: 'Дата', sortable: true, width: '170px', isDefault: true },
     ]);
+
+    columnsStorageKey = 'receives';
 
     receives = signal<ReceiveModel[]>([]);
     loading = signal<boolean>(false);

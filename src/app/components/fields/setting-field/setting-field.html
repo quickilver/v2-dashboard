@@ -14,5 +14,13 @@
                 (checkedChange)="value.set($event)"
             />
         }
+        @case ('select') {
+            <app-select-field
+                [label]="title()"
+                [options]="selectOptions()"
+                [value]="selectValue()"
+                (valueChange)="value.set($event ?? '')"
+            />
+        }
     }
 </div>
