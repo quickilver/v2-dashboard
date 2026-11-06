@@ -1,4 +1,13 @@
-import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect, inject } from '@angular/core';
+import {
+    Component,
+    input,
+    output,
+    signal,
+    computed,
+    ChangeDetectionStrategy,
+    effect,
+    inject,
+} from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { DropdownFieldComponent } from '../fields/dropdown-field/dropdown-field';
@@ -43,6 +52,7 @@ export class ListingComponent {
     pageSize = input<number>(20);
     page = input<number>(1);
     searchable = input<boolean>(true);
+    searchPlaceholder = input<string>('Поиск');
     sortable = input<boolean>(true);
     title = input<string>('');
     actionsColumn = input<boolean>(false);

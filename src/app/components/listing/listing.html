@@ -20,7 +20,7 @@
             <div class="filters">
                 <div class="filter-list">
                     <app-input-field
-                        placeholder="Поиск"
+                        [placeholder]="searchPlaceholder()"
                         [value]="searchQuery()"
                         (valueChange)="onSearch($event)"
                     />
@@ -106,7 +106,9 @@
                         } @empty {
                             <tr>
                                 <td
-                                    [attr.colspan]="displayColumns().length + (actionsColumn() ? 1 : 0)"
+                                    [attr.colspan]="
+                                        displayColumns().length + (actionsColumn() ? 1 : 0)
+                                    "
                                     class="empty"
                                 >
                                     Нет данных

@@ -1,22 +1,20 @@
-<div class="accounts-listing-container">
-    <app-accounts-filters [filters]="filters()" (filtersChange)="onFiltersChange($event)" />
-    <app-listing
-        [columns]="columns()"
-        [availableColumns]="columns()"
-        [columnsStorageKey]="columnsStorageKey"
-        [data]="accounts()"
-        [loading]="loading()"
-        [meta]="meta()"
-        [pageSize]="pageSize()"
-        [page]="page()"
-        title="Клиенты"
-        [actionsColumn]="true"
-        [searchable]="false"
-        (rowClick)="onRowClick($event)"
-        (sortChange)="onSort($event)"
-        (pageChange)="onPageChange($event)"
-        (editClick)="onEdit($event)"
-        (deleteClick)="onDelete($event)"
-        (createClick)="createClick()"
-    />
-</div>
+<app-listing
+    [columns]="columns()"
+    [availableColumns]="columns()"
+    [columnsStorageKey]="columnsStorageKey"
+    [data]="accounts()"
+    [loading]="loading()"
+    [meta]="meta()"
+    [pageSize]="pageSize()"
+    [page]="page()"
+    title="Клиенты"
+    [actionsColumn]="true"
+    searchPlaceholder="Поиск по имени, email или телефону"
+    (rowClick)="onRowClick($event)"
+    (searchChange)="onSearch($event.toString())"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPageChange($event)"
+    (editClick)="onEdit($event)"
+    (deleteClick)="onDelete($event)"
+    (createClick)="createClick()"
+/>

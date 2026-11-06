@@ -5,18 +5,16 @@ import { AccountService } from '../../../../services/account.service';
 import { AccountModel } from '../../../../models/account.model';
 import { AccountsIndexResponse } from '../../../../models/responses/accounts/accounts-index.response';
 import { AccountIndexParams } from '../../../../models/params/account-index.params';
-import { AccountFilters } from '../../../../models/accounts/account-filters.model';
 import { MetaModel } from '../../../../models/meta.model';
 import { ConfirmService } from '../../../../services/confirm.service';
 import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
-import { AccountsFiltersComponent } from '../accounts-filters/accounts-filters';
 import { AccountsEditorComponent } from '../accounts-editor/accounts-editor';
 
 @Component({
     selector: 'app-accounts-listing',
     standalone: true,
-    imports: [ListingComponent, AccountsFiltersComponent],
+    imports: [ListingComponent],
     templateUrl: './accounts-listing.html',
     styleUrl: './accounts-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,8 +22,8 @@ import { AccountsEditorComponent } from '../accounts-editor/accounts-editor';
 export class AccountsListingComponent implements OnInit {
     private readonly accountService = inject(AccountService);
     private readonly confirmService = inject(ConfirmService);
-    private readonly popupService = inject(PopupService);
     private readonly notificationService = inject(NotificationService);
+    private readonly popupService = inject(PopupService);
 
     columns = signal<ListingColumn[]>([
         { key: 'id', title: 'ID', sortable: true, width: '80px', isDefault: true },
@@ -53,13 +51,9 @@ export class AccountsListingComponent implements OnInit {
     pageSize = signal<number>(50);
     page = signal<number>(1);
 
-    filters = signal<AccountFilters>({
-        query: '',
-        is_blocked: null,
-    });
-
-    private currentSort: string = '';
-    private currentDirection: 'asc' | 'desc' = 'asc';
+    private search: string = '';
+    private sort: string = '';
+    private direction: 'asc' | 'desc' = 'asc';
 
     ngOnInit(): void {
         this.loadAccounts();
@@ -72,10 +66,9 @@ export class AccountsListingComponent implements OnInit {
             const params: AccountIndexParams = {
                 page: this.page(),
                 per_page: this.pageSize(),
-                query: this.filters().query,
-                sort: this.currentSort,
-                direction: this.currentDirection,
-                is_blocked: this.filters().is_blocked,
+                query: this.search,
+                sort: this.sort,
+                direction: this.direction,
             };
 
             const response: AccountsIndexResponse = await this.accountService.index(params);
@@ -88,8 +81,8 @@ export class AccountsListingComponent implements OnInit {
         }
     }
 
-    onFiltersChange(filters: AccountFilters): void {
-        this.filters.set(filters);
+    onSearch(query: string): void {
+        this.search = query;
         this.page.set(1);
         this.loadAccounts();
     }
@@ -116,14 +109,16 @@ export class AccountsListingComponent implements OnInit {
     }
 
     async onDelete(account: AccountModel): Promise<void> {
-        const confirmed = await this.confirmService.confirm(
+        const confirmed: boolean = await this.confirmService.confirm(
             'Удаление клиента',
             `Вы уверены, что хотите удалить клиента "${this.fullName(account)}"?`,
             'Удалить',
             'Отмена',
         );
 
-        if (!confirmed) return;
+        if (!confirmed) {
+            return;
+        }
 
         try {
             await this.accountService.delete(account.id);
@@ -135,8 +130,8 @@ export class AccountsListingComponent implements OnInit {
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
-        this.currentSort = sort.key;
-        this.currentDirection = sort.direction;
+        this.sort = sort.key;
+        this.direction = sort.direction;
         this.page.set(1);
         this.loadAccounts();
     }
