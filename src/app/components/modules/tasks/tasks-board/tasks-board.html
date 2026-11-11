@@ -20,20 +20,21 @@
                     <div class="board-column-title">{{ group.title }}</div>
                     <div class="board-column-actions">
                         <button
-                            class="icon-button"
-                            title="Редактировать"
-                            (click)="editGroup(group)"
+                            class="icon-button create-task"
+                            title="Создать задачу"
+                            (click)="createTask(group)"
                         >
-                            <app-icon name="settings" [size]="16" />
-                        </button>
-                        <button class="icon-button" title="Удалить" (click)="deleteGroup(group)">
-                            <app-icon name="logout" [size]="16" />
+                            +
                         </button>
                     </div>
                 </div>
 
                 <div class="board-column-body">
-                    <div class="board-column-empty">Задач пока нет</div>
+                    @for (task of tasksOf(group); track task.id) {
+                        <app-task-card [task]="task" (opened)="editTask($event)" />
+                    } @empty {
+                        <div class="board-column-empty">Нет задач</div>
+                    }
                 </div>
             </div>
         }

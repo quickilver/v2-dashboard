@@ -460,6 +460,25 @@ pictures[1][is_main]=0
 
 ---
 
+## Задачи (доска)
+
+Базовый путь: `/tasks/` — сервис `TaskService`.
+
+| Метод  | Путь          | Описание        | Ответ                 |
+| ------ | ------------- | --------------- | --------------------- |
+| GET    | `/tasks/`     | Список задач    | `TasksIndexResponse`  |
+| GET    | `/tasks/{id}` | Задача по ID    | `TasksShowResponse`   |
+| POST   | `/tasks/`     | Создать задачу  | `TasksCreateResponse` |
+| PUT    | `/tasks/{id}` | Обновить задачу | `TasksUpdateResponse` |
+| DELETE | `/tasks/{id}` | Удалить задачу  | —                     |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group_id`, `assigned_to`, `root_only`.
+- **Тело запроса:** `{ "group_id": 1, "title": "Задача", "description": "...", "assigned_to": 2, "start_at": "2026-01-01", "finish_at": "2026-01-10" }`.
+- `created_by` проставляется на бэкенде из авторизованного пользователя.
+- Удаление задачи — мягкое (`SoftDeletes`).
+
+---
+
 ## Логи
 
 Базовый путь: `/logs/` — сервис `LogService`.

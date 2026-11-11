@@ -89,17 +89,18 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 4px;
-                border: none;
-                background: none;
+                padding: 5px;
                 border-radius: $input-radius;
-                color: $grey;
                 cursor: pointer;
-                transition: 0.15s ease-in-out;
+                font-size: 22px;
+                width: 30px;
+                height: 30px;
+                color: $primary-color;
+                background: $primary-light-color;
+                border: 1px solid $primary-light-color;
 
                 &:hover {
-                    background: $grey-light;
-                    color: $main-font-color;
+                    border: 1px solid $primary-color
                 }
             }
         }
@@ -127,19 +128,20 @@
     justify-content: center;
     gap: 8px;
     min-height: 50px;
+    height: 100%;
     padding: 12px 15px;
     border-radius: $input-radius;
     background: none;
     font-size: 14px;
     cursor: pointer;
     transition: 0.15s ease-in-out;
-    border-color: $primary-color;
     color: $primary-color;
+    border: 1px solid $primary-light-color;
     background: $primary-light-color;
 
+
     &:hover {
-        background-color: $primary-color;
-        color: #ffffff;
+        border: 1px solid $primary-color;
     }
 }
 

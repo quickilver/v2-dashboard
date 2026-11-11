@@ -1,0 +1,70 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.board-task {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    border-radius: $input-radius;
+    background: #ffffff;
+    border: 1px solid $grey-light-2;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+
+    &:hover {
+        border-color: $grey;
+    }
+
+    .board-task-title {
+        font-size: 14px;
+        color: $main-font-color;
+        word-break: break-word;
+    }
+
+    .board-task-info {
+        display: flex;
+        gap: 10px;
+
+        .board-task-icon {
+            width: 40px;
+            height: 40px;
+            background: $grey-light;
+            border-radius: $input-radius;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .board-task-meta {
+            display: flex;
+            flex-direction: column;
+
+            .board-task-assignee {
+                font-weight: bold;
+            }
+
+            .board-task-date {
+                font-size: 12px;
+                font-weight: bold;
+
+                &.today-task {
+                    color: $info-color;
+                }
+
+                &.feature-task {
+                    color: $success-color;
+                }
+
+                &.past-task {
+                    color: $error-color;
+                }
+            }
+        }
+
+    }
+}

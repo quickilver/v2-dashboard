@@ -1,0 +1,13 @@
+@use 'variables' as *;
+
+.editor-container {
+    min-width: 480px;
+}
+
+.editor-placeholder {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 14px;
+    color: $grey;
+}
+

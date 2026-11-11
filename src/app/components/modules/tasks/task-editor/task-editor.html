@@ -1,0 +1,71 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">
+            <app-skeleton [count]="5" width="100%" [height]="36" [gap]="12" />
+        </div>
+    } @else {
+        <div class="tabs">
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                Информация
+            </div>
+            <div [class.is-active]="isActiveTab('comments')" (click)="changeTab('comments')">
+                Комментарии
+            </div>
+        </div>
+
+        <div class="editor-form">
+            @if (isActiveTab('info')) {
+                <div class="editor-body">
+                    <app-input-field
+                        label="Название"
+                        placeholder="Введите название задачи"
+                        [(value)]="title"
+                    />
+
+                    <app-textarea-field
+                        label="Описание"
+                        placeholder="Описание задачи"
+                        [(value)]="description"
+                    />
+
+                    <app-select-field
+                        label="Группа"
+                        placeholder="Выберите колонку"
+                        [options]="groupOptions()"
+                        [(value)]="taskGroupId"
+                    />
+
+                    <app-select-field
+                        label="Исполнитель"
+                        placeholder="Выберите исполнителя"
+                        [options]="assigneeOptions()"
+                        [(value)]="assignedTo"
+                    />
+
+                    <app-calendar-field
+                        label="Дата начала"
+                        placeholder="ДД.ММ.ГГГГ"
+                        [(value)]="startAt"
+                    />
+
+                    <app-calendar-field
+                        label="Дата завершения"
+                        placeholder="ДД.ММ.ГГГГ"
+                        [(value)]="finishAt"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('comments')) {
+                <div class="editor-body editor-placeholder">Раздел в разработке</div>
+            }
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="saving()">
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+            </button>
+        </div>
+    }
+</div>
