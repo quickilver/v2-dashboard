@@ -95,9 +95,7 @@ export class ProductService {
             );
         }
 
-        return firstValueFrom(
-            this.http.put<ProductsStoreResponse>(`${this.apiUrl}${id}`, payload),
-        );
+        return firstValueFrom(this.http.put<ProductsStoreResponse>(`${this.apiUrl}${id}`, payload));
     }
 
     /**

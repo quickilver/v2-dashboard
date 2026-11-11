@@ -1,0 +1,67 @@
+<div class="editor-body">
+    <app-products-list-field
+        searchLabel="Добавьте товар в заказ через поиск"
+        (productSelected)="onProductSelected($event)"
+    />
+
+    @if (productsCount() > 0) {
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (product of products(); track product.id) {
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>
+                            <div>{{ product.title }}</div>
+                            <div class="product-sku">{{ product.sku }}</div>
+                        </td>
+                        <td>
+                            <app-input-field
+                                size="small"
+                                type="number"
+                                placeholder="0"
+                                [value]="getAmount(product.id)"
+                                (valueChange)="onAmountChange(product.id, $event)"
+                            />
+                        </td>
+                        <td>
+                            <app-counter-field
+                                size="small"
+                                [min]="1"
+                                [value]="getCount(product.id)"
+                                (valueChange)="onCountChange(product.id, $event)"
+                            />
+                        </td>
+                        <td>{{ getTotal(product.id) }} ₽</td>
+                        <td>
+                            <button
+                                type="button"
+                                class="remove-button"
+                                (click)="onProductRemoved(product)"
+                            >
+                                Удалить
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="footer-label">Итого</td>
+                    <td colspan="2" class="footer-total">{{ totalPrice() }} ₽</td>
+                </tr>
+            </tfoot>
+        </table>
+    } @else {
+        <div class="products-empty">Товары не добавлены</div>
+    }
+</div>

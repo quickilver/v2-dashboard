@@ -4,6 +4,9 @@
         <div class="title">{{ title() }}</div>
         <div class="actions">
             <ng-content select="[header-actions]" />
+            @if (sizable()) {
+                <app-listing-sizes [size]="tableSize()" (changed)="onSizeChanged($event)" />
+            }
             @if (settingsColumns().length > 0) {
                 <app-listing-columns-settings
                     [available]="settingsColumns()"
@@ -11,7 +14,10 @@
                     (changed)="onColumnsChanged($event)"
                 />
             }
-            <button class="primary" (click)="onCreateClick()">Создать</button>
+            <button class="primary" (click)="onCreateClick()">
+                <app-icon name="plus" [size]="20" class="toggle-icon" />
+                <span>Создать</span>
+            </button>
         </div>
     </div>
 
@@ -36,7 +42,12 @@
                 <app-skeleton [count]="5" width="100%" [height]="20" [gap]="12" />
             </div>
         } @else {
-            <div class="table">
+            <div
+                class="table"
+                [class.size-large]="tableSize() === 'large'"
+                [class.size-normal]="tableSize() === 'normal'"
+                [class.size-small]="tableSize() === 'small'"
+            >
                 <table>
                     <thead>
                         <tr>

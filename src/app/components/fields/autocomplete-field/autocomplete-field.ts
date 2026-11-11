@@ -36,9 +36,7 @@ export class AutocompleteFieldComponent {
         const query = this.search().toLowerCase().trim();
         if (!query) return [];
 
-        return this.options().filter((option) =>
-            option.label.toLowerCase().includes(query),
-        );
+        return this.options().filter((option) => option.label.toLowerCase().includes(query));
     });
 
     onInput(event: Event): void {

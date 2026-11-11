@@ -13,10 +13,12 @@ import { InputFieldComponent } from '../fields/input-field/input-field';
 import { DropdownFieldComponent } from '../fields/dropdown-field/dropdown-field';
 import { SkeletonComponent } from '../skeleton/skeleton';
 import { DropdownOption } from '../../models/dropdown.model';
-import { ListingColumn } from '../../models/listing.model';
+import { ListingColumn, ListingSize } from '../../models/listing.model';
 import { MetaModel } from '../../models/meta.model';
 import { ListingColumnsService } from '../../services/listing-columns.service';
+import { ListingSizesService } from '../../services/listing-sizes.service';
 import { ListingColumnsSettingsComponent } from './listing-columns-settings/listing-columns-settings';
+import { ListingSizesComponent } from './listing-sizes/listing-sizes';
 
 export interface SortState {
     key: string;
@@ -32,6 +34,7 @@ export interface SortState {
         DropdownFieldComponent,
         SkeletonComponent,
         ListingColumnsSettingsComponent,
+        ListingSizesComponent,
     ],
     templateUrl: './listing.html',
     styleUrl: './listing.scss',
@@ -42,10 +45,12 @@ export interface SortState {
 })
 export class ListingComponent {
     private readonly listingColumnsService = inject(ListingColumnsService);
+    private readonly listingSizesService = inject(ListingSizesService);
 
     columns = input<ListingColumn[]>([]);
     availableColumns = input<ListingColumn[]>([]);
     columnsStorageKey = input<string>('');
+    sizable = input<boolean>(false);
     data = input<any[]>([]);
     loading = input<boolean>(false);
     meta = input<MetaModel | null>(null);
@@ -92,6 +97,8 @@ export class ListingComponent {
         return available.length > 0 ? available : this.columns();
     });
 
+    tableSize = signal<ListingSize>('normal');
+
     constructor() {
         effect(() => {
             const available = this.settingsColumns();
@@ -104,11 +111,25 @@ export class ListingComponent {
             const resolved = this.listingColumnsService.getColumns(storageKey, available);
             this.visibleColumnKeys.set(resolved.map((column) => column.key));
         });
+
+        effect(() => {
+            if (!this.sizable()) {
+                this.tableSize.set('normal');
+                return;
+            }
+
+            this.tableSize.set(this.listingSizesService.getSize(this.columnsStorageKey()));
+        });
     }
 
     onColumnsChanged(keys: string[]): void {
         this.visibleColumnKeys.set(keys);
         this.listingColumnsService.saveColumns(this.columnsStorageKey(), keys);
+    }
+
+    onSizeChanged(size: ListingSize): void {
+        this.tableSize.set(size);
+        this.listingSizesService.saveSize(this.columnsStorageKey(), size);
     }
 
     totalPages = computed(() => {

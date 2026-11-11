@@ -143,9 +143,7 @@ export class SettingsListingComponent implements OnInit {
 
         if (!container) return;
 
-        const sections = Array.from(
-            container.querySelectorAll<HTMLElement>('[data-group-index]'),
-        );
+        const sections = Array.from(container.querySelectorAll<HTMLElement>('[data-group-index]'));
 
         const viewportTop = 20;
         let currentIndex = 0;

@@ -38,6 +38,7 @@ src/app/components/modules/attributes/
 - **Методы:** `loadAttributes()`, `onRowClick()`, `onEdit()`, `onDelete()`, `createClick()`, `onSearch()`, `onSort()`, `onPageChange()`.
 - **Открытие едитора:** `PopupService.open('Создание характеристики' | 'Редактирование характеристики', AttributesEditorComponent, { id }, 'with-tabs')`; после закрытия листинг перезагружается.
 - **Удаление:** подтверждение через `ConfirmService`, затем `AttributeService.delete()`.
+- **Размер таблицы:** включён переключатель «Размеры» (`[sizable]="true"`) — крупный / обычный / мелкий; выбор хранится в `localStorage` (`listing_size:attributes`).
 
 ### `AttributesEditorComponent`
 

@@ -1,0 +1,16 @@
+@use 'variables' as *;
+
+.user-search {
+    background: $grey-light;
+    padding: 20px;
+    border-radius: $input-radius;
+
+    .label {
+        margin-bottom: 10px;
+
+        p {
+            padding: 0;
+            margin: 0;
+        }
+    }
+}

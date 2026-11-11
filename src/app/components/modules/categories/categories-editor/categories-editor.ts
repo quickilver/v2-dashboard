@@ -21,7 +21,12 @@ import { SkeletonComponent } from '../../../skeleton/skeleton';
 @Component({
     selector: 'app-categories-editor',
     standalone: true,
-    imports: [InputFieldComponent, CheckboxFieldComponent, CategoriesTreeComponent, SkeletonComponent],
+    imports: [
+        InputFieldComponent,
+        CheckboxFieldComponent,
+        CategoriesTreeComponent,
+        SkeletonComponent,
+    ],
     templateUrl: './categories-editor.html',
     styleUrl: './categories-editor.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

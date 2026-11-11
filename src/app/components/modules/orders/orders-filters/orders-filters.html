@@ -1,0 +1,100 @@
+<div class="filters-title">Фильтры</div>
+<div class="orders-filters">
+    <div class="filters-group filters-search">
+        <app-input-field
+            placeholder="Номер, телефон, email или ID"
+            [value]="filters().query"
+            (valueChange)="onQueryChange($event)"
+        />
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('account')">
+            <span>
+                Клиент
+                @if (accountCount()) {
+                    <span class="filters-count">{{ accountCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('account')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+
+        @if (isExpanded('account')) {
+            <div class="filters-group-content">
+                <app-autocomplete-accounts-field
+                    placeholder="Поиск клиента"
+                    [(search)]="accountSearch"
+                    [(value)]="selectedAccount"
+                    (valueChange)="onAccountChange($event)"
+                />
+                @if (selectedAccount()) {
+                    <button type="button" class="filters-reset" (click)="onAccountChange(null)">
+                        Сбросить клиента
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('product')">
+            <span>
+                Товар
+                @if (productCount()) {
+                    <span class="filters-count">{{ productCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('product')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+
+        @if (isExpanded('product')) {
+            <div class="filters-group-content">
+                <app-autocomplete-products-field
+                    placeholder="Поиск товара"
+                    [(search)]="productSearch"
+                    [(value)]="selectedProduct"
+                />
+                @if (selectedProduct()) {
+                    <button type="button" class="filters-reset" (click)="onProductChange(null)">
+                        Сбросить товар
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="filters-group">
+        <div class="filters-group-title" (click)="toggleGroup('date')">
+            <span>
+                Дата оформления
+                @if (dateCount()) {
+                    <span class="filters-count">{{ dateCount() }}</span>
+                }
+            </span>
+            <span class="filters-group-arrow" [class.is-open]="isExpanded('date')">
+                <app-icon name="chevron-down" [size]="16" />
+            </span>
+        </div>
+
+        @if (isExpanded('date')) {
+            <div class="filters-group-content filters-dates">
+                <app-calendar-field
+                    label="От"
+                    placeholder="ДД.ММ.ГГГГ"
+                    [value]="filters().date_from"
+                    (valueChange)="onDateFromChange($event)"
+                />
+                <app-calendar-field
+                    label="До"
+                    placeholder="ДД.ММ.ГГГГ"
+                    [value]="filters().date_to"
+                    (valueChange)="onDateToChange($event)"
+                />
+            </div>
+        }
+    </div>
+</div>

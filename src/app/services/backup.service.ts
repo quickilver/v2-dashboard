@@ -23,7 +23,11 @@ export class BackupService {
         );
     }
 
-    async restore(file: string, createDatabase: boolean = false, noSsl: boolean = false): Promise<void> {
+    async restore(
+        file: string,
+        createDatabase: boolean = false,
+        noSsl: boolean = false,
+    ): Promise<void> {
         return firstValueFrom(
             this.http.post<void>(`${this.apiUrl}restore`, {
                 file,

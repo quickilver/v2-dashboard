@@ -28,8 +28,8 @@
                 {{ filter.title }}
                 @if (filter.selectedValues.length) {
                     <span class="filters-count">
-                                    {{ filter.selectedValues.length }}
-                                </span>
+                        {{ filter.selectedValues.length }}
+                    </span>
                 }
             </div>
             <div class="filters-attribute-actions">
@@ -38,7 +38,9 @@
                     class="filters-attribute-remove"
                     (click)="remove(filter.id); $event.stopPropagation()"
                     title="Убрать фильтр"
-                >✕</button>
+                >
+                    ✕
+                </button>
                 <span class="filters-group-arrow" [class.is-open]="isExpanded(filter.id)">
                     <app-icon name="chevron-down" [size]="16" />
                 </span>

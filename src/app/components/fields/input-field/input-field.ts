@@ -1,4 +1,12 @@
-import { Component, ElementRef, input, InputSignal, model, ModelSignal, viewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    input,
+    InputSignal,
+    model,
+    ModelSignal,
+    viewChild,
+} from '@angular/core';
 import { MaskHelper } from '../../../helpers/mask.helper';
 
 export type InputFieldSize = 'small' | 'regular' | 'big';

@@ -9,7 +9,7 @@ import {
     signal,
 } from '@angular/core';
 import { ReceiveFormComponent } from '../receive-form/receive-form';
-import { ReceiveProductsSearchComponent } from '../receive-products-search/receive-products-search';
+import { ProductsListFieldComponent } from '../../../fields/products-list-field/products-list-field';
 import { ReceiveProductsListComponent } from '../receive-products-list/receive-products-list';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { ProductIndex } from '../../../../models/products/product-short.model';
@@ -24,7 +24,7 @@ import { NotificationService } from '../../../../services/notification.service';
     standalone: true,
     imports: [
         ReceiveFormComponent,
-        ReceiveProductsSearchComponent,
+        ProductsListFieldComponent,
         ReceiveProductsListComponent,
         SkeletonComponent,
     ],

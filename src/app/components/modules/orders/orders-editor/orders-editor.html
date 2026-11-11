@@ -1,0 +1,87 @@
+<div class="editor-container">
+    @if (loading()) {
+        <div class="editor-loading">
+            <app-skeleton [count]="5" width="100%" [height]="36" [gap]="12" />
+        </div>
+    } @else {
+        <div class="tabs">
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                Информация
+            </div>
+            <div [class.is-active]="isActiveTab('account')" (click)="changeTab('account')">
+                Клиент
+            </div>
+            <div [class.is-active]="isActiveTab('products')" (click)="changeTab('products')">
+                Товары <span class="tag">{{ productsCount() }}</span>
+            </div>
+        </div>
+
+        <div class="editor-form">
+            @if (isActiveTab('info')) {
+                <div class="editor-body">
+                    @if (isEditMode() && order(); as currentOrder) {
+                        <div class="info-block">
+                            <div class="info-row">
+                                <span class="info-label">ID</span>
+                                <span class="info-value">{{ currentOrder.id }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Номер</span>
+                                <span class="info-value">{{ currentOrder.number }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Дата оформления</span>
+                                <span class="info-value">
+                                    {{ formatDate(currentOrder.created_at) }}
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Сумма заказа</span>
+                                <span class="info-value">{{ totalPrice() }} ₽</span>
+                            </div>
+                        </div>
+                    }
+
+                    <app-select-field
+                        label="Статус"
+                        placeholder="Выберите статус"
+                        [options]="statusOptions()"
+                        [(value)]="statusId"
+                    />
+                    <app-textarea-field
+                        label="Комментарий"
+                        placeholder="Комментарий к заказу"
+                        [(value)]="comment"
+                    />
+                </div>
+            }
+
+            @if (isActiveTab('account')) {
+                <app-orders-account-tab
+                    [(accountSearch)]="accountSearch"
+                    [(selectedAccount)]="selectedAccount"
+                    [(contactPhone)]="contactPhone"
+                    [(contactEmail)]="contactEmail"
+                    [(contactFirstName)]="contactFirstName"
+                    [(contactLastName)]="contactLastName"
+                    [(contactMiddleName)]="contactMiddleName"
+                />
+            }
+
+            @if (isActiveTab('products')) {
+                <app-orders-products-tab
+                    [(products)]="products"
+                    [(counts)]="counts"
+                    [(amounts)]="amounts"
+                />
+            }
+        </div>
+
+        <div class="editor-actions">
+            <button (click)="onCancel()">Отмена</button>
+            <button class="primary" (click)="onSave()" [disabled]="saving()">
+                {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
+            </button>
+        </div>
+    }
+</div>

@@ -1,0 +1,32 @@
+@use 'variables' as *;
+
+.info-block {
+    background: $grey-light;
+    padding: 5px 20px;
+    border-radius: $input-radius;
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid $grey;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            flex: 0 0 200px;
+            font-size: 14px;
+            font-weight: bold;
+            color: $main-font-color;
+        }
+
+        .info-value {
+            flex: 1;
+            font-size: 14px;
+            color: $main-font-color;
+        }
+    }
+}

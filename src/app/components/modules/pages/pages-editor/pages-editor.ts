@@ -99,7 +99,9 @@ export class PagesEditorComponent implements OnInit {
             this.notificationService.success('Страница успешно сохранена');
             this.popupService.resolve();
         } catch (response: any) {
-            this.notificationService.error(response.error?.message || 'Ошибка при сохранении страницы');
+            this.notificationService.error(
+                response.error?.message || 'Ошибка при сохранении страницы',
+            );
         } finally {
             this.saving.set(false);
         }

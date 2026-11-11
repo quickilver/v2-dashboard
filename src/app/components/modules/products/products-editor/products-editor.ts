@@ -227,7 +227,9 @@ export class ProductsEditorComponent implements OnInit {
             this.notificationService.success('Товар успешно сохранён');
             this.popupService.resolve();
         } catch (response: any) {
-            this.notificationService.error(response.error?.message ?? 'Ошибка при сохранении товара');
+            this.notificationService.error(
+                response.error?.message ?? 'Ошибка при сохранении товара',
+            );
         } finally {
             this.saving.set(false);
         }

@@ -35,9 +35,11 @@
                         </ul>
                     } @else if (filteredAttributes().length > 0) {
                         <ul class="autocomplete-menu">
-                            @for (attribute of filteredAttributes();
+                            @for (
+                                attribute of filteredAttributes();
                                 track attribute.id;
-                                let i = $index) {
+                                let i = $index
+                            ) {
                                 <li
                                     class="autocomplete-item"
                                     [class.active]="attributeActiveIndex() === i"
@@ -98,6 +100,5 @@
                 }
             </div>
         }
-
     </div>
 </div>

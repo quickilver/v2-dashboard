@@ -1,0 +1,35 @@
+<div class="sizes-settings">
+    <button type="button" class="sizes-settings-toggle" (click)="toggleOpen()">
+        <app-icon name="text-size" [size]="20" class="toggle-icon" />
+        Размеры
+    </button>
+
+    @if (isOpen()) {
+        <div class="sizes-settings-panel">
+            <div class="sizes-settings-header">
+                <span>Размер таблицы</span>
+                <button type="button" class="sizes-settings-close" (click)="close()">✕</button>
+            </div>
+
+            <ul class="sizes-settings-list">
+                @for (option of options; track option.value) {
+                    <li
+                        class="sizes-settings-item"
+                        [class.is-active]="isActive(option.value)"
+                        (click)="select(option.value)"
+                    >
+                        <span
+                            class="sizes-settings-preview"
+                            [class.preview-large]="option.value === 'large'"
+                            [class.preview-normal]="option.value === 'normal'"
+                            [class.preview-small]="option.value === 'small'"
+                        >
+                            Аа
+                        </span>
+                        <span class="sizes-settings-title">{{ option.title }}</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

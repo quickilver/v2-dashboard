@@ -11,7 +11,9 @@
 | Цены           | `prices`     | `/catalog/prices`               | [prices.md](./prices.md)         |
 | Контрагенты    | `suppliers`  | `/suppliers`                    | [suppliers.md](./suppliers.md)   |
 | Поступления    | `receives`   | `/receives`                     | [receives.md](./receives.md)     |
+| Заказы         | `orders`     | `/orders`                       | [orders.md](./orders.md)         |
 | Статусы        | `statuses`   | `/orders/statuses`              | [statuses.md](./statuses.md)     |
+| Клиенты        | `accounts`   | `/accounts`                     | [accounts.md](./accounts.md)     |
 | Страницы       | `pages`      | `/content/pages`                | [pages.md](./pages.md)           |
 | Менеджеры      | `users`      | `/users`                        | [users.md](./users.md)           |
 | Настройки      | `settings`   | `/settings`                     | [settings.md](./settings.md)     |

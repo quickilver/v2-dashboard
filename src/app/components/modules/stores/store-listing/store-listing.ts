@@ -25,9 +25,9 @@ export class StoreListingComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     columns = signal<ListingColumn[]>([
-        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true  },
-        { key: 'title', title: 'Название', sortable: true, isDefault: true  },
-        { key: 'address', title: 'Адрес', sortable: true, isDefault: true  },
+        { key: 'id', title: 'ID', sortable: true, width: '60px', isDefault: true },
+        { key: 'title', title: 'Название', sortable: true, isDefault: true },
+        { key: 'address', title: 'Адрес', sortable: true, isDefault: true },
         { key: 'guid', title: 'GUID', sortable: false },
     ]);
 

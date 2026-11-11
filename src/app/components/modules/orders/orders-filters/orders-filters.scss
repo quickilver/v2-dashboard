@@ -1,0 +1,95 @@
+@use 'variables' as *;
+
+.filters-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.orders-filters {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: $shadow;
+
+    > .filters-search {
+        padding: 10px;
+        border-bottom: 1px solid $grey-light-2;
+    }
+
+    .filters-group {
+        .filters-group-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            height: 50px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid $grey-light-2;
+
+            &:hover {
+                background: $grey-light;
+            }
+
+            .filters-group-arrow {
+                display: flex;
+                transition: transform 0.2s ease;
+
+                &.is-open {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .filters-count {
+                display: inline-block;
+                padding: 4px 6px;
+                min-width: 25px;
+                text-align: center;
+                color: #ffffff;
+                border-radius: 4px;
+                background: $primary-color;
+                margin-left: 10px;
+            }
+        }
+
+        .filters-group-content {
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #f6f6f6;
+            border-bottom: 1px solid $grey-light-2;
+        }
+
+        &:last-child {
+            .filters-group-content {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .filters-dates {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .filters-reset {
+        margin-top: 8px;
+        width: 100%;
+        padding: 6px;
+        font-size: 13px;
+        color: $grey;
+        background: none;
+        border: 1px dashed $grey-light-2;
+        border-radius: $input-radius;
+        cursor: pointer;
+
+        &:hover {
+            color: $primary-color;
+            border-color: $primary-color;
+        }
+    }
+}

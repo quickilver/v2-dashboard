@@ -4,12 +4,10 @@ import { IconComponent } from '../../icon/icon';
 @Component({
     selector: 'app-file-manager-address',
     standalone: true,
-    imports: [
-        IconComponent
-    ],
+    imports: [IconComponent],
     templateUrl: './file-manager-address.html',
     styleUrl: './file-manager-address.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileManagerAddressComponent {
     readonly path = input<string>('');
@@ -17,11 +15,15 @@ export class FileManagerAddressComponent {
 
     readonly segments = computed<string[]>(() => {
         return this.path()
-            ? this.path().split('/').filter(s => s.length > 0)
+            ? this.path()
+                  .split('/')
+                  .filter((s) => s.length > 0)
             : [];
     });
 
     segmentPath(index: number): string {
-        return this.segments().slice(0, index + 1).join('/');
+        return this.segments()
+            .slice(0, index + 1)
+            .join('/');
     }
 }

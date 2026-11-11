@@ -36,8 +36,9 @@
         padding: 0 15px;
         cursor: pointer;
         border-top: 1px solid $grey-light-2;
-        transition: background-color 0.15s ease,
-        color 0.15s ease;
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease;
 
         &:hover {
             background: $grey-light;
@@ -85,7 +86,7 @@
         border-top: 1px dashed $grey-light-2;
         scroll-margin-top: 20px;
 
-        &:first-child{
+        &:first-child {
             margin-top: 0;
             padding-top: 0;
             border-top: none;

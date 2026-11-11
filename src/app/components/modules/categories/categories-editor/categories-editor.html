@@ -4,18 +4,11 @@
             <app-skeleton [count]="5" width="100%" [height]="36" [gap]="12" />
         </div>
     } @else {
-
         <div class="tabs">
-            <div
-                [class.is-active]="isActiveTab('info')"
-                (click)="changeTab('info')"
-            >
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
                 Информация
             </div>
-            <div
-                [class.is-active]="isActiveTab('parent')"
-                (click)="changeTab('parent')"
-            >
+            <div [class.is-active]="isActiveTab('parent')" (click)="changeTab('parent')">
                 Родительская категория
             </div>
         </div>
@@ -58,7 +51,12 @@
 
             @if (isActiveTab('parent')) {
                 <div class="editor-body">
-                    <app-categories-tree [parentId]="0" [selectable]="true" [ancestors]="ancestorIds()" [(value)]="parent" />
+                    <app-categories-tree
+                        [parentId]="0"
+                        [selectable]="true"
+                        [ancestors]="ancestorIds()"
+                        [(value)]="parent"
+                    />
                 </div>
             }
         </div>

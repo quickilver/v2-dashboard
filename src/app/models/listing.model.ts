@@ -1,3 +1,5 @@
+export type ListingSize = 'large' | 'normal' | 'small';
+
 export interface ListingColumn {
     key: string;
     title: string;

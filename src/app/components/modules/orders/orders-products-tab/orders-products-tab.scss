@@ -1,0 +1,64 @@
+@use 'variables' as *;
+
+.products-table {
+    width: 100%;
+    border-spacing: 0;
+    margin-top: 20px;
+
+    th {
+        padding: 12px 10px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: bold;
+        color: $main-font-color;
+        background: $grey-light;
+    }
+
+    td {
+        padding: 10px;
+        font-size: 14px;
+        color: $main-font-color;
+        border-bottom: 1px solid $grey-light;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .product-sku {
+        font-size: 12px;
+        color: $grey;
+    }
+
+    .remove-button {
+        padding: 4px 10px;
+        font-size: 13px;
+        color: #d4380d;
+        background: none;
+        border: 1px solid $grey-light-2;
+        border-radius: $input-radius;
+        cursor: pointer;
+
+        &:hover {
+            border-color: #d4380d;
+        }
+    }
+
+    tfoot {
+        .footer-label {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .footer-total {
+            font-weight: bold;
+        }
+    }
+}
+
+.products-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: $grey;
+    font-size: 14px;
+}

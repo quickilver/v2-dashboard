@@ -1,11 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    inject,
-    model,
-    signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, model, signal } from '@angular/core';
 import { ConfirmService } from '../../../../services/confirm.service';
 import { ProductPictureItem } from '../../../../models/products/product-picture-item.model';
 

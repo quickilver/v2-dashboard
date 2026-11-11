@@ -38,7 +38,7 @@ src/app/
 │   ├── file-manager/      # файловый менеджер
 │   ├── icon/              # app-icon (SVG из assets/icons)
 │   ├── user-info/         # блок пользователя в sidebar
-│   └── modules/           # 12 модулей админки
+│   └── modules/           # 14 модулей админки
 ├── pages/                 # login, homepage
 ├── services/              # 20 сервисов (по одному на сущность + инфраструктурные)
 ├── models/                # интерфейсы: *.model.ts, params/, responses/
@@ -56,7 +56,9 @@ src/app/
 | Цены           | `/catalog/prices`               | [prices.md](./modules/prices.md)         |
 | Контрагенты    | `/suppliers`                    | [suppliers.md](./modules/suppliers.md)   |
 | Поступления    | `/receives`                     | [receives.md](./modules/receives.md)     |
+| Заказы         | `/orders`                       | [orders.md](./modules/orders.md)         |
 | Статусы        | `/orders/statuses`              | [statuses.md](./modules/statuses.md)     |
+| Клиенты        | `/accounts`                     | [accounts.md](./modules/accounts.md)     |
 | Страницы       | `/content/pages`                | [pages.md](./modules/pages.md)           |
 | Менеджеры      | `/users`                        | [users.md](./modules/users.md)           |
 | Настройки      | `/settings`                     | [settings.md](./modules/settings.md)     |
@@ -212,6 +214,7 @@ export class <Entity>EditorComponent implements OnInit {
 | `sortable`         | `boolean`           | Показывать иконки сортировки  |
 | `title`            | `string`            | Заголовок                     |
 | `actionsColumn`    | `boolean`           | Колонка «Действия» (dropdown) |
+| `sizable`          | `boolean`           | Кнопка «Размеры» (крупный/обычный/мелкий) |
 
 | Выход                      | Аргумент             |
 | -------------------------- | -------------------- |
@@ -221,6 +224,18 @@ export class <Entity>EditorComponent implements OnInit {
 | `createClick`              | —                    |
 | `searchChange`             | `string \| number`   |
 | `sortChange`               | `{ key, direction }` |
+
+### Размер таблицы (кнопка «Размеры»)
+
+Кнопка выводится только при `[sizable]="true"` (сейчас — в модуле «Характеристики»).
+Варианты: `large` (16 px / 16 px), `normal` (14 px / 10 px, по умолчанию), `small` (12 px / 5 px).
+Размер применяется классом на контейнере `.table` (`size-large` / `size-normal` / `size-small`),
+CSS правит `font-size` и вертикальные `padding` ячеек. Выбор хранится в `localStorage`
+по ключу `listing_size:{columnsStorageKey}` через `ListingSizesService`.
+
+```html
+<app-listing ... [sizable]="true" />
+```
 | `pageChange`               | `number`             |
 
 `ListingColumn` (`models/listing.model.ts`):

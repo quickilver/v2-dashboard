@@ -5,8 +5,6 @@
         </div>
     } @else {
         @if (log(); as log) {
-
-
             <div class="tabs">
                 <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
                     Информация
@@ -19,14 +17,15 @@
                 </div>
             </div>
 
-
             <div class="editor-form">
                 @if (isActiveTab('info')) {
                     <div class="log-header">
                         <div class="log-event" [class]="'event-' + log.event">
                             {{ log.event }}
                         </div>
-                        <div class="log-date">{{ log.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
+                        <div class="log-date">
+                            {{ log.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
+                        </div>
                     </div>
                     <div class="log-section">
                         <div class="log-row">
@@ -44,11 +43,11 @@
                         <div class="log-row">
                             <span class="log-label">Пользователь</span>
                             <span class="log-value">
-                            {{ log.user.name }}
+                                {{ log.user.name }}
                                 @if (log.user.email) {
                                     <span class="log-sub">({{ log.user.email }})</span>
                                 }
-                        </span>
+                            </span>
                         </div>
                     </div>
                 }

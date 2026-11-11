@@ -1,6 +1,7 @@
 @if (restoring()) {
     <div class="backup-restore-bar">
-        Восстановление базы из <strong>{{ restoring() }}</strong>...
+        Восстановление базы из <strong>{{ restoring() }}</strong
+        >...
     </div>
 }
 <app-listing
@@ -16,4 +17,3 @@
     (rowClick)="onRowClick($event)"
     (cellClick)="onCellClick($event)"
 />
-

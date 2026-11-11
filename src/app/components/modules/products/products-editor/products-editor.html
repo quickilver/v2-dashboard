@@ -5,46 +5,25 @@
         </div>
     } @else {
         <div class="tabs">
-            <div
-                [class.is-active]="isActiveTab('info')"
-                (click)="changeTab('info')"
-            >
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
                 Информация
             </div>
-            <div
-                [class.is-active]="isActiveTab('description')"
-                (click)="changeTab('description')"
-            >
+            <div [class.is-active]="isActiveTab('description')" (click)="changeTab('description')">
                 Описание
             </div>
-            <div
-                [class.is-active]="isActiveTab('categories')"
-                (click)="changeTab('categories')"
-            >
+            <div [class.is-active]="isActiveTab('categories')" (click)="changeTab('categories')">
                 Категории <span class="tag">{{ categoriesCount() }}</span>
             </div>
-            <div
-                [class.is-active]="isActiveTab('prices')"
-                (click)="changeTab('prices')"
-            >
+            <div [class.is-active]="isActiveTab('prices')" (click)="changeTab('prices')">
                 Цены <span class="tag">{{ pricesCount() }}</span>
             </div>
-            <div
-                [class.is-active]="isActiveTab('stores')"
-                (click)="changeTab('stores')"
-            >
+            <div [class.is-active]="isActiveTab('stores')" (click)="changeTab('stores')">
                 Остатки <span class="tag">{{ storesTotal() }}</span>
             </div>
-            <div
-                [class.is-active]="isActiveTab('attributes')"
-                (click)="changeTab('attributes')"
-            >
+            <div [class.is-active]="isActiveTab('attributes')" (click)="changeTab('attributes')">
                 Характеристики <span class="tag">{{ attributesCount() }}</span>
             </div>
-            <div
-                [class.is-active]="isActiveTab('media')"
-                (click)="changeTab('media')"
-            >
+            <div [class.is-active]="isActiveTab('media')" (click)="changeTab('media')">
                 Медиа <span class="tag">{{ picturesCount() }}</span>
             </div>
         </div>
@@ -92,7 +71,9 @@
                 <div class="editor-body">
                     @for (price of prices(); track price.id) {
                         <div class="inline-field">
-                            <label class="field-label">{{ price.title }} ({{ price.currency }})</label>
+                            <label class="field-label"
+                                >{{ price.title }} ({{ price.currency }})</label
+                            >
                             <input
                                 type="number"
                                 class="input-field"

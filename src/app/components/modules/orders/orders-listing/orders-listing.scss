@@ -1,0 +1,15 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.orders-listing-container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+
+    > app-listing {
+        width: 100%;
+    }
+}

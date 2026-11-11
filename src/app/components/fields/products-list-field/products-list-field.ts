@@ -1,21 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
-import { AutocompleteProductsFieldComponent } from '../../../fields/autocomplete-products-field/autocomplete-products-field';
-import { PopupProductFieldComponent } from '../../../fields/popup-product-field/popup-product-field';
-import { PopupService } from '../../../../services/popup.service';
-import { ProductIndex } from '../../../../models/products/product-short.model';
+import { AutocompleteProductsFieldComponent } from '../autocomplete-products-field/autocomplete-products-field';
+import { PopupProductFieldComponent } from '../popup-product-field/popup-product-field';
+import { PopupService } from '../../../services/popup.service';
+import { ProductIndex } from '../../../models/products/product-short.model';
 
 @Component({
-    selector: 'app-receive-products-search',
+    selector: 'app-products-list-field',
     standalone: true,
     imports: [AutocompleteProductsFieldComponent],
-    templateUrl: './receive-products-search.html',
-    styleUrl: './receive-products-search.scss',
+    templateUrl: './products-list-field.html',
+    styleUrl: './products-list-field.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReceiveProductsSearchComponent {
+export class ProductsListFieldComponent {
     private readonly popupService = inject(PopupService);
 
     placeholder = input<string>('Поиск по названию или артикулу');
+    searchLabel = input<string>('Добавьте товар через поиск');
+    catalogLabel = input<string>('или выберите товар из каталога');
+
     productSelected = output<ProductIndex>();
 
     onValueChange(product: ProductIndex | null): void {

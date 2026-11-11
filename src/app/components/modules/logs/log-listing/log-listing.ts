@@ -1,4 +1,11 @@
-import { Component, signal, computed, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import {
+    Component,
+    signal,
+    computed,
+    ChangeDetectionStrategy,
+    OnInit,
+    inject,
+} from '@angular/core';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { LogService } from '../../../../services/log.service';
@@ -84,19 +91,14 @@ export class LogListingComponent implements OnInit {
                     'Редактирование пользователя',
                     UsersEditorComponent,
                     { id: event.row.user_id },
-                    'with-tabs'
+                    'with-tabs',
                 );
                 break;
         }
     }
 
     onDetails(log: LogModel): void {
-        this.popupService.open(
-            'Просмотр лога',
-            LogDetailsComponent,
-            { id: log.id },
-            'with-tabs'
-        );
+        this.popupService.open('Просмотр лога', LogDetailsComponent, { id: log.id }, 'with-tabs');
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {

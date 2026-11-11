@@ -1,16 +1,6 @@
 <div class="media-upload">
-    <label
-        class="media-dropzone"
-        (dragover)="onDragOver($event)"
-        (drop)="onDropFiles($event)"
-    >
-        <input
-            type="file"
-            accept="image/*"
-            multiple
-            hidden
-            (change)="onFilesSelected($event)"
-        />
+    <label class="media-dropzone" (dragover)="onDragOver($event)" (drop)="onDropFiles($event)">
+        <input type="file" accept="image/*" multiple hidden (change)="onFilesSelected($event)" />
         <span>Перетащите изображения сюда или нажмите для выбора</span>
         <span class="media-dropzone-hint">JPEG, PNG, GIF, WEBP, BMP</span>
     </label>

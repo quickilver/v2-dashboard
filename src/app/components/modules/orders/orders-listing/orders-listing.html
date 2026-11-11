@@ -1,0 +1,20 @@
+<div class="orders-listing-container">
+    <app-orders-filters [filters]="filters()" (filtersChange)="onFiltersChange($event)" />
+    <app-listing
+        [columns]="columns()"
+        [availableColumns]="columns()"
+        [columnsStorageKey]="columnsStorageKey"
+        [data]="orders()"
+        [loading]="loading()"
+        [meta]="meta()"
+        [pageSize]="pageSize()"
+        [page]="page()"
+        title="Заказы"
+        [actionsColumn]="false"
+        [searchable]="false"
+        (rowClick)="onRowClick($event)"
+        (sortChange)="onSort($event)"
+        (pageChange)="onPageChange($event)"
+        (createClick)="createClick()"
+    />
+</div>

@@ -14,7 +14,7 @@ import { UsersEditorComponent } from '../users-editor/users-editor';
     standalone: true,
     imports: [ListingComponent],
     templateUrl: './users-listing.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersListingComponent implements OnInit {
     private readonly popupService = inject(PopupService);
@@ -51,7 +51,7 @@ export class UsersListingComponent implements OnInit {
                 per_page: this.pageSize(),
                 query: this.currentSearch,
                 sort: this.currentSort,
-                direction: this.currentDirection
+                direction: this.currentDirection,
             };
 
             const response: UsersIndexResponse = await this.userService.index(params);
@@ -87,7 +87,7 @@ export class UsersListingComponent implements OnInit {
             'Удаление менеджера',
             `Вы уверены, что хотите удалить менеджера "${user.name}"?`,
             'Удалить',
-            'Отмена'
+            'Отмена',
         );
 
         if (confirmed) {

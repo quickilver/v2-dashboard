@@ -1,13 +1,13 @@
-<div class="receive-products-search">
+<div class="products-list-field">
     <div class="search-autocomplete">
-        <div class="label">Добавьте товар для поступления через поиск</div>
+        <div class="label">{{ searchLabel() }}</div>
         <app-autocomplete-products-field
             [placeholder]="placeholder()"
             (valueChange)="onValueChange($event)"
         />
     </div>
     <div class="search-catalog">
-        <div class="label">или выберите товар из каталога</div>
+        <div class="label">{{ catalogLabel() }}</div>
         <button class="primary open-catalog" (click)="openCatalog()">Открыть каталог</button>
     </div>
 </div>

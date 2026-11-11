@@ -8,9 +8,7 @@
             <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
                 Информация
             </div>
-            <div [class.is-active]="isActiveTab('seo')" (click)="changeTab('seo')">
-                SEO
-            </div>
+            <div [class.is-active]="isActiveTab('seo')" (click)="changeTab('seo')">SEO</div>
             <div [class.is-active]="isActiveTab('content')" (click)="changeTab('content')">
                 Контент
             </div>
@@ -31,11 +29,7 @@
                         [(value)]="alias"
                     />
 
-                    <app-input-field
-                        label="H1"
-                        placeholder="Введите H1 заголовок"
-                        [(value)]="h1"
-                    />
+                    <app-input-field label="H1" placeholder="Введите H1 заголовок" [(value)]="h1" />
 
                     <app-checkbox-field label="Отображать на сайте" [(checked)]="display" />
                 </div>

@@ -1,0 +1,33 @@
+<div class="editor-body">
+    <div class="user-search">
+        <div class="label">
+            <p>Выберите клиента из базы данных.</p>
+            <p>
+                Если клиент не выбран — заказ автоматически привяжется к пользователю с такими же
+                контактными данными.
+            </p>
+            <p>Если совпадений нет — система сама создаст нового клиента по указанным контактам.</p>
+        </div>
+        <app-autocomplete-accounts-field
+            label="Клиент"
+            placeholder="Поиск клиента"
+            [(search)]="accountSearch"
+            [(value)]="selectedAccount"
+            (valueChange)="onAccountChange($event)"
+        />
+    </div>
+    <app-input-field label="Фамилия" placeholder="Введите фамилию" [(value)]="contactLastName" />
+    <app-input-field label="Имя" placeholder="Введите имя" [(value)]="contactFirstName" />
+    <app-input-field
+        label="Отчество"
+        placeholder="Введите отчество"
+        [(value)]="contactMiddleName"
+    />
+    <app-input-field
+        label="Телефон"
+        placeholder="+7 (___) ___-__-__"
+        mask="+7 (999) 999-99-99"
+        [(value)]="contactPhone"
+    />
+    <app-input-field label="Email" placeholder="Введите email" [(value)]="contactEmail" />
+</div>

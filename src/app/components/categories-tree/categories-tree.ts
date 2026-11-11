@@ -177,7 +177,12 @@ export class CategoriesTreeComponent implements OnInit {
             const { CategoriesEditorComponent } =
                 await import('../modules/categories/categories-editor/categories-editor');
             this.popupService
-                .open('Редактирование категории', CategoriesEditorComponent, { id: category.id }, 'with-tabs')
+                .open(
+                    'Редактирование категории',
+                    CategoriesEditorComponent,
+                    { id: category.id },
+                    'with-tabs',
+                )
                 .then(() => {
                     this.load();
                 });

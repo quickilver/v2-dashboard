@@ -1,10 +1,10 @@
-@use 'variables' as *;
+@use '../../../../styles/variables' as *;
 
 :host {
     display: block;
 }
 
-.receive-products-search {
+.products-list-field {
     display: flex;
     margin: 0 auto;
     background: $grey-light;

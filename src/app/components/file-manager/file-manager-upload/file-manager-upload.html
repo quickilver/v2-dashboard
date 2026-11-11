@@ -1,10 +1,5 @@
 <label class="upload-button" [class.is-uploading]="uploading()">
     <app-icon name="file" class="icon" />
-    <input
-        #fileInput
-        type="file"
-        (change)="onFileSelected($event)"
-        [disabled]="uploading()"
-    />
+    <input #fileInput type="file" (change)="onFileSelected($event)" [disabled]="uploading()" />
     <span class>{{ uploading() ? 'загрузка...' : 'Загрузить файл' }}</span>
 </label>

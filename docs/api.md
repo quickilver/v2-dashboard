@@ -320,6 +320,65 @@ pictures[1][is_main]=0
 
 ---
 
+## Клиенты
+
+Базовый путь: `/accounts/` — сервис `AccountService`.
+
+| Метод  | Путь             | Описание           | Ответ                   |
+| ------ | ---------------- | ------------------ | ----------------------- |
+| GET    | `/accounts/`     | Список клиентов    | `AccountsIndexResponse` |
+| GET    | `/accounts/{id}` | Клиент по ID       | `AccountsShowResponse`  |
+| POST   | `/accounts/`     | Создать клиента    | `AccountModel`          |
+| PUT    | `/accounts/{id}` | Обновить клиента   | `AccountModel`          |
+| DELETE | `/accounts/{id}` | Удалить клиента    | —                       |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `is_blocked`.
+- `query` — поиск по имени, email, телефону.
+- `guid` генерируется на сервере (UUID), если не передан.
+- `phone` передаётся числом (только цифры), на бэке хранится как `bigint`.
+
+---
+
+## Заказы
+
+Базовый путь: `/orders/` — сервис `OrderService`.
+
+| Метод  | Путь           | Описание                     | Ответ                 |
+| ------ | -------------- | ---------------------------- | --------------------- |
+| GET    | `/orders/`     | Список заказов               | `OrdersIndexResponse` |
+| GET    | `/orders/{id}` | Заказ с позициями            | `OrdersShowResponse`  |
+| POST   | `/orders/`     | Создать заказ с позициями    | `OrdersShowResponse`  |
+| PUT    | `/orders/{id}` | Обновить заказ и его позиции | `OrdersShowResponse`  |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `account_id`, `product_id`, `date_from`, `date_to`.
+- `query` — поиск по номеру, контактным данным и ID.
+- `date_from` / `date_to` — даты оформления (`YYYY-MM-DD`).
+- **Тело запроса (create/update):**
+
+```json
+{
+    "number": "ORD-20261106-0001",
+    "account_id": 1,
+    "status_id": 2,
+    "contact_phone": 9998885566,
+    "contact_email": "client@example.com",
+    "contact_first_name": "Иван",
+    "contact_last_name": "Иванов",
+    "contact_middle_name": null,
+    "comment": "Доставить до 18:00",
+    "products": [{ "product_id": 10, "title": "Товар", "amount": 1500, "count": 2 }]
+}
+```
+
+- `number` — уникальный; при обновлении проверяется с исключением текущего заказа.
+- `contact_phone` — только цифры (число), на бэке `bigint`.
+- `products[].total` не передаётся: сервер считает `amount * count`.
+- При обновлении позиции пересоздаются полностью (старые удаляются).
+- Если `account_id` не передан, но заполнен `contact_first_name`, клиент создаётся автоматически (или находится по `contact_phone` / `contact_email`) и привязывается к заказу.
+- **Ответ:** `OrderModel` с `account`, `status`, `products`, `total_count`, `total_price`.
+
+---
+
 ## Контрагенты
 
 Базовый путь: `/suppliers/` — сервис `SupplierService`.

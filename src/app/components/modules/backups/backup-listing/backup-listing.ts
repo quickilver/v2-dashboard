@@ -1,4 +1,11 @@
-import { Component, signal, computed, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import {
+    Component,
+    signal,
+    computed,
+    ChangeDetectionStrategy,
+    OnInit,
+    inject,
+} from '@angular/core';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { BackupService } from '../../../../services/backup.service';

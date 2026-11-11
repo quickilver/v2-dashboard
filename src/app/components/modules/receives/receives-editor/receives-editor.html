@@ -5,7 +5,9 @@
         </div>
     } @else {
         <div class="tabs">
-            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">Информация</div>
+            <div [class.is-active]="isActiveTab('info')" (click)="changeTab('info')">
+                Информация
+            </div>
             <div [class.is-active]="isActiveTab('products')" (click)="changeTab('products')">
                 Товары <span class="tag">{{ products().length }}</span>
             </div>
@@ -26,7 +28,10 @@
 
             @if (isActiveTab('products')) {
                 <div class="editor-body editor-body--products">
-                    <app-receive-products-search (productSelected)="onProductSelected($event)" />
+                    <app-products-list-field
+                        searchLabel="Добавьте товар для поступления через поиск"
+                        (productSelected)="onProductSelected($event)"
+                    />
                     <app-receive-products-list
                         [products]="products()"
                         [(counts)]="counts"

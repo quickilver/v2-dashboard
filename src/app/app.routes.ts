@@ -15,6 +15,7 @@ import { SuppliersListingComponent } from './components/modules/suppliers/suppli
 import { ReceivesListingComponent } from './components/modules/receives/receives-listing/receives-listing';
 import { BackupListingComponent } from './components/modules/backups/backup-listing/backup-listing';
 import { AccountsListingComponent } from './components/modules/accounts/accounts-listing/accounts-listing';
+import { OrdersListingComponent } from './components/modules/orders/orders-listing/orders-listing';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -34,4 +35,5 @@ export const routes: Routes = [
     { path: 'logs', component: LogListingComponent },
     { path: 'backups', component: BackupListingComponent },
     { path: 'accounts', component: AccountsListingComponent },
+    { path: 'orders', component: OrdersListingComponent },
 ];
