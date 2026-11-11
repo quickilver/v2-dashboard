@@ -24,6 +24,7 @@ export class SettingService {
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
             if (params.group_id) httpParams = httpParams.set('group_id', params.group_id);
+            if (params.alias) httpParams = httpParams.set('alias', params.alias);
         }
         return firstValueFrom(
             this.http.get<SettingsIndexResponse>(this.apiUrl, { params: httpParams }),
@@ -32,6 +33,15 @@ export class SettingService {
 
     async show(id: number): Promise<SettingsShowResponse> {
         return firstValueFrom(this.http.get<SettingsShowResponse>(`${this.apiUrl}${id}`));
+    }
+
+    /**
+     * Возвращает настройку по её alias или `null`, если настройка не найдена.
+     */
+    async findByAlias(alias: string): Promise<SettingModel | null> {
+        const response = await this.index({ alias, per_page: 1 });
+
+        return response.data[0] ?? null;
     }
 
     async create(data: Partial<SettingModel>): Promise<SettingModel> {

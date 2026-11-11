@@ -3,7 +3,7 @@
 .products-table {
     width: 100%;
     border-spacing: 0;
-    margin-top: 20px;
+    margin-top: 5px;
 
     th {
         padding: 12px 10px;
@@ -12,6 +12,16 @@
         font-weight: bold;
         color: $main-font-color;
         background: $grey-light;
+
+        &.col-id{
+            width: 60px;
+        }
+        &.col-amount,
+        &.col-count,
+        &.col-actions,
+        &.col-total {
+            width: 100px;
+        }
     }
 
     td {

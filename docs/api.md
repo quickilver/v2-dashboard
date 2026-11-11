@@ -102,26 +102,26 @@
 
 Базовый путь: `/backups/` — сервис `BackupService`.
 
-| Метод | Путь                | Описание                 | Ответ         |
-| ----- | ------------------- | ------------------------ | ------------- |
-| GET   | `/backups/`         | Список бэкапов           | `BackupsIndexResponse` |
-| POST  | `/backups/`         | Создать новый бэкап      | `BackupModel` |
-| GET   | `/backups/{file}/download` | Скачать файл бэкапа | бинарный поток |
-| POST  | `/backups/restore`  | Восстановить базу из дампа | —            |
+| Метод | Путь                       | Описание                   | Ответ                  |
+| ----- | -------------------------- | -------------------------- | ---------------------- |
+| GET   | `/backups/`                | Список бэкапов             | `BackupsIndexResponse` |
+| POST  | `/backups/`                | Создать новый бэкап        | `BackupModel`          |
+| GET   | `/backups/{file}/download` | Скачать файл бэкапа        | бинарный поток         |
+| POST  | `/backups/restore`         | Восстановить базу из дампа | —                      |
 
 **GET `/backups/`** — список файлов дампов в `database/backups`. Ответ:
 
 ```json
 {
-  "data": [
-    {
-      "name": "dump_2026-11-03_17-19-23.sql.gz",
-      "size": 12582912,
-      "size_human": "12.00 MB",
-      "extension": "gz",
-      "path": "database/backups/dump_2026-11-03_17-19-23.sql.gz"
-    }
-  ]
+    "data": [
+        {
+            "name": "dump_2026-11-03_17-19-23.sql.gz",
+            "size": 12582912,
+            "size_human": "12.00 MB",
+            "extension": "gz",
+            "path": "database/backups/dump_2026-11-03_17-19-23.sql.gz"
+        }
+    ]
 }
 ```
 
@@ -324,13 +324,13 @@ pictures[1][is_main]=0
 
 Базовый путь: `/accounts/` — сервис `AccountService`.
 
-| Метод  | Путь             | Описание           | Ответ                   |
-| ------ | ---------------- | ------------------ | ----------------------- |
-| GET    | `/accounts/`     | Список клиентов    | `AccountsIndexResponse` |
-| GET    | `/accounts/{id}` | Клиент по ID       | `AccountsShowResponse`  |
-| POST   | `/accounts/`     | Создать клиента    | `AccountModel`          |
-| PUT    | `/accounts/{id}` | Обновить клиента   | `AccountModel`          |
-| DELETE | `/accounts/{id}` | Удалить клиента    | —                       |
+| Метод  | Путь             | Описание         | Ответ                   |
+| ------ | ---------------- | ---------------- | ----------------------- |
+| GET    | `/accounts/`     | Список клиентов  | `AccountsIndexResponse` |
+| GET    | `/accounts/{id}` | Клиент по ID     | `AccountsShowResponse`  |
+| POST   | `/accounts/`     | Создать клиента  | `AccountModel`          |
+| PUT    | `/accounts/{id}` | Обновить клиента | `AccountModel`          |
+| DELETE | `/accounts/{id}` | Удалить клиента  | —                       |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `is_blocked`.
 - `query` — поиск по имени, email, телефону.
@@ -343,12 +343,12 @@ pictures[1][is_main]=0
 
 Базовый путь: `/orders/` — сервис `OrderService`.
 
-| Метод  | Путь           | Описание                     | Ответ                 |
-| ------ | -------------- | ---------------------------- | --------------------- |
-| GET    | `/orders/`     | Список заказов               | `OrdersIndexResponse` |
-| GET    | `/orders/{id}` | Заказ с позициями            | `OrdersShowResponse`  |
-| POST   | `/orders/`     | Создать заказ с позициями    | `OrdersShowResponse`  |
-| PUT    | `/orders/{id}` | Обновить заказ и его позиции | `OrdersShowResponse`  |
+| Метод | Путь           | Описание                     | Ответ                 |
+| ----- | -------------- | ---------------------------- | --------------------- |
+| GET   | `/orders/`     | Список заказов               | `OrdersIndexResponse` |
+| GET   | `/orders/{id}` | Заказ с позициями            | `OrdersShowResponse`  |
+| POST  | `/orders/`     | Создать заказ с позициями    | `OrdersShowResponse`  |
+| PUT   | `/orders/{id}` | Обновить заказ и его позиции | `OrdersShowResponse`  |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `account_id`, `product_id`, `date_from`, `date_to`.
 - `query` — поиск по номеру, контактным данным и ID.
@@ -439,6 +439,24 @@ pictures[1][is_main]=0
 | POST  | `/open-router/refactoring` | Рефакторинг текста    | `{ "data": string }` |
 
 - **Тело запроса:** `{ "text": "..." }`.
+
+---
+
+## Группы задач (колонки доски)
+
+Базовый путь: `/task-groups/` — сервис `TaskGroupService`.
+
+| Метод  | Путь                | Описание         | Ответ                      |
+| ------ | ------------------- | ---------------- | -------------------------- |
+| GET    | `/task-groups/`     | Список колонок   | `TaskGroupsIndexResponse`  |
+| GET    | `/task-groups/{id}` | Колонка по ID    | `TaskGroupsShowResponse`   |
+| POST   | `/task-groups/`     | Создать колонку  | `TaskGroupsCreateResponse` |
+| PUT    | `/task-groups/{id}` | Обновить колонку | `TaskGroupsUpdateResponse` |
+| DELETE | `/task-groups/{id}` | Удалить колонку  | —                          |
+
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`.
+- **Тело запроса:** `{ "title": "Новая колонка", "position": 1 }`.
+- Удаление колонки каскадно удаляет её задачи.
 
 ---
 

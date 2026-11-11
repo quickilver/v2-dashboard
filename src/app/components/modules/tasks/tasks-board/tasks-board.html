@@ -1,0 +1,49 @@
+<div class="header">
+    <div class="title">Задачи</div>
+    <div class="actions">
+        <button class="primary" (click)="createGroup()">
+            <app-icon name="plus" [size]="18" />
+            <span>Добавить колонку</span>
+        </button>
+    </div>
+</div>
+
+@if (loading()) {
+    <div class="board-loading">
+        <app-skeleton [count]="3" width="280px" [height]="120" [gap]="20" />
+    </div>
+} @else {
+    <div class="board">
+        @for (group of groups(); track group.id) {
+            <div class="board-column">
+                <div class="board-column-header">
+                    <div class="board-column-title">{{ group.title }}</div>
+                    <div class="board-column-actions">
+                        <button
+                            class="icon-button"
+                            title="Редактировать"
+                            (click)="editGroup(group)"
+                        >
+                            <app-icon name="settings" [size]="16" />
+                        </button>
+                        <button class="icon-button" title="Удалить" (click)="deleteGroup(group)">
+                            <app-icon name="logout" [size]="16" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="board-column-body">
+                    <div class="board-column-empty">Задач пока нет</div>
+                </div>
+            </div>
+        }
+
+        <button class="board-add-column" (click)="createGroup()">
+            <span>Добавить колонку</span>
+        </button>
+    </div>
+
+    @if (groups().length === 0) {
+        <div class="board-empty">Колонок пока нет — добавьте первую колонку</div>
+    }
+}

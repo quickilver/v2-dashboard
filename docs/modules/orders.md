@@ -89,6 +89,7 @@ src/app/components/modules/orders/
 - **Модели:** `products` (`model.required`), `counts`, `amounts` — общие с едитором, поэтому состояние не дублируется.
 - **Computed:** `productsCount`, `totalPrice`.
 - **Методы:** `onProductSelected()`, `onProductRemoved()`, `getCount()`, `onCountChange()`, `getAmount()`, `onAmountChange()`, `getTotal()`.
+- **Цена по умолчанию:** при добавлении товара цена подставляется из настройки `order-default-price-id` («Тип цены по умолчанию», группа «Заказы»). Значение настройки читается через `SettingService.findByAlias()`, затем `ProductService.show(productId)` ищет цену товара с этим `price_id`; если цены нет — остаётся `0`.
 - **Разметка:** `app-products-list-field` для добавления, таблица позиций (ID, товар + SKU, цена, количество, сумма, удаление), итог в `tfoot`.
 - **Расчёты:** вынесены в `helpers/order-products.helper.ts` (`getProductCount`, `getProductAmount`, `getProductTotal`, `getProductsTotal`) — используются и в едиторе для `totalPrice`.
 - **Сохранение:** `isEditMode()` → `OrderService.update(id, payload)`, иначе `OrderService.create(payload)`; после успеха — уведомление и `PopupService.resolve()`.
@@ -149,6 +150,8 @@ interface OrderModel {
 - `AutocompleteAccountsFieldComponent` (`app-autocomplete-accounts-field`).
 - `InputFieldComponent`, `TextareaFieldComponent`, `SelectFieldComponent`, `CounterFieldComponent`, `SkeletonComponent`.
 - `PopupService`, `NotificationService`.
+- `SettingService` — чтение настройки `order-default-price-id` для цены по умолчанию.
+- `ProductService` — загрузка цен товара (`show`).
 - `PhoneHelper` (`src/app/helpers/phone.helper.ts`).
 
 ## Известные ограничения

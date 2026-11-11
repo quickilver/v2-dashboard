@@ -5,4 +5,5 @@ export interface SettingIndexParams {
     sort?: string;
     direction?: 'asc' | 'desc';
     group_id?: number;
+    alias?: string;
 }

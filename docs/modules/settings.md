@@ -27,16 +27,20 @@ src/app/components/modules/settings/
 Селектор `app-settings-listing`. Не использует `ListingComponent` — настройки выводятся списком групп.
 
 - **Вход:** `allSettings: SettingModel[]` (не используется в текущей реализации).
-- **Состояние (signals):** `settings: SettingModel[]`, `loading`.
-- **Computed:** `groupedSettings` — `Map<string, SettingModel[]>`, преобразованный в массив пар `[group, settings]` с сохранением порядка.
-- **Методы:** `loadSettings()` — `SettingService.index()` без параметров.
+- **Состояние (signals):** `settings: SettingModel[]`, `groups: SettingGroupModel[]`, `loading`, `saving`, `draftValues: Record<number, string | null>`.
+- **Computed:** `groupedSettings` — настройки, сгруппированные по `group_id` с сохранением порядка групп.
+- **Методы:**
+    - `loadSettings()` — `SettingService.index({ per_page: 100 })` + `SettingGroupService.index()`;
+    - `onValueChange(setting, value)` — запоминает изменённое значение в `draftValues` (если значение вернулось к исходному — запись удаляется);
+    - `onSave()` — сохраняет только изменённые настройки через `SettingService.update()`, затем обновляет локальное состояние и очищает `draftValues`.
 - **Шаблон:**
-    - для каждой группы выводится заголовок `group` (если не пустой) и блок с настройками;
-    - каждая настройка рендерится через `app-setting-field` с `title`, `type`, `value`, `alias`, `options`;
+    - для каждой группы выводится заголовок и блок с настройками;
+    - каждая настройка рендерится через `app-setting-field` с `title`, `type`, `value`, `alias`, `options` и обработчиком `(valueChange)`;
     - `type === 'checkbox'` → значение `'1'` или `'true'` трактуется как `true`;
+    - кнопка «Сохранить» блокируется на время запроса и показывает «Сохранение...»;
     - пустое состояние — «Нет настроек».
 
-> Сохранение настроек в текущей реализации не выполняется: `app-setting-field` меняет локальную модель, запрос на бэкенд не отправляется.
+> Значения сохраняются в строковом виде: `checkbox` → `'1'` / `'0'`, пустая строка → `null`.
 
 ### `SettingFieldComponent`
 
@@ -90,5 +94,5 @@ interface SettingModel {
 
 ## Известные ограничения
 
-- Сохранение изменённых настроек не реализовано (нет вызова `SettingService.update()`).
+- Изменённые настройки сохраняются только по кнопке «Сохранить» — автосохранения нет.
 - `options` (`any | null`) не используется при рендере — селекты/мультиселекты не поддерживаются.

@@ -19,7 +19,7 @@ import { OrderModel } from '../../../../models/order.model';
 import { AccountModel } from '../../../../models/account.model';
 import { ProductIndex } from '../../../../models/products/product-short.model';
 import { PhoneHelper } from '../../../../helpers/phone.helper';
-import { getProductCount, getProductsTotal } from '../../../../helpers/order-products.helper';
+import { OrderProductsHelper } from '../../../../helpers/order-products.helper';
 import { OrdersAccountTabComponent } from '../orders-account-tab/orders-account-tab';
 import { OrdersProductsTabComponent } from '../orders-products-tab/orders-products-tab';
 
@@ -71,7 +71,7 @@ export class OrdersEditorComponent implements OnInit {
     productsCount = computed<number>(() => this.products().length);
 
     totalPrice = computed<number>(() =>
-        getProductsTotal(this.products(), this.counts(), this.amounts()),
+        OrderProductsHelper.getProductsTotal(this.products(), this.counts(), this.amounts()),
     );
 
     accountName = computed<string>(() => {
@@ -166,7 +166,7 @@ export class OrdersEditorComponent implements OnInit {
                 product_id: product.id,
                 title: product.title,
                 amount: Number(this.amounts()[product.id] ?? 0),
-                count: getProductCount(this.counts(), product.id),
+                count: OrderProductsHelper.getCount(this.counts(), product.id),
             })),
         };
 

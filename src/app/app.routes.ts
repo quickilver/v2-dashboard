@@ -16,6 +16,7 @@ import { ReceivesListingComponent } from './components/modules/receives/receives
 import { BackupListingComponent } from './components/modules/backups/backup-listing/backup-listing';
 import { AccountsListingComponent } from './components/modules/accounts/accounts-listing/accounts-listing';
 import { OrdersListingComponent } from './components/modules/orders/orders-listing/orders-listing';
+import { TasksBoardComponent } from './components/modules/tasks/tasks-board/tasks-board';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -36,4 +37,5 @@ export const routes: Routes = [
     { path: 'backups', component: BackupListingComponent },
     { path: 'accounts', component: AccountsListingComponent },
     { path: 'orders', component: OrdersListingComponent },
+    { path: 'tasks', component: TasksBoardComponent },
 ];

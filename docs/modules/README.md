@@ -18,6 +18,7 @@
 | Менеджеры      | `users`      | `/users`                        | [users.md](./users.md)           |
 | Настройки      | `settings`   | `/settings`                     | [settings.md](./settings.md)     |
 | Логи           | `logs`       | `/logs`                         | [logs.md](./logs.md)             |
+| Задачи         | `tasks`      | `/tasks`                        | [tasks.md](./tasks.md)           |
 
 ## Структура документа модуля
 

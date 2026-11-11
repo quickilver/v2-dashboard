@@ -7,12 +7,10 @@
 }
 
 .settings-groups {
-    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
-    border-radius: $input-radius;
-    box-shadow: $shadow;
+    gap: 20px;
+    flex: 0 0 300px;
     overflow: hidden;
     position: sticky;
     top: 20px;
@@ -23,50 +21,58 @@
         padding: 0;
         display: flex;
         flex-direction: column;
-    }
+        background: #ffffff;
+        border-radius: $input-radius;
+        box-shadow: $shadow;
 
-    .settings-groups-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        min-height: 50px;
-        font-size: 14px;
-        color: $main-font-color;
-        padding: 0 15px;
-        cursor: pointer;
-        border-top: 1px solid $grey-light-2;
-        transition:
-            background-color 0.15s ease,
+        .settings-groups-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-height: 50px;
+            font-size: 14px;
+            color: $main-font-color;
+            padding: 0 15px;
+            cursor: pointer;
+            border-top: 1px solid $grey-light-2;
+            transition: background-color 0.15s ease,
             color 0.15s ease;
 
-        &:hover {
-            background: $grey-light;
+            &:hover {
+                background: $grey-light;
+            }
+
+            &:first-child {
+                border-top: none;
+            }
+
+            &.is-active {
+                background: $primary-light-color;
+                color: $primary-dark-color;
+            }
+
+            .settings-groups-count {
+                display: inline-block;
+                min-width: 25px;
+                padding: 4px 6px;
+                font-weight: normal;
+                text-align: center;
+                color: #ffffff;
+                background: $grey;
+                border-radius: $input-radius;
+            }
+
+            &.is-active .settings-groups-count {
+                background: $primary-color;
+            }
         }
 
-        &:first-child {
-            border-top: none;
-        }
+    }
 
-        &.is-active {
-            background: $primary-light-color;
-            color: $primary-dark-color;
-        }
-
-        .settings-groups-count {
-            display: inline-block;
-            min-width: 25px;
-            padding: 4px 6px;
-            font-weight: normal;
-            text-align: center;
-            color: #ffffff;
-            background: $grey;
-            border-radius: $input-radius;
-        }
-
-        &.is-active .settings-groups-count {
-            background: $primary-color;
-        }
+    .save-settings {
+        display: flex;
+        justify-content: center;
     }
 }
 

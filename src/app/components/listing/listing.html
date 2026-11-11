@@ -15,7 +15,6 @@
                 />
             }
             <button class="primary" (click)="onCreateClick()">
-                <app-icon name="plus" [size]="20" class="toggle-icon" />
                 <span>Создать</span>
             </button>
         </div>
@@ -29,6 +28,7 @@
                         [placeholder]="searchPlaceholder()"
                         [value]="searchQuery()"
                         (valueChange)="onSearch($event)"
+                        class="default-query"
                     />
                     <div class="filter-actions">
                         <ng-content select="[filter-actions]" />

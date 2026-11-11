@@ -41,8 +41,7 @@
             width: 100%;
 
             &.size-large table {
-                td,
-                th {
+                td {
                     padding-top: 16px;
                     padding-bottom: 16px;
                     font-size: 16px;
@@ -50,8 +49,7 @@
             }
 
             &.size-small table {
-                td,
-                th {
+                td {
                     padding-top: 5px;
                     padding-bottom: 5px;
                     font-size: 12px;

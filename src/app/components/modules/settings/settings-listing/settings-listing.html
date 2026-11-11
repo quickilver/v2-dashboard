@@ -16,6 +16,9 @@
                 </li>
             }
         </ul>
+        <button class="primary save-settings" [disabled]="saving()" (click)="onSave()">
+            {{ saving() ? 'Сохранение...' : 'Сохранить' }}
+        </button>
     </aside>
 
     <div class="settings-content" #groupsContainer>
@@ -34,6 +37,7 @@
                                 [value]="getFieldValue(setting)"
                                 [alias]="setting.alias"
                                 [options]="setting.options"
+                                (valueChange)="onValueChange(setting, $event)"
                             />
                         </div>
                     }

@@ -45,7 +45,9 @@ export class SettingsListingComponent implements OnInit {
     settings = signal<SettingModel[]>([]);
     groups = signal<SettingGroupModel[]>([]);
     loading = signal<boolean>(false);
+    saving = signal<boolean>(false);
     activeGroupIndex = signal<number>(0);
+    draftValues = signal<Record<number, string | null>>({});
 
     groupedSettings = computed<SettingsGroup[]>(() => {
         const settings = this.settings();
@@ -85,11 +87,103 @@ export class SettingsListingComponent implements OnInit {
 
             this.settings.set(settingsResponse.data);
             this.groups.set(groupsResponse.data);
+            this.draftValues.set({});
         } catch (error) {
             this.notificationService.error('Ошибка при загрузке настроек');
         } finally {
             this.loading.set(false);
         }
+    }
+
+    /**
+     * Сохраняет изменённые значения настроек.
+     */
+    async onSave(): Promise<void> {
+        const drafts = this.draftValues();
+        const changedSettings = this.settings().filter(
+            (setting) => drafts[setting.id] !== undefined,
+        );
+
+        if (changedSettings.length === 0) {
+            this.notificationService.info('Нет изменений для сохранения');
+
+            return;
+        }
+
+        this.saving.set(true);
+
+        try {
+            await Promise.all(
+                changedSettings.map((setting) =>
+                    this.settingService.update(setting.id, {
+                        title: setting.title,
+                        alias: setting.alias,
+                        type: setting.type,
+                        group_id: setting.group_id,
+                        options: setting.options,
+                        value: drafts[setting.id],
+                    }),
+                ),
+            );
+
+            this.settings.update((settings) =>
+                settings.map((setting) =>
+                    drafts[setting.id] !== undefined
+                        ? { ...setting, value: drafts[setting.id] }
+                        : setting,
+                ),
+            );
+            this.draftValues.set({});
+            this.notificationService.success('Настройки сохранены');
+        } catch {
+            this.notificationService.error('Ошибка при сохранении настроек');
+        } finally {
+            this.saving.set(false);
+        }
+    }
+
+    /**
+     * Запоминает изменённое значение настройки до сохранения.
+     */
+    onValueChange(setting: SettingModel, value: string | number | boolean): void {
+        const normalizedValue = this.normalizeValue(setting, value);
+        const originalValue = this.getOriginalValue(setting);
+
+        this.draftValues.update((values) => {
+            const nextValues: Record<number, string | null> = { ...values };
+
+            if (normalizedValue === originalValue) {
+                delete nextValues[setting.id];
+            } else {
+                nextValues[setting.id] = normalizedValue;
+            }
+
+            return nextValues;
+        });
+    }
+
+    /**
+     * Приводит значение поля к строке для сохранения в API.
+     */
+    private normalizeValue(setting: SettingModel, value: string | number | boolean): string | null {
+        if (setting.type === 'checkbox') {
+            return value ? '1' : '0';
+        }
+
+        const stringValue = String(value ?? '');
+
+        return stringValue === '' ? null : stringValue;
+    }
+
+    /**
+     * Возвращает исходное значение настройки в том же формате, что и `normalizeValue`.
+     */
+    private getOriginalValue(setting: SettingModel): string | null {
+        if (setting.type === 'checkbox') {
+            return setting.value === '1' || setting.value === 'true' ? '1' : '0';
+        }
+
+        return this.normalizeValue(setting, this.getFieldValue(setting));
     }
 
     /**
