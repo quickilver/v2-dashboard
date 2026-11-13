@@ -11,6 +11,7 @@ import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { OrdersFiltersComponent } from '../orders-filters/orders-filters';
 import { OrdersEditorComponent } from '../orders-editor/orders-editor';
+import { PriceHelper } from '../../../../helpers/price.helper';
 
 @Component({
     selector: 'app-orders-listing',
@@ -32,8 +33,20 @@ export class OrdersListingComponent implements OnInit {
         { key: 'contact_email', title: 'Email', sortable: false, isDefault: true },
         { key: 'contact_last_name', title: 'Фамилия', sortable: false, isDefault: true },
         { key: 'contact_first_name', title: 'Имя', sortable: false, isDefault: true },
-        { key: 'status', title: 'Статус', sortable: false, isDefault: true },
-        { key: 'total_price', title: 'Сумма заказа', sortable: false, isDefault: true },
+        {
+            key: 'status',
+            title: 'Статус',
+            sortable: false,
+            isDefault: true,
+            formatter: (row: OrderModel) => row.status?.title ?? '',
+        },
+        {
+            key: 'total_price',
+            title: 'Сумма заказа',
+            sortable: false,
+            isDefault: true,
+            formatter: (row: OrderModel) => row.total_price.toLocaleString('ru-RU') + ' ₽',
+        },
     ]);
 
     columnsStorageKey = 'orders';

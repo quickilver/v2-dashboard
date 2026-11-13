@@ -29,6 +29,21 @@
     }
 }
 
+:host(.skeleton-dark) {
+    .skeleton-item {
+        background: $grey-light-2;
+
+        &::after {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.45) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+        }
+    }
+}
+
 @keyframes skeleton-shimmer {
     0% {
         transform: translateX(-100%);

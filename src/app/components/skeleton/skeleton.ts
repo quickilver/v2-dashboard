@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         class: 'skeleton-host',
+        '[class.skeleton-dark]': 'dark()',
     },
 })
 export class SkeletonComponent {
@@ -28,6 +29,9 @@ export class SkeletonComponent {
 
     /** Круглый скелетон (например, для аватара). */
     circle = input<boolean>(false);
+
+    /** Тёмный вариант — для светлых/белых подложек. */
+    dark = input<boolean>(false);
 
     items = computed<number[]>(() => Array.from({ length: Math.max(1, this.count()) }));
 

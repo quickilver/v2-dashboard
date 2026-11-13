@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    OnInit,
+    computed,
+    inject,
+    signal,
+} from '@angular/core';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { IconComponent } from '../../../icon/icon';
 import { TaskGroupService } from '../../../../services/task-group.service';
@@ -10,12 +17,13 @@ import { TaskGroupModel } from '../../../../models/task-group.model';
 import { TaskModel } from '../../../../models/task.model';
 import { TaskGroupEditorComponent } from '../task-group-editor/task-group-editor';
 import { TaskEditorComponent } from '../task-editor/task-editor';
+import { TaskViewerComponent } from '../task-viewer/task-viewer';
 import { TaskCardComponent } from '../task-card/task-card';
 
 @Component({
     selector: 'app-tasks-board',
     standalone: true,
-    imports: [SkeletonComponent, IconComponent, TaskCardComponent],
+    imports: [SkeletonComponent, TaskCardComponent],
     templateUrl: './tasks-board.html',
     styleUrl: './tasks-board.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -79,9 +87,9 @@ export class TasksBoardComponent implements OnInit {
             });
     }
 
-    editTask(task: TaskModel): void {
+    openTask(task: TaskModel): void {
         this.popupService
-            .open('Редактирование задачи', TaskEditorComponent, { id: task.id }, 'with-tabs')
+            .open(task.title, TaskViewerComponent, { id: task.id },'with-tabs')
             .then(() => {
                 this.loadGroups();
             });

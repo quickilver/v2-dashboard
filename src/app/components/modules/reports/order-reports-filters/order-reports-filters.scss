@@ -1,0 +1,43 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.order-reports-filters {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: $shadow;
+
+    .filters-title {
+        padding: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid $grey-light-2;
+    }
+
+    .filters-body {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .filters-reset {
+        width: 100%;
+        padding: 6px;
+        font-size: 13px;
+        color: $grey;
+        background: none;
+        border: 1px dashed $grey-light-2;
+        border-radius: $input-radius;
+        cursor: pointer;
+
+        &:hover {
+            color: $primary-color;
+            border-color: $primary-color;
+        }
+    }
+}

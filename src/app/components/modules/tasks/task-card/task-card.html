@@ -1,23 +1,19 @@
 <div class="board-task" (click)="onOpen()">
-    <div class="board-task-title">{{ task().title }}</div>
+    <div class="board-task-text">
+        <div class="board-task-title">{{ task().title }}</div>
+    </div>
     <div class="board-task-info">
         <div class="board-task-icon">
-            <app-icon name="user" />
+            <app-icon name="user" [size]="18"/>
         </div>
         <div class="board-task-meta">
             @if (task().assignee; as assignee) {
-                <span class="board-task-assignee">{{ assignee.name }}</span>
+                <div class="board-task-assignee">
+                    <strong>{{ assignee.name }}</strong>
+                </div>
             } @else {
-                <span class="board-task-assignee no-assignee">нет исполнителя</span>
+                <div class="board-task-assignee no-assignee">Нет исполнителя</div>
             }
-            <span
-                class="board-task-date"
-                [class.today-task]="isToday(task().start_at)"
-                [class.feature-task]="!isToday(task().start_at) && isFuture(task().start_at)"
-                [class.past-task]="!isToday(task().start_at) && !isFuture(task().start_at)"
-            >
-                {{ formatDate(task().start_at) }}
-            </span>
         </div>
     </div>
 </div>

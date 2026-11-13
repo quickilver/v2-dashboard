@@ -44,6 +44,8 @@ src/app/components/modules/orders/
 Селектор `app-orders-listing`. Двухколоночная раскладка: слева `app-orders-filters`, справа `app-listing`.
 
 - **Колонки:** `number`, `id`, `contact_phone`, `contact_email`, `contact_last_name`, `contact_first_name`, `status`, `total_price`.
+- **Форматтеры:** `status` → `row.status?.title` (объект `StatusModel` нельзя выводить напрямую);
+  `total_price` → `PriceHelper.formatInteger(row.total_price)` (разделители тысяч).
 - **Колонки по умолчанию:** все, кроме `id` (`isDefault: true`).
 - **Ключ настроек колонок:** `orders` (`columnsStorageKey`).
 - **Состояние (signals):** `orders`, `loading`, `meta`, `pageSize` (50), `page` (1), `filters`.
@@ -97,16 +99,16 @@ src/app/components/modules/orders/
 
 ## Модели
 
-| Модель                | Файл                                                          |
-| --------------------- | ------------------------------------------------------------- |
-| `OrderModel`          | `src/app/models/order.model.ts`                               |
-| `OrderProductModel`   | `src/app/models/order.model.ts`                               |
-| `OrderCreateRequest`  | `src/app/models/orders/order-create-request.model.ts`         |
-| `OrderProductRequest` | `src/app/models/orders/order-create-request.model.ts`         |
-| `OrderFilters`        | `src/app/models/orders/order-filters.model.ts`                |
-| `OrderIndexParams`    | `src/app/models/params/order-index.params.ts`                 |
-| `OrdersIndexResponse` | `src/app/models/responses/orders/orders-index.response.ts`    |
-| `OrdersShowResponse`  | `src/app/models/responses/orders/orders-index.response.ts`    |
+| Модель                | Файл                                                       |
+| --------------------- | ---------------------------------------------------------- |
+| `OrderModel`          | `src/app/models/order.model.ts`                            |
+| `OrderProductModel`   | `src/app/models/order.model.ts`                            |
+| `OrderCreateRequest`  | `src/app/models/orders/order-create-request.model.ts`      |
+| `OrderProductRequest` | `src/app/models/orders/order-create-request.model.ts`      |
+| `OrderFilters`        | `src/app/models/orders/order-filters.model.ts`             |
+| `OrderIndexParams`    | `src/app/models/params/order-index.params.ts`              |
+| `OrdersIndexResponse` | `src/app/models/responses/orders/orders-index.response.ts` |
+| `OrdersShowResponse`  | `src/app/models/responses/orders/orders-index.response.ts` |
 
 ```ts
 interface OrderModel {
@@ -132,12 +134,12 @@ interface OrderModel {
 
 `OrderService` (`src/app/services/order.service.ts`), базовый путь `/orders/`.
 
-| Метод    | HTTP   | Путь           |
-| -------- | ------ | -------------- |
-| `index`  | GET    | `/orders/`     |
-| `show`   | GET    | `/orders/{id}` |
-| `create` | POST   | `/orders/`     |
-| `update` | PUT    | `/orders/{id}` |
+| Метод    | HTTP | Путь           |
+| -------- | ---- | -------------- |
+| `index`  | GET  | `/orders/`     |
+| `show`   | GET  | `/orders/{id}` |
+| `create` | POST | `/orders/`     |
+| `update` | PUT  | `/orders/{id}` |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `account_id`, `product_id`, `date_from`, `date_to`.
 - **Тело запроса (create/update):** `account_id`, `status_id`, `contact_phone`, `contact_email`, `contact_first_name`, `contact_last_name`, `contact_middle_name`, `comment`, `products[]` (`product_id`, `title`, `amount`, `count`).

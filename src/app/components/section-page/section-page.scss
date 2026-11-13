@@ -1,0 +1,135 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.section-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .section-title {
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .section-subtitle {
+        font-size: 14px;
+        color: $grey;
+    }
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.section-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid $grey-light-2;
+    border-radius: 6px;
+    box-shadow: $shadow;
+    text-decoration: none;
+    color: $main-font-color;
+    transition: 0.15s ease-in-out;
+
+    &:hover {
+        border-color: $primary-color;
+        transform: translateY(-2px);
+
+        .section-card-icon {
+            background: $primary-color;
+            color: #ffffff;
+        }
+
+        .section-card-arrow {
+            color: $primary-color;
+        }
+    }
+
+    .section-card-icon {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: $input-radius;
+        background: $primary-light-color;
+        color: $primary-color;
+        font-size: 24px;
+        transition: 0.15s ease-in-out;
+    }
+
+    .section-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .section-card-title {
+        font-size: 16px;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-card-path {
+        font-size: 12px;
+        color: $grey;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-card-arrow {
+        flex: 0 0 auto;
+        font-size: 20px;
+        color: $grey;
+        transition: 0.15s ease-in-out;
+    }
+}
+
+.section-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 60px 20px;
+    background: #ffffff;
+    border: 1px dashed $grey-light-2;
+    border-radius: 6px;
+    text-align: center;
+
+    .section-empty-icon {
+        font-size: 40px;
+        color: $grey-light-2;
+    }
+
+    .section-empty-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .section-empty-text {
+        max-width: 420px;
+        font-size: 13px;
+        color: $grey;
+    }
+}

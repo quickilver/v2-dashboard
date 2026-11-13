@@ -15,4 +15,11 @@ export class ModuleService {
     async index(): Promise<ModulesIndexResponse> {
         return firstValueFrom(this.http.get<ModulesIndexResponse>(this.apiUrl));
     }
+
+    /**
+     * Модули, доступные текущему пользователю (без проверки прав на модуль).
+     */
+    async available(): Promise<ModulesIndexResponse> {
+        return firstValueFrom(this.http.get<ModulesIndexResponse>(`${this.apiUrl}available`));
+    }
 }

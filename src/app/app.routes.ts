@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
 import { HomepageComponent } from './pages/homepage/homepage';
+import { CatalogPageComponent } from './pages/catalog/catalog';
+import { PurchasingPageComponent } from './pages/purchasing/purchasing';
+import { ContentPageComponent } from './pages/content/content';
+import { ReportsPageComponent } from './pages/reports/reports';
+import { OrderReportsComponent } from './components/modules/reports/order-reports/order-reports';
 import { ProductsListingComponent } from './components/modules/products/products-listing/products-listing';
 import { StoreListingComponent } from './components/modules/stores/store-listing/store-listing';
 import { PricesListingComponent } from './components/modules/prices/prices-listing/prices-listing';
@@ -21,13 +26,18 @@ import { TasksBoardComponent } from './components/modules/tasks/tasks-board/task
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: '', component: HomepageComponent },
-    { path: 'catalog', component: ProductsListingComponent },
+    { path: 'catalog', component: CatalogPageComponent },
     { path: 'catalog/categories', component: CategoriesListingComponent },
     { path: 'catalog/products', component: ProductsListingComponent },
     { path: 'catalog/stores', component: StoreListingComponent },
     { path: 'catalog/prices', component: PricesListingComponent },
     { path: 'catalog/attributes', component: AttributesListingComponent },
-    { path: 'users', component: UsersListingComponent },
+    { path: 'purchasing', component: PurchasingPageComponent },
+    { path: 'content', component: ContentPageComponent },
+    { path: 'reports', component: ReportsPageComponent },
+    { path: 'reports/orders', component: OrderReportsComponent },
+    { path: 'team/users', component: UsersListingComponent },
+    { path: 'team/tasks', component: TasksBoardComponent },
     { path: 'receives', component: ReceivesListingComponent },
     { path: 'settings', component: SettingsListingComponent },
     { path: 'suppliers', component: SuppliersListingComponent },
@@ -37,5 +47,4 @@ export const routes: Routes = [
     { path: 'backups', component: BackupListingComponent },
     { path: 'accounts', component: AccountsListingComponent },
     { path: 'orders', component: OrdersListingComponent },
-    { path: 'tasks', component: TasksBoardComponent },
 ];

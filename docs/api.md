@@ -4,7 +4,7 @@
 
 ## Базовые сведения
 
-- **Базовый URL:** `https://api.5ife.ru/api` (см. `src/environments/environment.ts`, поле `apiUrl`).
+- **Базовый URL:** `http://localhost:8000/api` (см. `src/environments/environment.ts`, поле `apiUrl`).
 - **Формат:** JSON (`Content-Type: application/json`), кроме загрузки файлов (`multipart/form-data`).
 - **Авторизация:** заголовок `Authorization` со значением `{token_type} {access_token}`.
   Токен добавляется автоматически в `src/app/interceptors/auth.interceptor.ts` из `AuthService.getToken()`.
@@ -92,9 +92,13 @@
 
 Базовый путь: `/modules/` — сервис `ModuleService`.
 
-| Метод | Путь        | Описание       | Ответ                  |
-| ----- | ----------- | -------------- | ---------------------- |
-| GET   | `/modules/` | Список модулей | `ModulesIndexResponse` |
+| Метод | Путь                 | Описание                                    | Ответ                  |
+| ----- | -------------------- | ------------------------------------------- | ---------------------- |
+| GET   | `/modules/`          | Список модулей (требует прав на `accounts`) | `ModulesIndexResponse` |
+| GET   | `/modules/available` | Модули, доступные текущему пользователю     | `ModulesIndexResponse` |
+
+`available()` используется в `NavigationComponent` — не требует прав на модуль,
+возвращает дерево по `user_permissions` (или всё дерево при `full_access`).
 
 ---
 
@@ -253,15 +257,18 @@ pictures[1][is_main]=0
 
 Базовый путь: `/settings/` — сервис `SettingService`.
 
-| Метод  | Путь             | Описание           | Ответ                   |
-| ------ | ---------------- | ------------------ | ----------------------- |
-| GET    | `/settings/`     | Список настроек    | `SettingsIndexResponse` |
-| GET    | `/settings/{id}` | Настройка по ID    | `SettingsShowResponse`  |
-| POST   | `/settings/`     | Создать настройку  | `SettingModel`          |
-| PUT    | `/settings/{id}` | Обновить настройку | `SettingModel`          |
-| DELETE | `/settings/{id}` | Удалить настройку  | —                       |
+| Метод  | Путь               | Описание           | Ответ                        |
+| ------ | ------------------ | ------------------ | ---------------------------- |
+| GET    | `/settings/`       | Список настроек    | `SettingsIndexResponse`      |
+| GET    | `/settings/groups` | Группы настроек    | `SettingGroupsIndexResponse` |
+| GET    | `/settings/{id}`   | Настройка по ID    | `SettingsShowResponse`       |
+| POST   | `/settings/`       | Создать настройку  | `SettingModel`               |
+| PUT    | `/settings/{id}`   | Обновить настройку | `SettingModel`               |
+| DELETE | `/settings/{id}`   | Удалить настройку  | —                            |
 
-- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group`.
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group_id`, `alias`.
+- **Группы:** `SettingGroupService` (`src/app/services/setting-group.service.ts`), базовый путь `/settings/groups` — только `index`.
+- **`SettingService.findByAlias(alias)`** — обёртка над `index({ alias, per_page: 1 })`, возвращает `SettingModel | null` (используется для настройки `order-default-price-id`).
 
 ---
 
@@ -376,6 +383,23 @@ pictures[1][is_main]=0
 - При обновлении позиции пересоздаются полностью (старые удаляются).
 - Если `account_id` не передан, но заполнен `contact_first_name`, клиент создаётся автоматически (или находится по `contact_phone` / `contact_email`) и привязывается к заказу.
 - **Ответ:** `OrderModel` с `account`, `status`, `products`, `total_count`, `total_price`.
+
+---
+
+## Отчёты
+
+Базовый путь: `/reports/` — сервис `ReportService`.
+
+| Метод | Путь                     | Описание                          | Ответ  |
+| ----- | ------------------------ | --------------------------------- | ------ |
+| GET   | `/reports/orders/export` | Экспорт отчёта по продажам в XLSX | `Blob` |
+
+- **Query:** `date_from`, `date_to` (`YYYY-MM-DD`), `account_id`, `product_id`, `query`.
+- **Ответ:** файл `orders-report-{Y-m-d_His}.xlsx`.
+- **Колонки:** Дата, Время, Номер, Покупатель, Телефон, Email, Статус, Товаров, Сумма.
+- На бэкенде — `ReportController::orders()` → `ExportOrdersReportAction` → `OrdersExport`
+  (Laravel Excel). Требует `permission:orders`.
+- Фронтенд скачивает файл через `responseType: 'blob'` и `URL.createObjectURL`.
 
 ---
 

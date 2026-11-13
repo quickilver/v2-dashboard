@@ -1,0 +1,34 @@
+<div class="section-page">
+    <div class="section-header">
+        <div class="section-title">{{ title() }}</div>
+        <div class="section-subtitle">{{ subtitle() }}</div>
+    </div>
+
+    @if (loading()) {
+        <div class="section-grid">
+            <app-skeleton [count]="4" width="100%" [height]="96" [gap]="20" />
+        </div>
+    } @else {
+        @if (sections().length > 0) {
+            <div class="section-grid">
+                @for (section of sections(); track section.id) {
+                    <a class="section-card" [routerLink]="section.path">
+                        <span class="section-card-icon">
+                            <app-icon [name]="section.icon || 'default'" />
+                        </span>
+                        <span class="section-card-body">
+                            <span class="section-card-title">{{ section.title }}</span>
+                            <span class="section-card-path">{{ section.path }}</span>
+                        </span>
+                        <app-icon name="chevron-right" class="section-card-arrow" />
+                    </a>
+                }
+            </div>
+        } @else {
+            <div class="section-empty">
+                <div class="section-empty-title">Нет доступных разделов</div>
+                <div class="section-empty-text">{{ emptyText() }}</div>
+            </div>
+        }
+    }
+</div>

@@ -1,22 +1,164 @@
 @use 'variables' as *;
 
 :host {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.homepage-toolbar {
-    padding: 10px;
-    background: #ffffff;
-    border-bottom: 1px solid $grey-light-2;
+    display: block;
 }
 
 .homepage {
     display: flex;
     flex-direction: column;
+    gap: 30px;
+}
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 40px;
+    background: linear-gradient(135deg, $primary-light-color 0%, #ffffff 70%);
+    border: 1px solid $grey-light-2;
+    border-radius: 8px;
+    box-shadow: $shadow;
+
+    .welcome-greeting {
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: $primary-color;
+    }
+
+    .welcome-title {
+        margin: 0;
+        font-size: 30px;
+        font-weight: bold;
+        color: $main-font-color;
+    }
+
+    .welcome-date {
+        font-size: 13px;
+        color: $grey;
+        text-transform: capitalize;
+    }
+
+    .welcome-text {
+        max-width: 560px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: $main-font-color;
+    }
+}
+
+.sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .sections-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+.sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.section-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid $grey-light-2;
+    border-radius: 6px;
+    box-shadow: $shadow;
+    text-decoration: none;
+    color: $main-font-color;
+    transition: 0.15s ease-in-out;
+
+    &:hover {
+        border-color: $primary-color;
+        transform: translateY(-2px);
+
+        .section-card-icon {
+            background: $primary-color;
+            color: #ffffff;
+        }
+
+        .section-card-arrow {
+            color: $primary-color;
+        }
+    }
+
+    .section-card-icon {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: $input-radius;
+        background: $primary-light-color;
+        color: $primary-color;
+        font-size: 24px;
+        transition: 0.15s ease-in-out;
+    }
+
+    .section-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .section-card-title {
+        font-size: 16px;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-card-path {
+        font-size: 12px;
+        color: $grey;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-card-arrow {
+        flex: 0 0 auto;
+        font-size: 20px;
+        color: $grey;
+        transition: 0.15s ease-in-out;
+    }
+}
+
+.sections-empty {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    gap: 12px;
+    gap: 10px;
+    padding: 60px 20px;
+    background: #ffffff;
+    border: 1px dashed $grey-light-2;
+    border-radius: 6px;
+    text-align: center;
+
+    .sections-empty-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .sections-empty-text {
+        max-width: 420px;
+        font-size: 13px;
+        color: $grey;
+    }
 }

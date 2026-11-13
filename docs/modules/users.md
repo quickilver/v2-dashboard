@@ -17,9 +17,9 @@ src/app/components/modules/users/
 
 ## Маршрут
 
-| Путь     | Компонент               |
-| -------- | ----------------------- |
-| `/users` | `UsersListingComponent` |
+| Путь          | Компонент               |
+| ------------- | ----------------------- |
+| `/team/users` | `UsersListingComponent` |
 
 Определён в `src/app/app.routes.ts`.
 

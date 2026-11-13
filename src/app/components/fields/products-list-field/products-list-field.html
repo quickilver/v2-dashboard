@@ -3,6 +3,7 @@
         <div class="label">{{ searchLabel() }}</div>
         <app-autocomplete-products-field
             [placeholder]="placeholder()"
+            [showSelected]="false"
             (valueChange)="onValueChange($event)"
         />
     </div>

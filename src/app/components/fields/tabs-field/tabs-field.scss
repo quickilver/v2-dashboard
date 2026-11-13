@@ -1,0 +1,95 @@
+@use 'variables' as *;
+
+.field-container {
+    display: flex;
+    flex-direction: column;
+
+    .label-field {
+        font-size: 14px;
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+}
+
+.tabs-field {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px;
+    background: $grey-light;
+    border-radius: 10px;
+    user-select: none;
+    border: 1px solid $input-border-color;
+
+    &--full {
+        display: flex;
+        width: 100%;
+    }
+
+    &--small {
+        border-radius: 8px;
+
+        .tabs-field-item {
+            height: 28px;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+    }
+}
+
+.tabs-field-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.12),
+        0 1px 1px rgba(0, 0, 0, 0.04);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.tabs-field-item {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: $main-font-color;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+
+    &:hover:not(.is-active):not(.is-disabled) {
+        background: transparent;
+        color: $primary-color;
+    }
+
+    &.is-active {
+        font-weight: 600;
+        color: $main-font-color;
+    }
+
+    &.is-disabled {
+        color: $grey;
+        cursor: not-allowed;
+    }
+
+    .tabs-field-icon {
+        font-size: 16px;
+        height: 16px !important;
+        width: 16px !important;
+    }
+}

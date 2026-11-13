@@ -1,0 +1,25 @@
+<div class="reports-page">
+    <div class="reports-header">
+        <div class="reports-title">Отчёты</div>
+        <div class="reports-subtitle">Выберите раздел, чтобы построить отчёт</div>
+    </div>
+
+    <app-tabs-field [options]="tabs" [(value)]="activeTab" />
+
+    <div class="reports-content">
+        @if (activeTab() === 'sales') {
+            <a class="reports-link" routerLink="/reports/orders">
+                <span class="reports-link-icon">
+                    <app-icon name="analytics" />
+                </span>
+                <span class="reports-link-body">
+                    <span class="reports-link-title">Отчёт по продажам</span>
+                    <span class="reports-link-text">Заказы за период с фильтрами</span>
+                </span>
+                <app-icon name="chevron-right" class="reports-link-arrow" />
+            </a>
+        } @else {
+            <div class="reports-placeholder">Раздел в разработке</div>
+        }
+    </div>
+</div>

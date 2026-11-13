@@ -32,10 +32,13 @@ src/app/components/modules/products/
 
 | Путь                | Компонент                  |
 | ------------------- | -------------------------- |
-| `/catalog`          | `ProductsListingComponent` |
+| `/catalog`          | `CatalogPageComponent`     |
 | `/catalog/products` | `ProductsListingComponent` |
 
 Определены в `src/app/app.routes.ts`. Пункт меню «Каталог → Товары» приходит из `ModuleSeeder` на бэкенде.
+
+`/catalog` — лендинг раздела: карточки со ссылками на подразделы, доступные
+текущему пользователю (см. [catalog.md](./catalog.md)).
 
 ## Компоненты
 

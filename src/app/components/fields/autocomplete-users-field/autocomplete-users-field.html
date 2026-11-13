@@ -1,0 +1,58 @@
+<div class="field-container">
+    @if (label()) {
+        <label class="label-field">{{ label() }}</label>
+    }
+
+    @if (showSelected() && selectedLabel()) {
+        <div class="item-selected">
+            <button
+                type="button"
+                class="selected-chip"
+                title="Удалить выбор"
+                (click)="clearSelection()"
+            >
+                <span class="selected-chip-name">{{ selectedLabel() }}</span>
+                <span class="selected-chip-remove">✕</span>
+            </button>
+        </div>
+    } @else {
+        <div class="autocomplete-wrapper">
+            <input
+                type="text"
+                class="input-field"
+                [placeholder]="placeholder()"
+                [value]="search()"
+                (input)="onInput($event)"
+                (keydown)="onKeydown($event)"
+                (focus)="isOpen.set(search().length > 0)"
+                autocomplete="off"
+            />
+
+            @if (isOpen()) {
+                @if (loading()) {
+                    <ul class="autocomplete-menu">
+                        <li class="autocomplete-item autocomplete-item--info">
+                            {{ loadingText() }}
+                        </li>
+                    </ul>
+                } @else if (filteredItems().length > 0) {
+                    <ul class="autocomplete-menu">
+                        @for (user of filteredItems(); track user.id; let i = $index) {
+                            <li
+                                class="autocomplete-item"
+                                [class.active]="activeIndex() === i"
+                                (click)="selectItem(user)"
+                            >
+                                {{ user.name }}
+                            </li>
+                        }
+                    </ul>
+                } @else {
+                    <ul class="autocomplete-menu">
+                        <li class="autocomplete-item autocomplete-item--info">{{ emptyText() }}</li>
+                    </ul>
+                }
+            }
+        </div>
+    }
+</div>

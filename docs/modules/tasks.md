@@ -10,6 +10,14 @@ src/app/components/modules/tasks/
 │   ├── tasks-board.ts
 │   ├── tasks-board.html
 │   └── tasks-board.scss
+├── task-card/            # карточка задачи на доске
+│   ├── task-card.ts
+│   ├── task-card.html
+│   └── task-card.scss
+├── task-viewer/          # попап просмотра задачи (табы «Информация» / «Обсуждение»)
+│   ├── task-viewer.ts
+│   ├── task-viewer.html
+│   └── task-viewer.scss
 ├── task-group-editor/    # попап создания/редактирования колонки
 │   ├── task-group-editor.ts
 │   └── task-group-editor.html
@@ -21,9 +29,9 @@ src/app/components/modules/tasks/
 
 ## Маршрут
 
-| Путь     | Компонент             |
-| -------- | --------------------- |
-| `/tasks` | `TasksBoardComponent` |
+| Путь          | Компонент             |
+| ------------- | --------------------- |
+| `/team/tasks` | `TasksBoardComponent` |
 
 Определён в `src/app/app.routes.ts`. Пункт меню «Задачи» приходит из `ModuleSeeder` на бэкенде (`/tasks/`).
 
@@ -39,7 +47,7 @@ src/app/components/modules/tasks/
     - `tasksOf(group)` — задачи конкретной колонки;
     - `createGroup()` — открывает попап `TaskGroupEditorComponent` с предзаполненной `position` (последняя + 1);
     - `createTask(group)` — открывает попап `TaskEditorComponent` с `groupId` колонки (кнопка `.create-task`);
-    - `editTask(task)` — попап `TaskEditorComponent` с `id` задачи (клик по карточке задачи);
+    - `openTask(task)` — попап `TaskViewerComponent` с `id` задачи (клик по карточке задачи);
     - `editGroup(group)` — попап с `id` колонки;
     - `deleteGroup(group)` — подтверждение через `ConfirmService`, затем `TaskGroupService.delete()`.
 - **Разметка:** заголовок «Задачи» с кнопкой «Добавить колонку», колонки с названием, кнопкой создания задачи и списком карточек задач, кнопка добавления колонки в конце доски, пустые состояния.
@@ -53,6 +61,29 @@ src/app/components/modules/tasks/
 - **Модели:** `title`, `position`.
 - **Методы:** `onSave()`, `onCancel()`.
 - **Валидация:** пустое название не сохраняется (уведомление об ошибке).
+
+### `TaskCardComponent`
+
+Селектор `app-task-card`. Карточка задачи на доске.
+
+- **Вход:** `task: TaskModel`.
+- **Выход:** `opened: TaskModel` — эмитится по клику на карточку.
+- **Методы:** `formatDate()`, `isToday()`, `isFuture()` — подсветка даты начала.
+
+### `TaskViewerComponent`
+
+Селектор `app-task-viewer`. Попап просмотра задачи с двумя табами.
+
+- **Вход:** `id: number` (обязательный).
+- **Состояние (signals):** `task: TaskModel | null`, `loading`, `tab` (`info` по умолчанию).
+- **Методы:**
+    - `loadTask()` — `TaskService.show(id)`;
+    - `isActiveTab(tab)`, `changeTab(tab)` — переключение табов;
+    - `edit()` — открывает `TaskEditorComponent` поверх и перезагружает задачу после закрытия;
+    - `close()` — `PopupService.resolve()`;
+    - `formatDate()`, `formatDateTime()` — форматирование дат (`DD.MM.YYYY`, `DD.MM.YYYY HH:mm`).
+- **Табы:** «Информация» — описание и карточка полей (исполнитель, автор, даты, служебные метки); «Обсуждение» — заглушка «Раздел в разработке».
+- **Действия:** «Закрыть» и «Редактировать» (sticky-футер).
 
 ### `TaskEditorComponent`
 
@@ -138,7 +169,7 @@ interface TaskModel {
 
 ## Зависимости
 
-- `SkeletonComponent`, `IconComponent`, `InputFieldComponent`, `TextareaFieldComponent`, `SelectFieldComponent`, `AutocompleteFieldComponent`, `CalendarFieldComponent`.
+- `SkeletonComponent`, `IconComponent`, `InputFieldComponent`, `TextareaFieldComponent`, `SelectFieldComponent`, `AutocompleteUsersFieldComponent`, `CalendarFieldComponent`.
 - `PopupService`, `ConfirmService`, `NotificationService`.
 
 ## Известные ограничения

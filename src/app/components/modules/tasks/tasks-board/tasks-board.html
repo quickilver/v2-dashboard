@@ -1,16 +1,11 @@
 <div class="header">
     <div class="title">Задачи</div>
-    <div class="actions">
-        <button class="primary" (click)="createGroup()">
-            <app-icon name="plus" [size]="18" />
-            <span>Добавить колонку</span>
-        </button>
-    </div>
+    <div class="actions"></div>
 </div>
 
 @if (loading()) {
     <div class="board-loading">
-        <app-skeleton [count]="3" width="280px" [height]="120" [gap]="20" />
+        <app-skeleton [count]="3" width="480px" [height]="120" [gap]="20" [dark]="true" />
     </div>
 } @else {
     <div class="board">
@@ -31,7 +26,7 @@
 
                 <div class="board-column-body">
                     @for (task of tasksOf(group); track task.id) {
-                        <app-task-card [task]="task" (opened)="editTask($event)" />
+                        <app-task-card [task]="task" (opened)="openTask($event)" />
                     } @empty {
                         <div class="board-column-empty">Нет задач</div>
                     }

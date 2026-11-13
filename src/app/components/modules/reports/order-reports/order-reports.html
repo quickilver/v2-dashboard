@@ -1,0 +1,99 @@
+<div class="header">
+    <div class="title">Отчёт по продажам</div>
+    <div class="actions">
+        <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
+            <app-icon name="file" [size]="18" />
+            <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
+        </button>
+    </div>
+</div>
+
+<div class="order-reports-container">
+    <div class="order-reports-header">
+        <app-order-reports-filters
+            [filters]="filters()"
+            (filtersChange)="onFiltersChange($event)"
+        />
+    </div>
+
+    <div class="order-reports-content">
+        @if (loading()) {
+            <app-skeleton [count]="6" width="100%" [height]="48" [gap]="12" />
+        } @else if (days().length > 0) {
+            <div class="report-summary">
+                <div class="report-summary-item">
+                    <span class="report-summary-label">Заказов</span>
+                    <span class="report-summary-value">{{ orders().length }}</span>
+                </div>
+                <div class="report-summary-item">
+                    <span class="report-summary-label">Товаров</span>
+                    <span class="report-summary-value">{{ totalCount() }}</span>
+                </div>
+                <div class="report-summary-item">
+                    <span class="report-summary-label">Сумма</span>
+                    <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                </div>
+            </div>
+
+            <div class="report-days">
+                @for (day of days(); track day.date) {
+                    <div class="report-day" [class.is-collapsed]="isCollapsed(day.date)">
+                        <div class="report-day-header" (click)="toggleDay(day.date)">
+                            <span class="report-day-arrow">
+                                <app-icon name="chevron-down" [size]="16" />
+                            </span>
+                            <span class="report-day-label">{{ day.label }}</span>
+                            <span class="report-day-meta">
+                                {{ day.orders.length }} зак. · {{ day.totalCount }} тов. ·
+                                {{ formatPrice(day.totalPrice) }} ₽
+                            </span>
+                        </div>
+
+                        @if (!isCollapsed(day.date)) {
+                            <div class="report-day-body">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-time">Время</th>
+                                            <th class="col-number">Номер</th>
+                                            <th class="col-account">Покупатель</th>
+                                            <th class="col-status">Статус</th>
+                                            <th class="col-count align-right">Товаров</th>
+                                            <th class="col-total align-right">Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (order of day.orders; track order.id) {
+                                            <tr>
+                                                <td>{{ formatTime(order.created_at) }}</td>
+                                                <td>
+                                                    <button
+                                                        type="button"
+                                                        class="report-order-link"
+                                                        (click)="openOrder(order)"
+                                                    >
+                                                        {{ order.number }}
+                                                    </button>
+                                                </td>
+                                                <td>{{ accountName(order) || '—' }}</td>
+                                                <td>{{ order.status?.title ?? '—' }}</td>
+                                                <td class="align-right">
+                                                    {{ order.total_count }} шт.
+                                                </td>
+                                                <td class="align-right">
+                                                    {{ formatPrice(order.total_price) }} ₽
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        } @else {
+            <div class="order-reports-placeholder">Заказов по выбранным фильтрам нет</div>
+        }
+    </div>
+</div>

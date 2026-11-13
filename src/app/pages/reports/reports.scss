@@ -1,0 +1,106 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+.reports-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reports-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .reports-title {
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .reports-subtitle {
+        font-size: 14px;
+        color: $grey;
+    }
+}
+
+.reports-content {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid $grey-light-2;
+    border-radius: 6px;
+    box-shadow: $shadow;
+}
+
+.reports-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid $grey-light-2;
+    border-radius: $input-radius;
+    text-decoration: none;
+    color: $main-font-color;
+    transition: 0.15s ease-in-out;
+
+    &:hover {
+        border-color: $primary-color;
+
+        .reports-link-icon {
+            background: $primary-color;
+            color: #ffffff;
+        }
+
+        .reports-link-arrow {
+            color: $primary-color;
+        }
+    }
+
+    .reports-link-icon {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: $input-radius;
+        background: $primary-light-color;
+        color: $primary-color;
+        font-size: 20px;
+        transition: 0.15s ease-in-out;
+    }
+
+    .reports-link-body {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .reports-link-title {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .reports-link-text {
+        font-size: 12px;
+        color: $grey;
+    }
+
+    .reports-link-arrow {
+        flex: 0 0 auto;
+        font-size: 20px;
+        color: $grey;
+        transition: 0.15s ease-in-out;
+    }
+}
+
+.reports-placeholder {
+    padding: 60px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: $grey;
+}

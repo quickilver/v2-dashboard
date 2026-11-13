@@ -29,11 +29,6 @@
                     [(value)]="selectedAccount"
                     (valueChange)="onAccountChange($event)"
                 />
-                @if (selectedAccount()) {
-                    <button type="button" class="filters-reset" (click)="onAccountChange(null)">
-                        Сбросить клиента
-                    </button>
-                }
             </div>
         }
     </div>
@@ -58,11 +53,6 @@
                     [(search)]="productSearch"
                     [(value)]="selectedProduct"
                 />
-                @if (selectedProduct()) {
-                    <button type="button" class="filters-reset" (click)="onProductChange(null)">
-                        Сбросить товар
-                    </button>
-                }
             </div>
         }
     </div>

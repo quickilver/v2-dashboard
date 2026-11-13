@@ -1,0 +1,111 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+    height: 100%;
+}
+
+.viewer-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    .tabs {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        padding: 0 20px;
+        background: #ffffff;
+        border-bottom: 1px solid $grey-light-2;
+    }
+}
+
+.viewer-loading {
+    padding: 20px;
+}
+
+.viewer-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+}
+
+.viewer-placeholder {
+    padding: 60px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: $grey;
+}
+
+.viewer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .viewer-description {
+        padding: 12px;
+        background: $primary-light-color;
+        border-left: 5px solid $primary-color;
+        min-height: 200px;
+        max-height: 400px;
+        overflow-y: auto;
+        font-size: 14px;
+        line-height: 1.5;
+        color: $main-font-color;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .viewer-empty {
+        font-size: 14px;
+        color: $grey;
+    }
+
+    .viewer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .viewer-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .viewer-label {
+            font-weight: bold;
+        }
+
+        .viewer-value {
+            font-size: 14px;
+            color: $main-font-color;
+            word-break: break-word;
+        }
+    }
+}
+
+.viewer-actions {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.viewer-error {
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: $grey;
+}
+
+@media (max-width: 600px) {
+    .viewer-section {
+        .viewer-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}

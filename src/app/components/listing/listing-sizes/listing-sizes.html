@@ -17,14 +17,6 @@
                         [class.is-active]="isActive(option.value)"
                         (click)="select(option.value)"
                     >
-                        <span
-                            class="sizes-settings-preview"
-                            [class.preview-large]="option.value === 'large'"
-                            [class.preview-normal]="option.value === 'normal'"
-                            [class.preview-small]="option.value === 'small'"
-                        >
-                            Аа
-                        </span>
                         <span class="sizes-settings-title">{{ option.title }}</span>
                     </li>
                 }

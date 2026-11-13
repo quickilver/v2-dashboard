@@ -1,4 +1,13 @@
-import { Component, ChangeDetectionStrategy, input, model, signal, computed } from '@angular/core';
+import {
+    Component,
+    ChangeDetectionStrategy,
+    ElementRef,
+    inject,
+    input,
+    model,
+    signal,
+    computed,
+} from '@angular/core';
 
 interface DayInfo {
     day: number;
@@ -15,8 +24,13 @@ interface DayInfo {
     styleUrl: './calendar-field.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
+    host: {
+        '(document:click)': 'onDocumentClick($event)',
+    },
 })
 export class CalendarFieldComponent {
+    private readonly elementRef = inject(ElementRef<HTMLElement>);
+
     label = input<string>('');
     placeholder = input<string>('');
     mask = input<string>('DD.MM.YYYY');
@@ -124,6 +138,19 @@ export class CalendarFieldComponent {
 
     closeCalendar(): void {
         this.isOpen.set(false);
+    }
+
+    onDocumentClick(event: MouseEvent): void {
+        if (!this.isOpen()) {
+            return;
+        }
+
+        const target = event.target as Node | null;
+        const host = this.elementRef.nativeElement;
+
+        if (target && !host.contains(target)) {
+            this.closeCalendar();
+        }
     }
 
     selectDate(dayInfo: DayInfo): void {

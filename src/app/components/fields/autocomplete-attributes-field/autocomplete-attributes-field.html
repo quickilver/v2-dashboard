@@ -1,4 +1,4 @@
-<div class="field-container" (mouseleave)="close()">
+<div class="field-container">
     @if (label()) {
         <label class="label-field">{{ label() }}</label>
     }
@@ -18,15 +18,15 @@
         @if (isOpen()) {
             @if (loading()) {
                 <ul class="autocomplete-menu">
-                    <li class="autocomplete-item autocomplete-item--info">Загрузка...</li>
+                    <li class="autocomplete-item autocomplete-item--info">{{ loadingText() }}</li>
                 </ul>
-            } @else if (filteredAttributes().length > 0) {
+            } @else if (filteredItems().length > 0) {
                 <ul class="autocomplete-menu">
-                    @for (attribute of filteredAttributes(); track attribute.id; let i = $index) {
+                    @for (attribute of filteredItems(); track attribute.id; let i = $index) {
                         <li
                             class="autocomplete-item"
                             [class.active]="activeIndex() === i"
-                            (click)="select(attribute)"
+                            (click)="selectItem(attribute)"
                         >
                             {{ attribute.title }}
                         </li>
@@ -34,7 +34,7 @@
                 </ul>
             } @else {
                 <ul class="autocomplete-menu">
-                    <li class="autocomplete-item autocomplete-item--info">Ничего не найдено</li>
+                    <li class="autocomplete-item autocomplete-item--info">{{ emptyText() }}</li>
                 </ul>
             }
         }

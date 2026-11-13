@@ -7,11 +7,6 @@
 
         .autocomplete-wrapper {
             width: 50%;
-            position: relative;
-
-            .input-field {
-                width: 100%;
-            }
 
             &.is-attribute {
                 .input-field {
@@ -27,12 +22,6 @@
                     border-bottom-left-radius: 0;
                 }
             }
-        }
-
-        .label-field {
-            font-size: 14px;
-            margin-bottom: 4px;
-            font-weight: bold;
         }
 
         .attribute-header {

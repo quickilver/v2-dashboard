@@ -7,22 +7,44 @@
 .board-task {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 20px;
     padding: 10px;
     border-radius: $input-radius;
-    background: #ffffff;
-    border: 1px solid $grey-light-2;
+    background: $primary-light-color;
+    border: 1px solid $primary-light-color;
     cursor: pointer;
     transition: 0.15s ease-in-out;
 
     &:hover {
-        border-color: $grey;
+        border-color: $primary-color;
     }
 
-    .board-task-title {
+    .board-task-text {
+        display: flex;
         font-size: 14px;
         color: $main-font-color;
         word-break: break-word;
+
+        .board-task-title {
+            flex: 1;
+        }
+
+        .board-task-edit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: $input-radius;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            border: 1px solid $grey-light-2;
+            cursor: pointer;
+
+            &:hover {
+                background: $grey-light;
+                border-color: $grey;
+            }
+        }
     }
 
     .board-task-info {
@@ -30,38 +52,41 @@
         gap: 10px;
 
         .board-task-icon {
-            width: 40px;
-            height: 40px;
-            background: $grey-light;
-            border-radius: $input-radius;
+            width: 30px;
+            height: 30px;
+            background: $primary-color;
+            border-radius: 100px;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 18px;
         }
 
         .board-task-meta {
             display: flex;
             flex-direction: column;
-
-            .board-task-assignee {
-                font-weight: bold;
-            }
+            justify-content: center;
 
             .board-task-date {
-                font-size: 12px;
-                font-weight: bold;
+                display: flex;
 
                 &.today-task {
-                    color: $info-color;
+                    strong {
+                        color: $info-color;
+                    }
                 }
 
                 &.feature-task {
-                    color: $success-color;
+                    strong {
+                        color: $success-color;
+                    }
                 }
 
                 &.past-task {
-                    color: $error-color;
+                    strong {
+                        color: $error-color;
+                    }
                 }
             }
         }

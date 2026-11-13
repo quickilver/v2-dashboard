@@ -23,8 +23,12 @@ export class NavigationComponent {
     }
 
     private async loadNavigation(): Promise<void> {
-        const response = await this.modulesService.index();
-        this.navigation.set(response.data.map((module) => this.mapModuleToNavigation(module)));
+        try {
+            const response = await this.modulesService.available();
+            this.navigation.set(response.data.map((module) => this.mapModuleToNavigation(module)));
+        } catch {
+            this.navigation.set([]);
+        }
     }
 
     private mapModuleToNavigation(module: ModuleModel): NavigationItem {
