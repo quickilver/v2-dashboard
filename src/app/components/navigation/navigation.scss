@@ -29,12 +29,42 @@
 
         &.nav-list {
             > li {
-                > a {
-                    font-weight: bold;
+                .nav-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
 
-                    .nav-icon {
-                        font-size: 20px;
-                        height: 20px !important;
+                    > a {
+                        flex: 1 1 auto;
+                        min-width: 0;
+                        font-weight: bold;
+
+                        .nav-icon {
+                            font-size: 20px;
+                            height: 20px !important;
+                        }
+                    }
+
+                    .nav-toggle {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex: 0 0 auto;
+                        width: 24px;
+                        height: 24px;
+                        padding: 0;
+                        border: none;
+                        background: none;
+                        cursor: pointer;
+                        transition: transform 0.2s ease;
+
+                        &:hover {
+                            color: $main-font-color;
+                        }
+
+                        &.is-open {
+                            transform: rotate(180deg);
+                        }
                     }
                 }
             }

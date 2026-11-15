@@ -1,15 +1,28 @@
 <nav class="sidebar-nav">
     <ul class="nav-list">
         @for (item of navigation(); track item.route) {
-            <li class="nav-item">
-                <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
-                    @if (item.icon) {
-                        <app-icon [name]="item.icon" class="nav-icon"></app-icon>
-                    }
-                    {{ item.title }}
-                </a>
+            <li class="nav-item" [class.is-expanded]="isExpanded(item.route)">
+                <div class="nav-row">
+                    <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
+                        @if (item.icon) {
+                            <app-icon [name]="item.icon" class="nav-icon"></app-icon>
+                        }
+                        {{ item.title }}
+                    </a>
 
-                @if (item.children && item.children.length > 0) {
+                    @if (item.children && item.children.length > 0) {
+                        <button
+                            type="button"
+                            class="nav-toggle"
+                            [class.is-open]="isExpanded(item.route)"
+                            (click)="toggleItem(item.route)"
+                        >
+                            <app-icon name="chevron-down" [size]="16" />
+                        </button>
+                    }
+                </div>
+
+                @if (item.children && item.children.length > 0 && isExpanded(item.route)) {
                     <ul class="sub-nav-list">
                         @for (child of item.children; track child.route) {
                             <li class="sub-nav-item">

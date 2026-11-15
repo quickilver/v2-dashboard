@@ -9,6 +9,8 @@
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
+    z-index: 1000;
+    position: relative;
 
     .user-icon {
         font-size: 34px;

@@ -15,16 +15,6 @@
         font-size: 26px;
         font-weight: bold;
     }
-
-    .actions {
-        display: flex;
-        gap: 10px;
-
-        button {
-            display: flex;
-            gap: 8px;
-        }
-    }
 }
 
 .order-reports-container {
@@ -60,26 +50,44 @@
 
 .report-summary {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
     border-bottom: 1px solid $grey-light-2;
+    margin-bottom: 20px;
 
-    .report-summary-item {
+    .report-summary-stats {
         display: flex;
-        flex-direction: column;
-        gap: 4px;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding-bottom: 20px;
+
+        .report-summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .report-summary-label {
+            font-size: 12px;
+            color: $grey;
+        }
+
+        .report-summary-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
     }
 
-    .report-summary-label {
-        font-size: 12px;
-        color: $grey;
-    }
+    .reports-summary-actions {
+        padding-bottom: 20px;
+        display: flex;
+        gap: 10px;
 
-    .report-summary-value {
-        font-size: 20px;
-        font-weight: bold;
+        button {
+            display: flex;
+            gap: 8px;
+        }
     }
 }
 
@@ -188,5 +196,84 @@
 
     .align-right {
         text-align: right;
+    }
+}
+
+.toggle-products {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid $primary-color;
+    background: $primary-light-color;
+    border-radius: $input-radius;
+    padding: 1px 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    color: $primary-color;
+
+    .toggle-products-arrow {
+        display: flex;
+        align-items: center;
+    }
+
+    &.is-open {
+        background: $primary-color;
+        color: #ffffff;
+    }
+}
+
+.report-products-row {
+    td {
+        padding: 0 !important;
+        background: $grey-light;
+    }
+
+    &:hover td {
+        background: $grey-light !important;
+    }
+}
+
+.report-products {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+
+    .report-product {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 6px 0;
+        font-size: 13px;
+        border-bottom: 1px solid $grey-light-2;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .report-product-title {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .report-product-count {
+            flex: 0 0 auto;
+            color: $grey;
+        }
+
+        .report-product-total {
+            flex: 0 0 100px;
+            text-align: right;
+            font-weight: bold;
+        }
+    }
+
+    .report-products-empty {
+        padding: 10px 0;
+        font-size: 13px;
+        color: $grey;
     }
 }

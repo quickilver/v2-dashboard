@@ -38,6 +38,7 @@ export class OrderReportsComponent implements OnInit {
     readonly loading = signal<boolean>(false);
     readonly exporting = signal<boolean>(false);
     readonly collapsedDays = signal<Record<string, boolean>>({});
+    readonly expandedProducts = signal<Record<number, boolean>>({});
 
     readonly days = computed<OrderReportDay[]>(() => this.groupByDay(this.orders()));
 
@@ -124,6 +125,17 @@ export class OrderReportsComponent implements OnInit {
         this.collapsedDays.update((days) => ({ ...days, [date]: !collapsed }));
     }
 
+    isProductsExpanded(orderId: number): boolean {
+        return this.expandedProducts()[orderId] ?? false;
+    }
+
+    toggleProducts(orderId: number): void {
+        this.expandedProducts.update((orders) => ({
+            ...orders,
+            [orderId]: !orders[orderId],
+        }));
+    }
+
     formatPrice(value: number): string {
         return value.toLocaleString('ru-RU');
     }
@@ -139,12 +151,6 @@ export class OrderReportsComponent implements OnInit {
     }
 
     accountName(order: OrderModel): string {
-        if (order.account) {
-            return [order.account.last_name, order.account.first_name, order.account.middle_name]
-                .filter((part) => !!part)
-                .join(' ');
-        }
-
         return [order.contact_last_name, order.contact_first_name, order.contact_middle_name]
             .filter((part) => !!part)
             .join(' ');

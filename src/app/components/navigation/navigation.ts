@@ -15,11 +15,20 @@ import { IconComponent } from '../icon/icon';
 })
 export class NavigationComponent {
     readonly navigation = signal<NavigationItem[]>([]);
+    readonly expandedItems = signal<Record<string, boolean>>({});
 
     private readonly modulesService = inject(ModuleService);
 
     constructor() {
         this.loadNavigation();
+    }
+
+    isExpanded(route: string): boolean {
+        return this.expandedItems()[route] ?? false;
+    }
+
+    toggleItem(route: string): void {
+        this.expandedItems.update((items) => ({ ...items, [route]: !items[route] }));
     }
 
     private async loadNavigation(): Promise<void> {

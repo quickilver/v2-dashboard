@@ -1,11 +1,6 @@
 <div class="header">
     <div class="title">Отчёт по продажам</div>
-    <div class="actions">
-        <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
-            <app-icon name="file" [size]="18" />
-            <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
-        </button>
-    </div>
+    <div class="actions"></div>
 </div>
 
 <div class="order-reports-container">
@@ -21,20 +16,26 @@
             <app-skeleton [count]="6" width="100%" [height]="48" [gap]="12" />
         } @else if (days().length > 0) {
             <div class="report-summary">
-                <div class="report-summary-item">
-                    <span class="report-summary-label">Заказов</span>
-                    <span class="report-summary-value">{{ orders().length }}</span>
+                <div class="report-summary-stats">
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Заказов</span>
+                        <span class="report-summary-value">{{ orders().length }}</span>
+                    </div>
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Товаров</span>
+                        <span class="report-summary-value">{{ totalCount() }}</span>
+                    </div>
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Сумма</span>
+                        <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                    </div>
                 </div>
-                <div class="report-summary-item">
-                    <span class="report-summary-label">Товаров</span>
-                    <span class="report-summary-value">{{ totalCount() }}</span>
-                </div>
-                <div class="report-summary-item">
-                    <span class="report-summary-label">Сумма</span>
-                    <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                <div class="reports-summary-actions">
+                    <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
+                        <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
+                    </button>
                 </div>
             </div>
-
             <div class="report-days">
                 @for (day of days(); track day.date) {
                     <div class="report-day" [class.is-collapsed]="isCollapsed(day.date)">
@@ -53,14 +54,14 @@
                             <div class="report-day-body">
                                 <table class="report-table">
                                     <thead>
-                                        <tr>
-                                            <th class="col-time">Время</th>
-                                            <th class="col-number">Номер</th>
-                                            <th class="col-account">Покупатель</th>
-                                            <th class="col-status">Статус</th>
-                                            <th class="col-count align-right">Товаров</th>
-                                            <th class="col-total align-right">Сумма</th>
-                                        </tr>
+                                    <tr>
+                                        <th class="col-time">Время</th>
+                                        <th class="col-number">Номер</th>
+                                        <th class="col-account">Покупатель</th>
+                                        <th class="col-status">Статус</th>
+                                        <th class="col-count align-right">Товаров</th>
+                                        <th class="col-total align-right">Сумма</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         @for (order of day.orders; track order.id) {
@@ -78,12 +79,59 @@
                                                 <td>{{ accountName(order) || '—' }}</td>
                                                 <td>{{ order.status?.title ?? '—' }}</td>
                                                 <td class="align-right">
-                                                    {{ order.total_count }} шт.
+                                                    <button
+                                                        type="button"
+                                                        class="toggle-products"
+                                                        [class.is-open]="isProductsExpanded(order.id)"
+                                                        (click)="toggleProducts(order.id)"
+                                                    >
+                                                        <span>{{ order.total_count }} шт.</span>
+                                                        <span class="toggle-products-arrow">
+                                                            <app-icon
+                                                                [name]="
+                                                                    isProductsExpanded(order.id)
+                                                                        ? 'chevron-up'
+                                                                        : 'chevron-down'
+                                                                "
+                                                                [size]="14"
+                                                            />
+                                                        </span>
+                                                    </button>
                                                 </td>
                                                 <td class="align-right">
                                                     {{ formatPrice(order.total_price) }} ₽
                                                 </td>
                                             </tr>
+
+                                            @if (isProductsExpanded(order.id)) {
+                                                <tr class="report-products-row">
+                                                    <td colspan="6">
+                                                        <div class="report-products">
+                                                            @for (
+                                                                product of order.products;
+                                                                track product.id
+                                                            ) {
+                                                                <div class="report-product">
+                                                                    <span class="report-product-title">
+                                                                        {{ product.title }}
+                                                                    </span>
+                                                                    <span class="report-product-count">
+                                                                        {{ product.count }} ×
+                                                                        {{ formatPrice(product.amount) }} ₽
+                                                                    </span>
+                                                                    <span class="report-product-total">
+                                                                        {{ formatPrice(product.total) }} ₽
+                                                                    </span>
+                                                                </div>
+                                                            } @empty {
+                                                                <div class="report-products-empty">
+                                                                    Товаров нет
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     </tbody>
                                 </table>
