@@ -1,30 +1,40 @@
 # Модуль «Отчёты» (reports)
 
-Отчёты по данным магазина. Пока реализован только отчёт по продажам с фильтрами.
+Отчёты по данным магазина: отчёт по продажам и отчёт по поступлениям с фильтрами.
 
 ## Расположение
 
 ```
 src/app/components/modules/reports/
-├── order-reports/            # страница отчёта по продажам
+├── order-reports/              # страница отчёта по продажам
 │   ├── order-reports.ts
 │   ├── order-reports.html
 │   └── order-reports.scss
-└── order-reports-filters/    # панель фильтров отчёта
-    ├── order-reports-filters.ts
-    ├── order-reports-filters.html
-    └── order-reports-filters.scss
+├── order-reports-filters/      # панель фильтров отчёта по продажам
+│   ├── order-reports-filters.ts
+│   ├── order-reports-filters.html
+│   └── order-reports-filters.scss
+├── receive-reports/            # страница отчёта по поступлениям
+│   ├── receive-reports.ts
+│   ├── receive-reports.html
+│   └── receive-reports.scss
+└── receive-reports-filters/    # панель фильтров отчёта по поступлениям
+    ├── receive-reports-filters.ts
+    ├── receive-reports-filters.html
+    └── receive-reports-filters.scss
 ```
 
 ## Маршруты
 
-| Путь              | Компонент               |
-| ----------------- | ----------------------- |
-| `/reports`        | `ReportsPageComponent`  |
-| `/reports/orders` | `OrderReportsComponent` |
+| Путь                | Компонент                 |
+| ------------------- | ------------------------- |
+| `/reports`          | `ReportsPageComponent`    |
+| `/reports/orders`   | `OrderReportsComponent`   |
+| `/reports/receives` | `ReceiveReportsComponent` |
 
 Определены в `src/app/app.routes.ts`. Страница `/reports` — лендинг с табами
-(`app-tabs-field`); на табе «Продажи» есть ссылка на `/reports/orders`.
+(`app-tabs-field`): на табе «Продажи» ссылка на `/reports/orders`,
+на табе «Закупки» — на `/reports/receives`.
 
 ## Компоненты
 
@@ -87,6 +97,47 @@ src/app/components/modules/reports/
 кнопка сброса покупателя занимает всю ширину (`grid-column: 1 / -1`). На экранах
 уже 700px сетка становится одноколоночной.
 
+### `ReceiveReportsComponent`
+
+Селектор `app-receive-reports`. Страница отчёта по поступлениям — построена по образцу
+`OrderReportsComponent`.
+
+- **Состояние (signals):**
+    - `filters: ReceiveReportFilters` — по умолчанию последние 7 дней
+      (`date_from` = сегодня − 6 дней, `date_to` = сегодня, формат `DD.MM.YYYY`);
+    - `receives: ReceiveModel[]` — поступления по фильтрам;
+    - `loading`, `exporting` — загрузка и выгрузка;
+    - `collapsedDays: Record<string, boolean>` — свёрнутые дни;
+    - `expandedProducts: Record<number, boolean>` — раскрытые списки товаров.
+- **Computed:**
+    - `days: ReceiveReportDay[]` — поступления, сгруппированные по дням
+      (по убыванию даты), с итогами `totalPrice` / `totalCount`;
+    - `totalPrice`, `totalCount` — итоги по выборке.
+- **Методы:**
+    - `loadReceives()` — `ReceiveService.index({ per_page: 100, sort: 'created_at', direction: 'desc', store_id, supplier_id, user_id, date_from, date_to })`;
+    - `onFiltersChange(filters)` — сохраняет фильтры и перезагружает данные;
+    - `openReceive(receive)` — открывает попап `ReceivesEditorComponent` и перезагружает отчёт после закрытия;
+    - `exportToExcel()` — `ReportService.exportReceives(filters)` → `receives-report-{YYYY-MM-DD}.xlsx`;
+    - `toggleDay()` / `isCollapsed()`, `toggleProducts()` / `isProductsExpanded()` — сворачивание;
+    - `formatPrice()`, `formatTime()` — форматирование вывода.
+- **Разметка:** сводка (поступлений / товаров / сумма), список дней с таблицей
+  (время, номер, склад, контрагент, менеджер, товаров, сумма). Номер поступления —
+  кнопка, открывающая попап; по кнопке в колонке «Товаров» раскрывается список позиций.
+
+### `ReceiveReportsFiltersComponent`
+
+Селектор `app-receive-reports-filters`. Панель фильтров (сетка 2 колонки).
+
+| Поле       | Компонент                          | Ключ фильтра  |
+| ---------- | ---------------------------------- | ------------- |
+| Дата от    | `app-calendar-field`               | `date_from`   |
+| Дата до    | `app-calendar-field`               | `date_to`     |
+| Склад      | `app-select-field`                 | `store_id`    |
+| Менеджер   | `app-autocomplete-users-field`     | `user_id`     |
+| Контрагент | `app-autocomplete-suppliers-field` | `supplier_id` |
+
+Склады загружаются через `StoreService.index({ per_page: 100 })` в `ngOnInit`.
+
 ## Модели
 
 `OrderReportFilters` — `src/app/models/reports/order-report-filters.model.ts`:
@@ -97,6 +148,30 @@ interface OrderReportFilters {
     date_to: string;
     manager_id: number | null;
     account_id: number | null;
+}
+```
+
+`ReceiveReportFilters` — `src/app/models/reports/receive-report-filters.model.ts`:
+
+```ts
+interface ReceiveReportFilters {
+    date_from: string;
+    date_to: string;
+    store_id: number | null;
+    supplier_id: number | null;
+    user_id: number | null;
+}
+```
+
+`ReceiveReportDay` — `src/app/models/reports/receive-report-day.model.ts`:
+
+```ts
+interface ReceiveReportDay {
+    date: string; // YYYY-MM-DD
+    label: string;
+    receives: ReceiveModel[];
+    totalPrice: number;
+    totalCount: number;
 }
 ```
 
@@ -117,16 +192,18 @@ interface OrderReportDay {
 - `CalendarFieldComponent`, `AutocompleteUsersFieldComponent`,
   `AutocompleteAccountsFieldComponent`.
 - `OrderService` — заказы по фильтрам.
-- `ReportService` — экспорт в XLSX (`GET /reports/orders/export`).
-- `PopupService` — попап заказа (`OrdersEditorComponent`).
+- `ReceiveService` — поступления по фильтрам.
+- `StoreService` — список складов для фильтра.
+- `ReportService` — экспорт в XLSX (`GET /reports/orders/export`, `GET /reports/receives/export`).
+- `PopupService` — попапы заказа (`OrdersEditorComponent`) и поступления (`ReceivesEditorComponent`).
 - `UserService` — поиск менеджеров (внутри `app-autocomplete-users-field`).
 - `NotificationService` — ошибки загрузки.
 - `SkeletonComponent`, `IconComponent`.
 
 ## Известные ограничения
 
-- Загружается не более 100 заказов (`per_page: 100`), пагинации в отчёте нет.
+- Загружается не более 100 заказов/поступлений (`per_page: 100`), пагинации в отчётах нет.
 - Фильтр «Менеджер» собирается в состояние, но не передаётся в API: у заказов
   нет поля менеджера (`orders` не содержит `user_id`).
-- Экспорт в Excel выгружает все заказы по фильтру без пагинации.
+- Экспорт в Excel выгружает все заказы/поступления по фильтру без пагинации.
 - Пункт меню «Отчёты» в `ModuleSeeder` на бэкенде пока не создан.

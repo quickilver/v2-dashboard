@@ -18,6 +18,7 @@ import { MetaModel } from '../../models/meta.model';
 import { ListingColumnsService } from '../../services/listing-columns.service';
 import { ListingSizesService } from '../../services/listing-sizes.service';
 import { ListingColumnsSettingsComponent } from './listing-columns-settings/listing-columns-settings';
+import { ListingPageSizesComponent } from './listing-page-sizes/listing-page-sizes';
 import { ListingSizesComponent } from './listing-sizes/listing-sizes';
 
 export interface SortState {
@@ -34,6 +35,7 @@ export interface SortState {
         DropdownFieldComponent,
         SkeletonComponent,
         ListingColumnsSettingsComponent,
+        ListingPageSizesComponent,
         ListingSizesComponent,
     ],
     templateUrl: './listing.html',
@@ -51,6 +53,7 @@ export class ListingComponent {
     availableColumns = input<ListingColumn[]>([]);
     columnsStorageKey = input<string>('');
     sizable = input<boolean>(false);
+    pageSizable = input<boolean>(false);
     data = input<any[]>([]);
     loading = input<boolean>(false);
     meta = input<MetaModel | null>(null);
@@ -64,6 +67,7 @@ export class ListingComponent {
 
     sortChange = output<SortState>();
     pageChange = output<number>();
+    pageSizeChange = output<number>();
     searchChange = output<string | number>();
     rowClick = output<any>();
     cellClick = output<{ row: any; column: ListingColumn }>();
@@ -187,6 +191,11 @@ export class ListingComponent {
     onPageChange(page: number): void {
         if (page < 1 || page > this.totalPages()) return;
         this.pageChange.emit(page);
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        if (pageSize === this.pageSize()) return;
+        this.pageSizeChange.emit(pageSize);
     }
 
     onRowClick(item: any): void {

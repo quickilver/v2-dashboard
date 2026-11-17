@@ -121,4 +121,10 @@ export class StatusesListingComponent implements OnInit {
         this.page.set(page);
         this.loadStatuses();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadStatuses();
+    }
 }

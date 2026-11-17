@@ -144,4 +144,10 @@ export class AttributesListingComponent implements OnInit {
         this.page.set(page);
         this.loadAttributes();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadAttributes();
+    }
 }

@@ -14,6 +14,7 @@ import { BackupsIndexResponse } from '../../../../models/responses/backups/backu
 import { NotificationService } from '../../../../services/notification.service';
 import { ConfirmService } from '../../../../services/confirm.service';
 import { BackupRow } from './backup-row.model';
+import { MetaModel } from '../../../../models/meta.model';
 
 @Component({
     selector: 'app-backup-listing',
@@ -47,8 +48,32 @@ export class BackupListingComponent implements OnInit {
     loading = signal<boolean>(false);
     creating = signal<boolean>(false);
     restoring = signal<string | null>(null);
+    pageSize = signal<number>(50);
+    page = signal<number>(1);
 
     rows = computed<BackupRow[]>(() => this.backups().map((backup) => this.toRow(backup)));
+
+    pagedRows = computed<BackupRow[]>(() => {
+        const start = (this.page() - 1) * this.pageSize();
+
+        return this.rows().slice(start, start + this.pageSize());
+    });
+
+    meta = computed<MetaModel | null>(() => {
+        const total = this.rows().length;
+        const perPage = this.pageSize();
+        const lastPage = Math.max(1, Math.ceil(total / perPage));
+
+        return {
+            current_page: this.page(),
+            from: total === 0 ? 0 : (this.page() - 1) * perPage + 1,
+            last_page: lastPage,
+            per_page: perPage,
+            to: Math.min(total, this.page() * perPage),
+            total,
+            links: [],
+        };
+    });
 
     ngOnInit(): void {
         this.loadBackups();
@@ -59,6 +84,12 @@ export class BackupListingComponent implements OnInit {
         try {
             const response: BackupsIndexResponse = await this.backupService.index();
             this.backups.set(response.data);
+
+            const lastPage = Math.max(1, Math.ceil(response.data.length / this.pageSize()));
+
+            if (this.page() > lastPage) {
+                this.page.set(lastPage);
+            }
         } catch (error) {
             this.notificationService.error('Ошибка при загрузке бэкапов');
         } finally {
@@ -86,6 +117,15 @@ export class BackupListingComponent implements OnInit {
         } finally {
             this.creating.set(false);
         }
+    }
+
+    onPageChange(page: number): void {
+        this.page.set(page);
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
     }
 
     onRowClick(row: BackupRow): void {

@@ -113,6 +113,12 @@ export class LogListingComponent implements OnInit {
         this.loadLogs();
     }
 
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadLogs();
+    }
+
     private toRow(log: LogModel): LogRow {
         return {
             id: log.id,

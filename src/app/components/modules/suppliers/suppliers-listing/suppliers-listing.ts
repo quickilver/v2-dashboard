@@ -121,4 +121,10 @@ export class SuppliersListingComponent implements OnInit {
         this.page.set(page);
         this.loadSuppliers();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadSuppliers();
+    }
 }

@@ -114,4 +114,10 @@ export class PricesListingComponent implements OnInit {
         this.page.set(page);
         this.loadPrices();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadPrices();
+    }
 }

@@ -1,0 +1,98 @@
+@use 'variables' as *;
+
+.page-sizes {
+    position: relative;
+}
+
+.page-sizes-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: $main-font-color;
+    background: #ffffff;
+    border: 1px solid $input-border-color;
+    border-radius: $input-radius;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        border-color: $primary-color;
+        color: $primary-color;
+    }
+
+    .toggle-icon {
+        font-size: 16px;
+    }
+}
+
+.page-sizes-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 100;
+    width: 200px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: $input-radius;
+    box-shadow: $shadow;
+    border: 1px solid $grey-light-2;
+}
+
+.page-sizes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: $main-font-color;
+}
+
+.page-sizes-close {
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    color: $grey;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        color: $main-font-color;
+    }
+}
+
+.page-sizes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.page-sizes-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: $input-radius;
+    font-size: 14px;
+    color: $main-font-color;
+    cursor: pointer;
+
+    &:hover {
+        background: $grey-light;
+    }
+
+    &.is-active {
+        background: $primary-light-color;
+        color: $primary-dark-color;
+    }
+}
+
+.page-sizes-title {
+    flex: 1;
+}

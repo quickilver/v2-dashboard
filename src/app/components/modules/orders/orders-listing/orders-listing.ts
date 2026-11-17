@@ -127,4 +127,10 @@ export class OrdersListingComponent implements OnInit {
         this.page.set(page);
         this.loadOrders();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadOrders();
+    }
 }

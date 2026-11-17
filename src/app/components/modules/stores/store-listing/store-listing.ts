@@ -114,4 +114,10 @@ export class StoreListingComponent implements OnInit {
         this.page.set(page);
         this.loadStores();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadStores();
+    }
 }

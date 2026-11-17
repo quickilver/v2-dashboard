@@ -124,4 +124,10 @@ export class PagesListingComponent implements OnInit {
         this.page.set(page);
         this.loadPages();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadPages();
+    }
 }

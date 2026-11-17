@@ -11,10 +11,12 @@
         [page]="page()"
         title="Заказы"
         [actionsColumn]="false"
+        [sizable]="true"
         [searchable]="false"
         (rowClick)="onRowClick($event)"
         (sortChange)="onSort($event)"
         (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
         (createClick)="createClick()"
     />
 </div>

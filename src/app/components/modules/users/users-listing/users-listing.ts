@@ -106,4 +106,10 @@ export class UsersListingComponent implements OnInit {
         this.page.set(page);
         this.loadUsers();
     }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadUsers();
+    }
 }

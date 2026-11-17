@@ -22,8 +22,14 @@ export class ReceiveService {
         if (params) {
             if (params.page) httpParams = httpParams.set('page', params.page);
             if (params.per_page) httpParams = httpParams.set('per_page', params.per_page);
+            if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.sort) httpParams = httpParams.set('sort', params.sort);
             if (params.direction) httpParams = httpParams.set('direction', params.direction);
+            if (params.store_id) httpParams = httpParams.set('store_id', params.store_id);
+            if (params.supplier_id) httpParams = httpParams.set('supplier_id', params.supplier_id);
+            if (params.user_id) httpParams = httpParams.set('user_id', params.user_id);
+            if (params.date_from) httpParams = httpParams.set('date_from', params.date_from);
+            if (params.date_to) httpParams = httpParams.set('date_to', params.date_to);
         }
         return firstValueFrom(
             this.http.get<ReceivesIndexResponse>(this.apiUrl, { params: httpParams }),

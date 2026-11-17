@@ -141,6 +141,12 @@ export class AccountsListingComponent implements OnInit {
         this.loadAccounts();
     }
 
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadAccounts();
+    }
+
     private fullName(account: AccountModel): string {
         return [account.last_name, account.first_name, account.middle_name]
             .filter((part) => !!part)

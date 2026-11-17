@@ -165,6 +165,12 @@ export class ReceivesListingComponent implements OnInit {
         this.loadReceives();
     }
 
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
+        this.loadReceives();
+    }
+
     private openEditor(id: number): void {
         this.popupService
             .open('Редактирование поступления', ReceivesEditorComponent, { id }, 'with-tabs')

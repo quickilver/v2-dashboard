@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { OrderReportFilters } from '../models/reports/order-report-filters.model';
+import { ReceiveReportFilters } from '../models/reports/receive-report-filters.model';
 
 @Injectable({
     providedIn: 'root',
@@ -27,6 +28,29 @@ export class ReportService {
 
         return firstValueFrom(
             this.http.get(`${this.apiUrl}orders/export`, {
+                params: httpParams,
+                responseType: 'blob',
+            }),
+        );
+    }
+
+    /**
+     * Экспорт отчёта по поступлениям в XLSX.
+     */
+    async exportReceives(filters: ReceiveReportFilters): Promise<Blob> {
+        let httpParams = new HttpParams();
+
+        const dateFrom = this.toApiDate(filters.date_from);
+        const dateTo = this.toApiDate(filters.date_to);
+
+        if (dateFrom) httpParams = httpParams.set('date_from', dateFrom);
+        if (dateTo) httpParams = httpParams.set('date_to', dateTo);
+        if (filters.store_id) httpParams = httpParams.set('store_id', filters.store_id);
+        if (filters.supplier_id) httpParams = httpParams.set('supplier_id', filters.supplier_id);
+        if (filters.user_id) httpParams = httpParams.set('user_id', filters.user_id);
+
+        return firstValueFrom(
+            this.http.get(`${this.apiUrl}receives/export`, {
                 params: httpParams,
                 responseType: 'blob',
             }),

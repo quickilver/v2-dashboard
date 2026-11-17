@@ -301,7 +301,7 @@ pictures[1][is_main]=0
 | PUT    | `/receives/{id}` | Обновить поступление | `ReceivesUpdateResponse` |
 | DELETE | `/receives/{id}` | Удалить поступление  | —                        |
 
-- **Query (index):** `page`, `per_page`, `sort`, `direction`.
+- **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `store_id`, `supplier_id`, `user_id`, `date_from`, `date_to`.
 - **Тело запроса:**
 
 ```json
@@ -390,9 +390,10 @@ pictures[1][is_main]=0
 
 Базовый путь: `/reports/` — сервис `ReportService`.
 
-| Метод | Путь                     | Описание                          | Ответ  |
-| ----- | ------------------------ | --------------------------------- | ------ |
-| GET   | `/reports/orders/export` | Экспорт отчёта по продажам в XLSX | `Blob` |
+| Метод | Путь                       | Описание                              | Ответ  |
+| ----- | -------------------------- | ------------------------------------- | ------ |
+| GET   | `/reports/orders/export`   | Экспорт отчёта по продажам в XLSX     | `Blob` |
+| GET   | `/reports/receives/export` | Экспорт отчёта по поступлениям в XLSX | `Blob` |
 
 - **Query:** `date_from`, `date_to` (`YYYY-MM-DD`), `account_id`, `product_id`, `query`.
 - **Ответ:** файл `orders-report-{Y-m-d_His}.xlsx`.
@@ -400,6 +401,14 @@ pictures[1][is_main]=0
 - На бэкенде — `ReportController::orders()` → `ExportOrdersReportAction` → `OrdersExport`
   (Laravel Excel). Требует `permission:orders`.
 - Фронтенд скачивает файл через `responseType: 'blob'` и `URL.createObjectURL`.
+
+### Отчёт по поступлениям
+
+- **Query:** `date_from`, `date_to` (`YYYY-MM-DD`), `store_id`, `supplier_id`, `user_id`, `query`.
+- **Ответ:** файл `receives-report-{Y-m-d_His}.xlsx`.
+- **Колонки:** Дата, Время, Номер, Склад, Контрагент, Менеджер, Комментарий, Товаров, Сумма.
+- На бэкенде — `ReportController::receives()` → `ExportReceivesReportAction` → `ReceivesExport`.
+  Требует `permission:receives`.
 
 ---
 

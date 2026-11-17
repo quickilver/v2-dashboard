@@ -117,7 +117,7 @@ export class <Entity>ListingComponent implements OnInit {
     private currentDirection: 'asc' | 'desc' = 'asc';
 
     ngOnInit(): void { this.load(); }
-    // load / onRowClick / onEdit / onDelete / createClick / onSearch / onSort / onPageChange
+    // load / onRowClick / onEdit / onDelete / createClick / onSearch / onSort / onPageChange / onPageSizeChange
 }
 ```
 
@@ -136,6 +136,7 @@ export class <Entity>ListingComponent implements OnInit {
     (rowClick)="onRowClick($event)"
     (sortChange)="onSort($event)"
     (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (createClick)="createClick()"
@@ -227,6 +228,7 @@ export class <Entity>EditorComponent implements OnInit {
 | `title`             | `string`            | Заголовок                                    |
 | `actionsColumn`     | `boolean`           | Колонка «Действия» (dropdown)                |
 | `sizable`           | `boolean`           | Кнопка «Размеры» (крупный/обычный/мелкий)    |
+| `pageSizable`       | `boolean`           | Кнопка «Строк на странице» (20/50/100)       |
 
 | Выход                      | Аргумент             |
 | -------------------------- | -------------------- |
@@ -237,10 +239,34 @@ export class <Entity>EditorComponent implements OnInit {
 | `searchChange`             | `string \| number`   |
 | `sortChange`               | `{ key, direction }` |
 | `pageChange`               | `number`             |
+| `pageSizeChange`           | `number`             |
+
+### Количество строк на странице (кнопка `pageSize`)
+
+Кнопка выводится только при `[pageSizable]="true"` (по умолчанию скрыта).
+Варианты: 20, 50 (по умолчанию), 100. Выбор эмитится через `pageSizeChange`,
+листинг-родитель обновляет свой `pageSize`, сбрасывает `page` на 1 и перезапрашивает данные.
+
+```html
+<app-listing
+    ...
+    [pageSizable]="true"
+    [pageSize]="pageSize()"
+    (pageSizeChange)="onPageSizeChange($event)"
+/>
+```
+
+```ts
+onPageSizeChange(pageSize: number): void {
+    this.pageSize.set(pageSize);
+    this.page.set(1);
+    this.load();
+}
+```
 
 ### Размер таблицы (кнопка «Размеры»)
 
-Кнопка выводится только при `[sizable]="true"` (сейчас — в модуле «Характеристики»).
+Кнопка выводится только при `[sizable]="true"` (включена во всех листингах).
 Варианты: `large` (16 px / 16 px), `normal` (14 px / 10 px, по умолчанию), `small` (12 px / 5 px).
 Размер применяется классом на контейнере `.table` (`size-large` / `size-normal` / `size-small`),
 CSS правит `font-size` и вертикальные `padding` ячеек. Выбор хранится в `localStorage`

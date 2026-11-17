@@ -1,0 +1,43 @@
+<div class="receive-reports-filters">
+    <div class="filters-title">Фильтры</div>
+
+    <div class="filters-body">
+        <app-calendar-field
+            label="Дата от"
+            placeholder="ДД.ММ.ГГГГ"
+            [value]="filters().date_from"
+            (valueChange)="onDateFromChange($event)"
+        />
+
+        <app-calendar-field
+            label="Дата до"
+            placeholder="ДД.ММ.ГГГГ"
+            [value]="filters().date_to"
+            (valueChange)="onDateToChange($event)"
+        />
+
+        <app-select-field
+            label="Склад"
+            placeholder="Все склады"
+            [options]="storeOptions()"
+            [value]="filters().store_id"
+            (valueChange)="onStoreChange($event)"
+        />
+
+        <app-autocomplete-users-field
+            label="Менеджер"
+            placeholder="Поиск менеджера"
+            [search]="managerSearch()"
+            (searchChange)="managerSearch.set($event)"
+            [value]="selectedManager()"
+            (valueChange)="onManagerChange($event)"
+        />
+
+        <app-autocomplete-suppliers-field
+            label="Контрагент"
+            placeholder="Поиск контрагента"
+            [value]="selectedSupplier()"
+            (valueChange)="onSupplierChange($event)"
+        />
+    </div>
+</div>

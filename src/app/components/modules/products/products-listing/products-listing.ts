@@ -36,14 +36,14 @@ export class ProductsListingComponent implements OnInit {
             isDefault: true,
             imageUrl: (row: ProductIndex) => row.picture?.preview_url ?? row.picture?.url ?? '',
         },
-        { key: 'id', title: 'ID', sortable: true, width: '100px', isDefault: true },
+        { key: 'id', title: 'ID', sortable: true, width: '50px', isDefault: true },
         { key: 'title', title: 'Название', sortable: true, isDefault: true },
         { key: 'sku', title: 'Артикул', sortable: true, isDefault: true },
         {
             key: 'total_count',
             title: 'Кол-во',
             sortable: false,
-            width: '100px',
+            width: '50px',
             isDefault: true,
             formatter: (row: ProductIndex) => String(row.total_count ?? 0),
         },
@@ -157,6 +157,12 @@ export class ProductsListingComponent implements OnInit {
 
     onPageChange(page: number): void {
         this.page.set(page);
+        this.loadProducts();
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.pageSize.set(pageSize);
+        this.page.set(1);
         this.loadProducts();
     }
 }

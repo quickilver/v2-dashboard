@@ -54,14 +54,14 @@
                             <div class="report-day-body">
                                 <table class="report-table">
                                     <thead>
-                                    <tr>
-                                        <th class="col-time">Время</th>
-                                        <th class="col-number">Номер</th>
-                                        <th class="col-account">Покупатель</th>
-                                        <th class="col-status">Статус</th>
-                                        <th class="col-count align-right">Товаров</th>
-                                        <th class="col-total align-right">Сумма</th>
-                                    </tr>
+                                        <tr>
+                                            <th class="col-time">Время</th>
+                                            <th class="col-number">Номер</th>
+                                            <th class="col-account">Покупатель</th>
+                                            <th class="col-status">Статус</th>
+                                            <th class="col-count align-right">Товаров</th>
+                                            <th class="col-total align-right">Сумма</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         @for (order of day.orders; track order.id) {
@@ -82,7 +82,9 @@
                                                     <button
                                                         type="button"
                                                         class="toggle-products"
-                                                        [class.is-open]="isProductsExpanded(order.id)"
+                                                        [class.is-open]="
+                                                            isProductsExpanded(order.id)
+                                                        "
                                                         (click)="toggleProducts(order.id)"
                                                     >
                                                         <span>{{ order.total_count }} шт.</span>
@@ -112,15 +114,31 @@
                                                                 track product.id
                                                             ) {
                                                                 <div class="report-product">
-                                                                    <span class="report-product-title">
+                                                                    <span
+                                                                        class="report-product-title"
+                                                                    >
                                                                         {{ product.title }}
                                                                     </span>
-                                                                    <span class="report-product-count">
+                                                                    <span
+                                                                        class="report-product-count"
+                                                                    >
                                                                         {{ product.count }} ×
-                                                                        {{ formatPrice(product.amount) }} ₽
+                                                                        {{
+                                                                            formatPrice(
+                                                                                product.amount
+                                                                            )
+                                                                        }}
+                                                                        ₽
                                                                     </span>
-                                                                    <span class="report-product-total">
-                                                                        {{ formatPrice(product.total) }} ₽
+                                                                    <span
+                                                                        class="report-product-total"
+                                                                    >
+                                                                        {{
+                                                                            formatPrice(
+                                                                                product.total
+                                                                            )
+                                                                        }}
+                                                                        ₽
                                                                     </span>
                                                                 </div>
                                                             } @empty {

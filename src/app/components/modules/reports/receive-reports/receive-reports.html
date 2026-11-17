@@ -1,0 +1,167 @@
+<div class="header">
+    <div class="title">Отчёт по поступлениям</div>
+    <div class="actions"></div>
+</div>
+
+<div class="receive-reports-container">
+    <div class="receive-reports-header">
+        <app-receive-reports-filters
+            [filters]="filters()"
+            (filtersChange)="onFiltersChange($event)"
+        />
+    </div>
+
+    <div class="receive-reports-content">
+        @if (loading()) {
+            <app-skeleton [count]="6" width="100%" [height]="48" [gap]="12" />
+        } @else if (days().length > 0) {
+            <div class="report-summary">
+                <div class="report-summary-stats">
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Поступлений</span>
+                        <span class="report-summary-value">{{ receives().length }}</span>
+                    </div>
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Товаров</span>
+                        <span class="report-summary-value">{{ totalCount() }}</span>
+                    </div>
+                    <div class="report-summary-item">
+                        <span class="report-summary-label">Сумма</span>
+                        <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                    </div>
+                </div>
+                <div class="reports-summary-actions">
+                    <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
+                        <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="report-days">
+                @for (day of days(); track day.date) {
+                    <div class="report-day" [class.is-collapsed]="isCollapsed(day.date)">
+                        <div class="report-day-header" (click)="toggleDay(day.date)">
+                            <span class="report-day-arrow">
+                                <app-icon name="chevron-down" [size]="16" />
+                            </span>
+                            <span class="report-day-label">{{ day.label }}</span>
+                            <span class="report-day-meta">
+                                {{ day.receives.length }} пост. · {{ day.totalCount }} тов. ·
+                                {{ formatPrice(day.totalPrice) }} ₽
+                            </span>
+                        </div>
+
+                        @if (!isCollapsed(day.date)) {
+                            <div class="report-day-body">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-time">Время</th>
+                                            <th class="col-number">Номер</th>
+                                            <th class="col-store">Склад</th>
+                                            <th class="col-supplier">Контрагент</th>
+                                            <th class="col-user">Менеджер</th>
+                                            <th class="col-count align-right">Товаров</th>
+                                            <th class="col-total align-right">Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (receive of day.receives; track receive.id) {
+                                            <tr>
+                                                <td>{{ formatTime(receive.created_at) }}</td>
+                                                <td>
+                                                    <button
+                                                        type="button"
+                                                        class="report-receive-link"
+                                                        (click)="openReceive(receive)"
+                                                    >
+                                                        {{ receive.id }}
+                                                    </button>
+                                                </td>
+                                                <td>{{ receive.store.title }}</td>
+                                                <td>{{ receive.supplier?.title ?? '—' }}</td>
+                                                <td>{{ receive.user.name }}</td>
+                                                <td class="align-right">
+                                                    <button
+                                                        type="button"
+                                                        class="toggle-products"
+                                                        [class.is-open]="
+                                                            isProductsExpanded(receive.id)
+                                                        "
+                                                        (click)="toggleProducts(receive.id)"
+                                                    >
+                                                        <span>{{ receive.total_count }} шт.</span>
+                                                        <span class="toggle-products-arrow">
+                                                            <app-icon
+                                                                [name]="
+                                                                    isProductsExpanded(receive.id)
+                                                                        ? 'chevron-up'
+                                                                        : 'chevron-down'
+                                                                "
+                                                                [size]="14"
+                                                            />
+                                                        </span>
+                                                    </button>
+                                                </td>
+                                                <td class="align-right">
+                                                    {{ formatPrice(receive.total_price) }} ₽
+                                                </td>
+                                            </tr>
+
+                                            @if (isProductsExpanded(receive.id)) {
+                                                <tr class="report-products-row">
+                                                    <td colspan="7">
+                                                        <div class="report-products">
+                                                            @for (
+                                                                product of receive.products;
+                                                                track product.product.id
+                                                            ) {
+                                                                <div class="report-product">
+                                                                    <span
+                                                                        class="report-product-title"
+                                                                    >
+                                                                        {{ product.product.title }}
+                                                                    </span>
+                                                                    <span
+                                                                        class="report-product-count"
+                                                                    >
+                                                                        {{ product.count }} ×
+                                                                        {{
+                                                                            formatPrice(
+                                                                                product.purchase_price
+                                                                            )
+                                                                        }}
+                                                                        ₽
+                                                                    </span>
+                                                                    <span
+                                                                        class="report-product-total"
+                                                                    >
+                                                                        {{
+                                                                            formatPrice(
+                                                                                product.total
+                                                                            )
+                                                                        }}
+                                                                        ₽
+                                                                    </span>
+                                                                </div>
+                                                            } @empty {
+                                                                <div class="report-products-empty">
+                                                                    Товаров нет
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        } @else {
+            <div class="receive-reports-placeholder">Поступлений по выбранным фильтрам нет</div>
+        }
+    </div>
+</div>

@@ -70,6 +70,7 @@
 
                 th {
                     user-select: none;
+                    white-space: nowrap;
 
                     &.sortable {
                         cursor: pointer;
@@ -120,6 +121,7 @@
 
                         td {
                             border-bottom: 1px solid $grey-light;
+                            text-overflow: ellipsis;
                         }
 
                         .actions-td {

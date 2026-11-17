@@ -4,6 +4,12 @@
         <div class="title">{{ title() }}</div>
         <div class="actions">
             <ng-content select="[header-actions]" />
+            @if (pageSizable()) {
+                <app-listing-page-sizes
+                    [pageSize]="pageSize()"
+                    (changed)="onPageSizeChange($event)"
+                />
+            }
             @if (sizable()) {
                 <app-listing-sizes [size]="tableSize()" (changed)="onSizeChanged($event)" />
             }

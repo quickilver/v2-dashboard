@@ -1,0 +1,32 @@
+<div class="page-sizes">
+    <button
+        type="button"
+        class="page-sizes-toggle"
+        title="Строк на странице"
+        (click)="toggleOpen()"
+    >
+        <span class="page-sizes-value">{{ pageSize() }}</span>
+        <app-icon name="chevron-down" [size]="16" class="toggle-icon" />
+    </button>
+
+    @if (isOpen()) {
+        <div class="page-sizes-panel">
+            <div class="page-sizes-header">
+                <span>Строк на странице</span>
+                <button type="button" class="page-sizes-close" (click)="close()">✕</button>
+            </div>
+
+            <ul class="page-sizes-list">
+                @for (option of options; track option) {
+                    <li
+                        class="page-sizes-item"
+                        [class.is-active]="isActive(option)"
+                        (click)="select(option)"
+                    >
+                        <span class="page-sizes-title">{{ option }}</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
