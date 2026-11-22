@@ -111,6 +111,7 @@
 | GET   | `/backups/`                | Список бэкапов             | `BackupsIndexResponse` |
 | POST  | `/backups/`                | Создать новый бэкап        | `BackupModel`          |
 | GET   | `/backups/{file}/download` | Скачать файл бэкапа        | бинарный поток         |
+| POST  | `/backups/upload`          | Загрузить и восстановить дамп | —                   |
 | POST  | `/backups/restore`         | Восстановить базу из дампа | —                      |
 
 **GET `/backups/`** — список файлов дампов в `database/backups`. Ответ:
@@ -132,6 +133,8 @@
 **POST `/backups/`** — тело `{ "compress": true, "no_ssl": true }` (оба опциональны).
 
 **GET `/backups/{file}/download`** — отдаёт файл дампа на скачивание (`Content-Disposition: attachment`). `{file}` — имя файла из `database/backups/` (без слэшей).
+
+**POST `/backups/upload`** принимает `multipart/form-data` с полем `file` (`.sql` или `.sql.gz`) и необязательным `no_ssl` (`0` или `1`). Требуется `full_access`. Файл сохраняется под именем `upload_ГГГГ-ММ-ДД_ЧЧ-ММ-СС_UUID` с расширением дампа, затем API восстанавливает из него базу.
 
 **POST `/backups/restore`** — тело:
 
@@ -507,6 +510,7 @@ pictures[1][is_main]=0
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group_id`, `assigned_to`, `root_only`.
 - **Тело запроса:** `{ "group_id": 1, "title": "Задача", "description": "...", "assigned_to": 2, "start_at": "2026-01-01", "finish_at": "2026-01-10" }`.
+- Перенос задачи между колонками — `PUT /tasks/{id}` с новым `group_id`.
 - `created_by` проставляется на бэкенде из авторизованного пользователя.
 - Удаление задачи — мягкое (`SoftDeletes`).
 

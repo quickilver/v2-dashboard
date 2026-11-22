@@ -15,6 +15,7 @@
 | Конкретный модуль                       | [docs/modules/](./modules/)                                            |
 | Страницы верхнего уровня                | [docs/pages/](./pages/)                                                |
 | Маршруты                                | `src/app/app.routes.ts`                                                |
+| Заголовки страниц (`<title>`)           | `title` в маршрутах + `src/app/app-title.strategy.ts`                  |
 | Пункты меню                             | `ModuleSeeder` на бэкенде (`v2-api/database/seeders/ModuleSeeder.php`) |
 | Переиспользуемая таблица                | `src/app/components/listing/listing.ts`                                |
 | Поля форм                               | `src/app/components/fields/`                                           |
@@ -205,11 +206,27 @@ export class <Entity>EditorComponent implements OnInit {
 3. **Сервис** — `src/app/services/<entity>.service.ts` с `index` / `show` / `create` / `update` / `delete` через `firstValueFrom`.
 4. **Листинг** — `modules/<entity>/<entity>-listing/`.
 5. **Едитор** — `modules/<entity>/<entity>-editor/`.
-6. **Маршрут** — добавить в `src/app/app.routes.ts`.
+6. **Маршрут** — добавить в `src/app/app.routes.ts` вместе с `title` (заголовок вкладки).
 7. **Документация** — `docs/modules/<entity>.md` + раздел в `docs/api.md`.
 8. **Проверки** — `npm run build`, `npx prettier --check`, `problems`.
 
-## 7. Переиспользуемые компоненты
+## 7. Заголовки страниц
+
+Заголовок вкладки задаётся свойством `title` у маршрута в `src/app/app.routes.ts`:
+
+```ts
+{ path: 'team/tasks', component: TasksBoardComponent, title: 'Задачи' },
+```
+
+`AppTitleStrategy` (`src/app/app-title.strategy.ts`) подставляет его в `<title>`
+в формате `«Страница — v2 dashboard»`; если у маршрута нет `title` — остаётся
+просто `v2 dashboard`. Стратегия зарегистрирована в `app.config.ts` через
+`{ provide: TitleStrategy, useClass: AppTitleStrategy }`.
+
+При добавлении нового маршрута обязательно указывайте `title` — иначе вкладка
+браузера останется с названием приложения.
+
+## 8. Переиспользуемые компоненты
 
 ### `app-listing` (`components/listing/listing.ts`)
 
@@ -355,7 +372,7 @@ interface ListingColumn {
 
 Класс попапа `'with-tabs'` включает flex-раскладку: табы сверху, скроллируемое тело, «прилипшие» кнопки снизу. **Обязателен**, если в едиторе есть табы.
 
-## 8. Соглашения кода
+## 9. Соглашения кода
 
 - `standalone: true`, `ChangeDetectionStrategy.OnPush` — всегда.
 - `inject()` вместо конструктора (кроме `HttpClient` в сервисах — там конструктор).
@@ -367,7 +384,7 @@ interface ListingColumn {
 - Комментарии — только для неочевидных решений.
 - Форматирование — Prettier (`npm run refactor`).
 
-## 9. Типовые ошибки и как их избежать
+## 10. Типовые ошибки и как их избежать
 
 | Симптом                                                                      | Причина                             | Решение                                                      |
 | ---------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------ |
@@ -380,7 +397,7 @@ interface ListingColumn {
 | `array_key_exists(): Argument #1 must be a valid array offset type` (бэкенд) | `HasLog` + составной первичный ключ | Уже исправлено через `HasLog::resolveModelId()`              |
 | Laravel-роут `{receife}`                                                     | Автогенерация имени параметра       | `->parameters(['receives' => 'receive'])`                    |
 
-## 10. Команды
+## 11. Команды
 
 ```bash
 npm start          # ng serve
@@ -393,7 +410,7 @@ npx prettier --check "src/app/**/*.{ts,html,scss}"
 
 Сборка выдаёт предупреждение о превышении бюджета бандла (~620 kB при лимите 500 kB) — это **не ошибка**.
 
-## 11. Правила для агентов
+## 12. Правила для агентов
 
 1. Перед изменением модуля прочитать его `docs/modules/<entity>.md`.
 2. Перед работой с API свериться с `docs/api.md`.

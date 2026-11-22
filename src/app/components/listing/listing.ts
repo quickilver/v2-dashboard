@@ -7,7 +7,9 @@ import {
     ChangeDetectionStrategy,
     effect,
     inject,
+    TemplateRef,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { IconComponent } from '../icon/icon';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { DropdownFieldComponent } from '../fields/dropdown-field/dropdown-field';
@@ -30,6 +32,7 @@ export interface SortState {
     selector: 'app-listing',
     standalone: true,
     imports: [
+        NgTemplateOutlet,
         IconComponent,
         InputFieldComponent,
         DropdownFieldComponent,
@@ -64,6 +67,7 @@ export class ListingComponent {
     sortable = input<boolean>(true);
     title = input<string>('');
     actionsColumn = input<boolean>(false);
+    rowActionsTemplate = input<TemplateRef<{ $implicit: unknown }> | null>(null);
 
     sortChange = output<SortState>();
     pageChange = output<number>();

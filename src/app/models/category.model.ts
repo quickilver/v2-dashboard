@@ -2,7 +2,7 @@ import { CategoryAncestor } from './category-ancestor.model';
 
 export interface Category {
     id: number;
-    guid: string;
+    guid: string | null;
     title: string;
     alias: string;
     parent_id: number | null;

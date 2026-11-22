@@ -69,7 +69,7 @@ export class CategoriesEditorComponent implements OnInit {
         try {
             const response = await this.categoriesService.show(id);
             const category = response.data;
-            this.guid.set(category.guid);
+            this.guid.set(category.guid ?? '');
             this.title.set(category.title);
             this.alias.set(category.alias);
             this.display.set(category.display);
@@ -106,7 +106,9 @@ export class CategoriesEditorComponent implements OnInit {
             this.notificationService.success('Категория успешно сохранена');
             this.popupService.resolve();
         } catch (response: any) {
-            this.notificationService.error(response.error.message);
+            this.notificationService.error(
+                response?.error?.message ?? 'Ошибка при сохранении категории',
+            );
         } finally {
             this.saving.set(false);
         }

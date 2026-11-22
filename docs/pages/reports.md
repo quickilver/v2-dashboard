@@ -2,8 +2,7 @@
 
 ## Назначение
 
-Раздел построения отчётов. Пока содержит только переключатель разделов
-(`app-tabs-field`) и заглушку контента.
+Раздел построения отчётов: карточки-ссылки на доступные отчёты.
 
 ## Расположение
 
@@ -24,21 +23,17 @@ src/app/pages/reports/
 
 ## Компонент `ReportsPageComponent`
 
-Селектор `app-reports-page`, standalone, `OnPush`.
-
-- `tabs: TabsFieldOption[]` — «Продажи», «Закупки», «Склад», «Клиенты»;
-- `activeTab = signal<string | number | null>('sales')` — активный раздел.
+Селектор `app-reports-page`, standalone, `OnPush`. Состояния нет — компонент
+только отображает список отчётов.
 
 ## Шаблон
 
 - Заголовок «Отчёты» и подзаголовок.
-- `app-tabs-field` с `[(value)]="activeTab"`.
-- На табе «Продажи» — карточка-ссылка на `/reports/orders`; на остальных табах —
-  заглушка «Раздел в разработке».
+- Карточки-ссылки: «Отчёт по продажам» → `/reports/orders`,
+  «Отчёт по поступлениям» → `/reports/receives`.
 
 ## Зависимости
 
-- `TabsFieldComponent` — см. [tabs-field.md](../components/tabs-field.md).
 - `IconComponent`, `RouterLink`.
 
 ## Известные ограничения

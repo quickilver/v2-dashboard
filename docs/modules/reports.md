@@ -32,9 +32,8 @@ src/app/components/modules/reports/
 | `/reports/orders`   | `OrderReportsComponent`   |
 | `/reports/receives` | `ReceiveReportsComponent` |
 
-Определены в `src/app/app.routes.ts`. Страница `/reports` — лендинг с табами
-(`app-tabs-field`): на табе «Продажи» ссылка на `/reports/orders`,
-на табе «Закупки» — на `/reports/receives`.
+Определены в `src/app/app.routes.ts`. Страница `/reports` — лендинг с карточками-ссылками
+на `/reports/orders` и `/reports/receives`.
 
 ## Компоненты
 

@@ -37,6 +37,14 @@ export class BackupService {
         );
     }
 
+    async uploadAndRestore(file: File, noSsl: boolean = false): Promise<void> {
+        const formData: FormData = new FormData();
+        formData.append('file', file);
+        formData.append('no_ssl', noSsl ? '1' : '0');
+
+        await firstValueFrom(this.http.post(`${this.apiUrl}upload`, formData));
+    }
+
     async download(file: string): Promise<Blob> {
         return firstValueFrom(
             this.http.get(`${this.apiUrl}${encodeURIComponent(file)}/download`, {

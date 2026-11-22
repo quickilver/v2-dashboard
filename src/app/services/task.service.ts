@@ -29,7 +29,9 @@ export class TaskService {
             if (params.assigned_to) httpParams = httpParams.set('assigned_to', params.assigned_to);
             if (params.root_only) httpParams = httpParams.set('root_only', params.root_only);
         }
-        return firstValueFrom(this.http.get<TasksIndexResponse>(this.apiUrl, { params: httpParams }));
+        return firstValueFrom(
+            this.http.get<TasksIndexResponse>(this.apiUrl, { params: httpParams }),
+        );
     }
 
     async show(id: number): Promise<TasksShowResponse> {

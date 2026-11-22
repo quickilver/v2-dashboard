@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
+import { AuthService } from '../../../../services/auth.service';
 import { BackupService } from '../../../../services/backup.service';
 import { BackupModel } from '../../../../models/backup.model';
 import { BackupsIndexResponse } from '../../../../models/responses/backups/backups-index.response';
@@ -25,6 +26,7 @@ import { MetaModel } from '../../../../models/meta.model';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackupListingComponent implements OnInit {
+    private readonly authService = inject(AuthService);
     private readonly backupService = inject(BackupService);
     private readonly notificationService = inject(NotificationService);
     private readonly confirmService = inject(ConfirmService);
@@ -48,6 +50,10 @@ export class BackupListingComponent implements OnInit {
     loading = signal<boolean>(false);
     creating = signal<boolean>(false);
     restoring = signal<string | null>(null);
+    canUpload = computed<boolean>(() => this.authService.user()?.full_access === true);
+    backupActionPending = computed<boolean>(
+        () => this.creating() || this.restoring() !== null || this.confirmService.isShow(),
+    );
     pageSize = signal<number>(50);
     page = signal<number>(1);
 
@@ -98,6 +104,8 @@ export class BackupListingComponent implements OnInit {
     }
 
     async onCreateBackup(): Promise<void> {
+        if (this.backupActionPending()) return;
+
         const confirmed = await this.confirmService.confirm(
             'Создание бэкапа',
             'Создать новый дамп базы данных? Это может занять некоторое время.',
@@ -128,10 +136,6 @@ export class BackupListingComponent implements OnInit {
         this.page.set(1);
     }
 
-    onRowClick(row: BackupRow): void {
-        this.onRestore(row);
-    }
-
     onCellClick(event: { row: BackupRow; column: ListingColumn }): void {
         if (event.column.key === 'name') {
             this.onDownload(event.row);
@@ -152,23 +156,56 @@ export class BackupListingComponent implements OnInit {
         }
     }
 
+    async onUpload(input: HTMLInputElement): Promise<void> {
+        const file: File | undefined = input.files?.[0];
+        input.value = '';
+
+        if (!file || !this.canUpload()) return;
+
+        if (!/\.sql(?:\.gz)?$/i.test(file.name) || file.size === 0) {
+            this.notificationService.error('Выберите непустой дамп в формате .sql или .sql.gz');
+            return;
+        }
+
+        await this.restoreBackup(file.name, file);
+    }
+
     async onRestore(row: BackupRow): Promise<void> {
-        const confirmed = await this.confirmService.confirm(
+        await this.restoreBackup(row.fileName);
+    }
+
+    private async restoreBackup(fileName: string, upload?: File): Promise<void> {
+        if (this.backupActionPending()) return;
+
+        const actionLabel: string = upload ? 'Загрузить и восстановить' : 'Восстановить';
+        const description: string = upload
+            ? `Загрузить файл "${fileName}" и восстановить из него базу? Текущие данные будут заменены.`
+            : `Восстановить базу из файла "${fileName}"? Текущие данные будут заменены.`;
+        const confirmed: boolean = await this.confirmService.confirm(
             'Восстановление базы данных',
-            `Вы уверены, что хотите восстановить базу из файла "${row.fileName}"? Текущие данные будут заменены.`,
-            'Восстановить',
+            description,
+            actionLabel,
             'Отмена',
         );
 
         if (!confirmed) return;
 
-        this.restoring.set(row.fileName);
+        this.restoring.set(fileName);
         try {
-            await this.backupService.restore(row.fileName, false, true);
+            if (upload) {
+                await this.backupService.uploadAndRestore(upload, true);
+            } else {
+                await this.backupService.restore(fileName, false, true);
+            }
+
             this.notificationService.success('База данных успешно восстановлена');
         } catch (error) {
             this.notificationService.error('Ошибка при восстановлении базы данных');
         } finally {
+            if (upload) {
+                this.page.set(1);
+                await this.loadBackups();
+            }
             this.restoring.set(null);
         }
     }
@@ -184,7 +221,7 @@ export class BackupListingComponent implements OnInit {
     }
 
     private extractDate(fileName: string): string {
-        const match = fileName.match(/dump_(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})/);
+        const match = fileName.match(/^(?:dump|upload)_(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})/);
         if (!match) return '';
 
         const [, date, time] = match;

@@ -35,6 +35,7 @@ export class CategoriesTreeComponent implements OnInit {
     selectable = input<boolean>(false);
     editable = input<boolean>(false);
     multiple = input<boolean>(false);
+    showDisplay = input<boolean>(false);
     parentId = input<number>(0);
     ancestors = input<number[]>([]);
     value = model<number | number[] | null>(null);
@@ -144,7 +145,7 @@ export class CategoriesTreeComponent implements OnInit {
         const { CategoriesEditorComponent } =
             await import('../modules/categories/categories-editor/categories-editor');
         this.popupService
-            .open('Создание категории', CategoriesEditorComponent, { parentId })
+            .open('Создание категории', CategoriesEditorComponent, { parentId }, 'with-tabs')
             .then(() => {
                 this.load();
             });
@@ -200,7 +201,9 @@ export class CategoriesTreeComponent implements OnInit {
                         this.load();
                     })
                     .catch((e) => {
-                        this.notificationsService.error(e.error.message);
+                        this.notificationsService.error(
+                            e?.error?.message ?? 'Ошибка при удалении категории',
+                        );
                     });
             });
     }

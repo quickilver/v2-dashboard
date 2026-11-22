@@ -10,7 +10,13 @@
 } @else {
     <div class="board">
         @for (group of groups(); track group.id) {
-            <div class="board-column">
+            <div
+                class="board-column"
+                [class.is-drag-over]="dragOverGroupId() === group.id"
+                (dragover)="onDragOver(group, $event)"
+                (dragleave)="onDragLeave(group, $event)"
+                (drop)="onDrop(group, $event)"
+            >
                 <div class="board-column-header">
                     <div class="board-column-title">{{ group.title }}</div>
                     <div class="board-column-actions">
@@ -26,7 +32,14 @@
 
                 <div class="board-column-body">
                     @for (task of tasksOf(group); track task.id) {
-                        <app-task-card [task]="task" (opened)="openTask($event)" />
+                        <app-task-card
+                            [task]="task"
+                            draggable="true"
+                            [class.is-dragging]="draggedTask()?.id === task.id"
+                            (dragstart)="onDragStart(task, $event)"
+                            (dragend)="onDragEnd()"
+                            (opened)="openTask($event)"
+                        />
                     } @empty {
                         <div class="board-column-empty">Нет задач</div>
                     }

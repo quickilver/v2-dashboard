@@ -16,6 +16,14 @@
                     {{ node.category.title }}
                 </div>
 
+                @if (showDisplay()) {
+                    <div
+                        class="tree-display"
+                        [class.is-visible]="node.category.display"
+                        [title]="node.category.display ? 'Отображается' : 'Скрыта'"
+                    ></div>
+                }
+
                 @if (editable()) {
                     <div class="tree-position">
                         <input
@@ -41,6 +49,7 @@
                     [editable]="editable()"
                     [selectable]="selectable()"
                     [multiple]="multiple()"
+                    [showDisplay]="showDisplay()"
                     [(value)]="value"
                     [(selectedPaths)]="selectedPaths"
                 />

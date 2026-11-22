@@ -113,10 +113,17 @@
                                 }
                                 @if (actionsColumn()) {
                                     <td class="actions-td" (click)="$event.stopPropagation()">
-                                        <app-dropdown-field
-                                            label="Действия"
-                                            [options]="getRowActions(row)"
-                                        />
+                                        @if (rowActionsTemplate(); as template) {
+                                            <ng-container
+                                                [ngTemplateOutlet]="template"
+                                                [ngTemplateOutletContext]="{ $implicit: row }"
+                                            />
+                                        } @else {
+                                            <app-dropdown-field
+                                                label="Действия"
+                                                [options]="getRowActions(row)"
+                                            />
+                                        }
                                     </td>
                                 }
                             </tr>

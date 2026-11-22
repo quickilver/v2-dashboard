@@ -4,6 +4,16 @@
         >...
     </div>
 }
+<ng-template #rowActions let-row>
+    <button
+        type="button"
+        class="restore-button"
+        [disabled]="backupActionPending()"
+        (click)="onRestore(row)"
+    >
+        Восстановить
+    </button>
+</ng-template>
 <app-listing
     [columns]="columns()"
     [availableColumns]="columns()"
@@ -15,11 +25,26 @@
     [page]="page()"
     title="Резервные копии базы данных"
     [searchable]="false"
-    [actionsColumn]="false"
+    [actionsColumn]="true"
+    [rowActionsTemplate]="rowActions"
     [sizable]="true"
     (createClick)="onCreateBackup()"
-    (rowClick)="onRowClick($event)"
     (cellClick)="onCellClick($event)"
     (pageChange)="onPageChange($event)"
     (pageSizeChange)="onPageSizeChange($event)"
-/>
+>
+    <ng-container header-actions>
+        @if (canUpload()) {
+            <input
+                #dumpFile
+                type="file"
+                accept=".sql,.sql.gz"
+                hidden
+                (change)="onUpload(dumpFile)"
+            />
+            <button type="button" [disabled]="backupActionPending()" (click)="dumpFile.click()">
+                Загрузить
+            </button>
+        }
+    </ng-container>
+</app-listing>

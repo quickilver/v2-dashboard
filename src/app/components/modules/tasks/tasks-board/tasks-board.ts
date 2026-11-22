@@ -38,6 +38,11 @@ export class TasksBoardComponent implements OnInit {
     groups = signal<TaskGroupModel[]>([]);
     tasksByGroup = signal<Record<number, TaskModel[]>>({});
     loading = signal<boolean>(false);
+    draggedTask = signal<TaskModel | null>(null);
+    dragOverGroupId = signal<number | null>(null);
+    moving = signal<boolean>(false);
+
+    private dragEndedAt = 0;
 
     ngOnInit(): void {
         this.loadGroups();
@@ -88,11 +93,73 @@ export class TasksBoardComponent implements OnInit {
     }
 
     openTask(task: TaskModel): void {
+        if (Date.now() - this.dragEndedAt < 150) {
+            return;
+        }
+
         this.popupService
-            .open(task.title, TaskViewerComponent, { id: task.id },'with-tabs')
+            .open(task.title, TaskViewerComponent, { id: task.id }, 'with-tabs')
             .then(() => {
                 this.loadGroups();
             });
+    }
+
+    onDragStart(task: TaskModel, event: DragEvent): void {
+        this.draggedTask.set(task);
+
+        if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', String(task.id));
+        }
+    }
+
+    onDragEnd(): void {
+        this.dragEndedAt = Date.now();
+        this.draggedTask.set(null);
+        this.dragOverGroupId.set(null);
+    }
+
+    onDragOver(group: TaskGroupModel, event: DragEvent): void {
+        if (!this.draggedTask()) {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (event.dataTransfer) {
+            event.dataTransfer.dropEffect = 'move';
+        }
+
+        this.dragOverGroupId.set(group.id);
+    }
+
+    onDragLeave(group: TaskGroupModel, event: DragEvent): void {
+        const relatedTarget = event.relatedTarget as Node | null;
+        const column = event.currentTarget as HTMLElement;
+
+        if (relatedTarget && column.contains(relatedTarget)) {
+            return;
+        }
+
+        if (this.dragOverGroupId() === group.id) {
+            this.dragOverGroupId.set(null);
+        }
+    }
+
+    async onDrop(group: TaskGroupModel, event: DragEvent): Promise<void> {
+        event.preventDefault();
+
+        const task = this.draggedTask();
+
+        this.dragEndedAt = Date.now();
+        this.draggedTask.set(null);
+        this.dragOverGroupId.set(null);
+
+        if (!task || task.group_id === group.id || this.moving()) {
+            return;
+        }
+
+        await this.moveTask(task, group.id);
     }
 
     editGroup(group: TaskGroupModel): void {
@@ -122,6 +189,48 @@ export class TasksBoardComponent implements OnInit {
         } catch {
             this.notificationService.error('Ошибка при удалении колонки');
         }
+    }
+
+    private async moveTask(task: TaskModel, groupId: number): Promise<void> {
+        const previousState = this.tasksByGroup();
+
+        this.moving.set(true);
+        this.tasksByGroup.set(this.moveTaskInState(previousState, task, groupId));
+
+        try {
+            await this.taskService.update(task.id, {
+                group_id: groupId,
+                title: task.title,
+                description: task.description,
+                assigned_to: task.assigned_to,
+                start_at: task.start_at,
+                finish_at: task.finish_at,
+            });
+            this.notificationService.success('Задача перемещена');
+        } catch {
+            this.tasksByGroup.set(previousState);
+            this.notificationService.error('Не удалось переместить задачу');
+        } finally {
+            this.moving.set(false);
+        }
+    }
+
+    private moveTaskInState(
+        state: Record<number, TaskModel[]>,
+        task: TaskModel,
+        groupId: number,
+    ): Record<number, TaskModel[]> {
+        const result: Record<number, TaskModel[]> = {};
+
+        for (const [key, tasks] of Object.entries(state)) {
+            result[Number(key)] = tasks.filter((item) => item.id !== task.id);
+        }
+
+        const movedTask: TaskModel = { ...task, group_id: groupId };
+
+        result[groupId] = [...(result[groupId] ?? []), movedTask];
+
+        return result;
     }
 
     private groupTasksByColumn(tasks: TaskModel[]): Record<number, TaskModel[]> {

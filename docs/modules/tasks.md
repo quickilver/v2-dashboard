@@ -41,7 +41,7 @@ src/app/components/modules/tasks/
 
 Селектор `app-tasks-board`. Kanban-доска: горизонтальный список колонок с задачами.
 
-- **Состояние (signals):** `groups: TaskGroupModel[]`, `tasksByGroup: Record<number, TaskModel[]>`, `loading`.
+- **Состояние (signals):** `groups: TaskGroupModel[]`, `tasksByGroup: Record<number, TaskModel[]>`, `loading`, `draggedTask`, `dragOverGroupId`, `moving`.
 - **Методы:**
     - `loadGroups()` — параллельно загружает колонки (`TaskGroupService.index`) и задачи (`TaskService.index`);
     - `tasksOf(group)` — задачи конкретной колонки;
@@ -49,7 +49,9 @@ src/app/components/modules/tasks/
     - `createTask(group)` — открывает попап `TaskEditorComponent` с `groupId` колонки (кнопка `.create-task`);
     - `openTask(task)` — попап `TaskViewerComponent` с `id` задачи (клик по карточке задачи);
     - `editGroup(group)` — попап с `id` колонки;
-    - `deleteGroup(group)` — подтверждение через `ConfirmService`, затем `TaskGroupService.delete()`.
+    - `deleteGroup(group)` — подтверждение через `ConfirmService`, затем `TaskGroupService.delete()`;
+    - `onDragStart()`, `onDragOver()`, `onDragLeave()`, `onDrop()`, `onDragEnd()` — drag & drop задачи между колонками.
+- **Drag & drop:** карточка задачи (`app-task-card`) получает `draggable="true"`; колонка ловит `dragover`/`dragleave`/`drop`. При переносе состояние обновляется оптимистично (`moveTaskInState`), затем вызывается `TaskService.update(taskId, { group_id })` (`PUT /tasks/{id}`); при ошибке состояние откатывается. Колонка-цель подсвечивается классом `.is-drag-over`, перетаскиваемая карточка — `.is-dragging`. Клик по карточке сразу после перетаскивания игнорируется (`dragEndedAt`), чтобы не открывался попап.
 - **Разметка:** заголовок «Задачи» с кнопкой «Добавить колонку», колонки с названием, кнопкой создания задачи и списком карточек задач, кнопка добавления колонки в конце доски, пустые состояния.
 - **Скролл:** прокручивается только сама доска (`.board`, `overflow-x: auto`), страница не скроллится. Компонент занимает всю оставшуюся ширину и высоту контента (`:host` — `width: 100%`, `height: calc(100vh - 40px)`, `overflow: hidden`).
 
@@ -68,6 +70,7 @@ src/app/components/modules/tasks/
 
 - **Вход:** `task: TaskModel`.
 - **Выход:** `opened: TaskModel` — эмитится по клику на карточку.
+- **Drag & drop:** карточка помечается `draggable="true"` на доске; события `dragstart`/`dragend` обрабатывает `TasksBoardComponent`.
 - **Методы:** `formatDate()`, `isToday()`, `isFuture()` — подсветка даты начала.
 
 ### `TaskViewerComponent`

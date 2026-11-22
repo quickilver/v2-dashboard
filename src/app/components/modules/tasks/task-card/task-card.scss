@@ -2,6 +2,10 @@
 
 :host {
     display: block;
+
+    &.is-dragging {
+        opacity: 0.4;
+    }
 }
 
 .board-task {
@@ -90,6 +94,5 @@
                 }
             }
         }
-
     }
 }

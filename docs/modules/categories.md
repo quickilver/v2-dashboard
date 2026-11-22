@@ -48,11 +48,12 @@ src/app/components/modules/categories/
 
 `CategoriesTreeComponent` (`src/app/components/categories-tree/`) — переиспользуемый компонент, используется в листинге категорий, в едиторе категории (выбор родителя) и в фильтрах товаров.
 
-- **Входы:** `selectable`, `editable`, `multiple`, `parentId`, `ancestors: number[]`.
+- **Входы:** `selectable`, `editable`, `multiple`, `showDisplay`, `parentId`, `ancestors: number[]`.
 - **Модели:** `value: number | number[] | null` (выбранные id), `selectedPaths: number[][]`.
 - **Состояние:** `nodes: CategoryTreeNodeModel[]`, `loading`, `loaded`.
 - **Загрузка:** `CategoriesService.index({ parent_id, per_page: 100, sort: 'position', direction: 'desc' })`; дочерние узлы подгружаются лениво при раскрытии.
 - **Режим `editable`:** контекстное меню узла (`DropdownFieldComponent`) с действиями «Создать», «Редактировать», «Удалить»; открывает `CategoriesEditorComponent` через `PopupService`.
+- **Индикатор `showDisplay`:** перед полем позиции выводится кружок — зелёный (`$success-color`) при `category.display`, красный (`$error-color`) при скрытой категории. По умолчанию выключен; включён в `CategoriesListingComponent`.
 
 ## Модели
 
@@ -67,7 +68,7 @@ src/app/components/modules/categories/
 ```ts
 interface Category {
     id: number;
-    guid: string;
+    guid: string | null;
     title: string;
     alias: string;
     parent_id: number | null;
