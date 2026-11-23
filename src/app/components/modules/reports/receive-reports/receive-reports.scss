@@ -161,12 +161,18 @@
 
         &.col-time,
         &.col-number,
-        &.col-count {
+        &.col-count,
+         {
             width: 60px;
         }
 
+        &.col-user,
+        &.col-supplier {
+            width: 150px;
+        }
+
         &.col-total {
-            width: 100px;
+            width: 200px;
         }
     }
 

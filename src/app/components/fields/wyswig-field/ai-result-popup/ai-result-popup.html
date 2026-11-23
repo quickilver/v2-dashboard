@@ -11,6 +11,8 @@
                 <div class="skeleton-line skeleton-line--short"></div>
                 <div class="skeleton-line"></div>
             </div>
+        } @else if (errorMessage(); as message) {
+            <p role="alert">{{ message }}</p>
         } @else {
             <div class="ai-result-content" [innerHTML]="resultHtml()"></div>
         }
@@ -18,7 +20,7 @@
     @if (!loading()) {
         <div class="editor-actions">
             <button (click)="reject()" [disabled]="loading()">Отмена</button>
-            @if (!hasError()) {
+            @if (!errorMessage()) {
                 <button class="primary" (click)="apply()" [disabled]="loading()">Применить</button>
             }
         </div>

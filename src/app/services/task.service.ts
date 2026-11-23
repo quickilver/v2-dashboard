@@ -46,6 +46,15 @@ export class TaskService {
         return firstValueFrom(this.http.put<TasksUpdateResponse>(`${this.apiUrl}${id}`, data));
     }
 
+    async move(id: number, groupId: number, beforeTaskId: number | null): Promise<void> {
+        await firstValueFrom(
+            this.http.patch<void>(`${this.apiUrl}${id}/position`, {
+                group_id: groupId,
+                before_task_id: beforeTaskId,
+            }),
+        );
+    }
+
     async delete(id: number): Promise<void> {
         return firstValueFrom(this.http.delete<void>(`${this.apiUrl}${id}`));
     }

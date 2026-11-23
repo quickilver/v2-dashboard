@@ -13,7 +13,6 @@ import { DropdownFieldComponent } from '../dropdown-field/dropdown-field';
 import { DropdownOption } from '../../../models/dropdown.model';
 import { OpenRouterService } from '../../../services/open-router.service';
 import { PopupService } from '../../../services/popup.service';
-import { FileManagerService } from '../../../services/file-manager.service';
 import { FileManagerPopupComponent } from '../../file-manager/file-manager-popup/file-manager-popup';
 import { FileManagerFileEntry } from '../../../models/responses/file-manager/file-manager-file-entry.model';
 import { AiResultPopupComponent } from './ai-result-popup/ai-result-popup';
@@ -29,7 +28,6 @@ import { WyswigMediaSettingsComponent } from './wyswig-media-settings/wyswig-med
 export class WyswigFieldComponent implements AfterViewInit {
     private readonly openRouter = inject(OpenRouterService);
     private readonly popupService = inject(PopupService);
-    private readonly fileManagerService = inject(FileManagerService);
 
     label = input<string>('');
     value = model<string>('');
@@ -221,13 +219,19 @@ export class WyswigFieldComponent implements AfterViewInit {
     }
 
     private buildFileHtml(file: FileManagerFileEntry): string {
-        const url = this.fileManagerService.publicUrl(file.path);
-
         if (file.mime_type.startsWith('image/')) {
-            return `<img src="${url}" alt="${file.name}" />`;
+            const image: HTMLImageElement = document.createElement('img');
+            image.src = file.url;
+            image.alt = file.name;
+            return image.outerHTML;
         }
 
-        return `<a href="${url}" target="_blank" rel="noopener">${file.name}</a>`;
+        const link: HTMLAnchorElement = document.createElement('a');
+        link.href = file.url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = file.name;
+        return link.outerHTML;
     }
 
     private insertHtml(html: string): void {

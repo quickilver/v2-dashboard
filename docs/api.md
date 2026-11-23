@@ -86,6 +86,8 @@
 - **POST `/files/folder`** — тело `{ name, path }`.
 - **POST `/files/upload`** — `multipart/form-data`: поле `file` (файл), `path` (опционально).
 
+`path` указывается относительно корня файлового менеджера, например `articles/2026`. Для открытия файла используйте `url` из ответа API.
+
 ---
 
 ## Модули
@@ -507,10 +509,11 @@ pictures[1][is_main]=0
 | POST   | `/tasks/`     | Создать задачу  | `TasksCreateResponse` |
 | PUT    | `/tasks/{id}` | Обновить задачу | `TasksUpdateResponse` |
 | DELETE | `/tasks/{id}` | Удалить задачу  | —                     |
+| PATCH  | `/tasks/{id}/position` | Сохранить место карточки | — |
 
 - **Query (index):** `page`, `per_page`, `query`, `sort`, `direction`, `group_id`, `assigned_to`, `root_only`.
 - **Тело запроса:** `{ "group_id": 1, "title": "Задача", "description": "...", "assigned_to": 2, "start_at": "2026-01-01", "finish_at": "2026-01-10" }`.
-- Перенос задачи между колонками — `PUT /tasks/{id}` с новым `group_id`.
+- Доска запрашивает `sort=position&direction=desc` и передаёт `group_id` и `before_task_id` в `PATCH /tasks/{id}/position`. Значение `null` вставляет карточку в конец колонки.
 - `created_by` проставляется на бэкенде из авторизованного пользователя.
 - Удаление задачи — мягкое (`SoftDeletes`).
 

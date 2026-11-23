@@ -7,7 +7,6 @@ import {
     signal,
 } from '@angular/core';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
-import { IconComponent } from '../../../icon/icon';
 import { TaskGroupService } from '../../../../services/task-group.service';
 import { TaskService } from '../../../../services/task.service';
 import { ConfirmService } from '../../../../services/confirm.service';
@@ -15,6 +14,7 @@ import { PopupService } from '../../../../services/popup.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { TaskGroupModel } from '../../../../models/task-group.model';
 import { TaskModel } from '../../../../models/task.model';
+import { TasksIndexResponse } from '../../../../models/responses/tasks/tasks-index.response';
 import { TaskGroupEditorComponent } from '../task-group-editor/task-group-editor';
 import { TaskEditorComponent } from '../task-editor/task-editor';
 import { TaskViewerComponent } from '../task-viewer/task-viewer';
@@ -39,7 +39,7 @@ export class TasksBoardComponent implements OnInit {
     tasksByGroup = signal<Record<number, TaskModel[]>>({});
     loading = signal<boolean>(false);
     draggedTask = signal<TaskModel | null>(null);
-    dragOverGroupId = signal<number | null>(null);
+    dropTarget = signal<{ groupId: number; beforeTaskId: number | null } | null>(null);
     moving = signal<boolean>(false);
 
     private dragEndedAt = 0;
@@ -52,17 +52,17 @@ export class TasksBoardComponent implements OnInit {
         this.loading.set(true);
 
         try {
-            const [groupsResponse, tasksResponse] = await Promise.all([
+            const [groupsResponse, tasks] = await Promise.all([
                 this.taskGroupService.index({
                     per_page: 100,
                     sort: 'position',
                     direction: 'asc',
                 }),
-                this.taskService.index({ per_page: 100, sort: 'id', direction: 'asc' }),
+                this.loadTasks(),
             ]);
 
             this.groups.set(groupsResponse.data);
-            this.tasksByGroup.set(this.groupTasksByColumn(tasksResponse.data));
+            this.tasksByGroup.set(this.groupTasksByColumn(tasks));
         } catch {
             this.notificationService.error('Ошибка при загрузке доски задач');
         } finally {
@@ -105,6 +105,11 @@ export class TasksBoardComponent implements OnInit {
     }
 
     onDragStart(task: TaskModel, event: DragEvent): void {
+        if (this.moving()) {
+            event.preventDefault();
+            return;
+        }
+
         this.draggedTask.set(task);
 
         if (event.dataTransfer) {
@@ -116,13 +121,12 @@ export class TasksBoardComponent implements OnInit {
     onDragEnd(): void {
         this.dragEndedAt = Date.now();
         this.draggedTask.set(null);
-        this.dragOverGroupId.set(null);
+        this.dropTarget.set(null);
     }
 
     onDragOver(group: TaskGroupModel, event: DragEvent): void {
-        if (!this.draggedTask()) {
-            return;
-        }
+        const task: TaskModel | null = this.draggedTask();
+        if (!task) return;
 
         event.preventDefault();
 
@@ -130,7 +134,11 @@ export class TasksBoardComponent implements OnInit {
             event.dataTransfer.dropEffect = 'move';
         }
 
-        this.dragOverGroupId.set(group.id);
+        const beforeTaskId: number | null = this.findDropAnchor(event, task.id);
+        const target = this.dropTarget();
+        if (target?.groupId !== group.id || target.beforeTaskId !== beforeTaskId) {
+            this.dropTarget.set({ groupId: group.id, beforeTaskId });
+        }
     }
 
     onDragLeave(group: TaskGroupModel, event: DragEvent): void {
@@ -141,25 +149,36 @@ export class TasksBoardComponent implements OnInit {
             return;
         }
 
-        if (this.dragOverGroupId() === group.id) {
-            this.dragOverGroupId.set(null);
+        if (this.dropTarget()?.groupId === group.id) {
+            this.dropTarget.set(null);
         }
     }
 
     async onDrop(group: TaskGroupModel, event: DragEvent): Promise<void> {
         event.preventDefault();
 
-        const task = this.draggedTask();
+        const task: TaskModel | null = this.draggedTask();
+        this.onDragEnd();
 
-        this.dragEndedAt = Date.now();
-        this.draggedTask.set(null);
-        this.dragOverGroupId.set(null);
+        if (!task || this.moving()) return;
 
-        if (!task || task.group_id === group.id || this.moving()) {
-            return;
+        const beforeTaskId: number | null = this.findDropAnchor(event, task.id);
+        await this.moveTask(task, group.id, beforeTaskId);
+    }
+
+    private findDropAnchor(event: DragEvent, draggedTaskId: number): number | null {
+        const column = event.currentTarget as HTMLElement;
+        const cards = column.querySelectorAll<HTMLElement>('[data-task-id]');
+
+        for (const card of cards) {
+            const taskId: number = Number(card.dataset['taskId']);
+            if (taskId === draggedTaskId) continue;
+
+            const bounds: DOMRect = card.getBoundingClientRect();
+            if (event.clientY < bounds.top + bounds.height / 2) return taskId;
         }
 
-        await this.moveTask(task, group.id);
+        return null;
     }
 
     editGroup(group: TaskGroupModel): void {
@@ -191,46 +210,65 @@ export class TasksBoardComponent implements OnInit {
         }
     }
 
-    private async moveTask(task: TaskModel, groupId: number): Promise<void> {
-        const previousState = this.tasksByGroup();
+    private async moveTask(
+        task: TaskModel,
+        groupId: number,
+        beforeTaskId: number | null,
+    ): Promise<void> {
+        const previousState: Record<number, TaskModel[]> = this.tasksByGroup();
+        const sourceTasks: TaskModel[] = previousState[task.group_id] ?? [];
+        const targetTasks: TaskModel[] = (previousState[groupId] ?? []).filter(
+            (item) => item.id !== task.id,
+        );
+        const targetIndex: number =
+            beforeTaskId === null
+                ? targetTasks.length
+                : targetTasks.findIndex((item) => item.id === beforeTaskId);
+
+        if (targetIndex < 0) return;
+        if (task.group_id === groupId && sourceTasks[targetIndex]?.id === task.id) return;
+
+        targetTasks.splice(targetIndex, 0, { ...task, group_id: groupId });
+        const nextState: Record<number, TaskModel[]> = {
+            ...previousState,
+            [task.group_id]: sourceTasks.filter((item) => item.id !== task.id),
+            [groupId]: targetTasks,
+        };
 
         this.moving.set(true);
-        this.tasksByGroup.set(this.moveTaskInState(previousState, task, groupId));
+        this.tasksByGroup.set(nextState);
 
         try {
-            await this.taskService.update(task.id, {
-                group_id: groupId,
-                title: task.title,
-                description: task.description,
-                assigned_to: task.assigned_to,
-                start_at: task.start_at,
-                finish_at: task.finish_at,
-            });
-            this.notificationService.success('Задача перемещена');
+            await this.taskService.move(task.id, groupId, beforeTaskId);
+            this.notificationService.success('Порядок задач сохранён');
         } catch {
-            this.tasksByGroup.set(previousState);
+            if (this.tasksByGroup() === nextState) {
+                this.tasksByGroup.set(previousState);
+            }
             this.notificationService.error('Не удалось переместить задачу');
         } finally {
             this.moving.set(false);
         }
     }
 
-    private moveTaskInState(
-        state: Record<number, TaskModel[]>,
-        task: TaskModel,
-        groupId: number,
-    ): Record<number, TaskModel[]> {
-        const result: Record<number, TaskModel[]> = {};
+    private async loadTasks(): Promise<TaskModel[]> {
+        const tasks: TaskModel[] = [];
+        let page: number = 1;
+        let lastPage: number;
 
-        for (const [key, tasks] of Object.entries(state)) {
-            result[Number(key)] = tasks.filter((item) => item.id !== task.id);
-        }
+        do {
+            const response: TasksIndexResponse = await this.taskService.index({
+                page,
+                per_page: 100,
+                sort: 'position',
+                direction: 'desc',
+            });
+            tasks.push(...response.data);
+            lastPage = response.meta.last_page;
+            page++;
+        } while (page <= lastPage);
 
-        const movedTask: TaskModel = { ...task, group_id: groupId };
-
-        result[groupId] = [...(result[groupId] ?? []), movedTask];
-
-        return result;
+        return tasks;
     }
 
     private groupTasksByColumn(tasks: TaskModel[]): Record<number, TaskModel[]> {

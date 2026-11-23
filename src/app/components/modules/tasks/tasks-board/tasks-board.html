@@ -12,7 +12,7 @@
         @for (group of groups(); track group.id) {
             <div
                 class="board-column"
-                [class.is-drag-over]="dragOverGroupId() === group.id"
+                [class.is-drag-over]="dropTarget()?.groupId === group.id"
                 (dragover)="onDragOver(group, $event)"
                 (dragleave)="onDragLeave(group, $event)"
                 (drop)="onDrop(group, $event)"
@@ -30,11 +30,18 @@
                     </div>
                 </div>
 
-                <div class="board-column-body">
+                <div
+                    class="board-column-body"
+                    [class.drop-at-end]="
+                        dropTarget()?.groupId === group.id && dropTarget()?.beforeTaskId === null
+                    "
+                >
                     @for (task of tasksOf(group); track task.id) {
                         <app-task-card
                             [task]="task"
-                            draggable="true"
+                            [attr.draggable]="!moving()"
+                            [attr.data-task-id]="task.id"
+                            [class.drop-before]="dropTarget()?.beforeTaskId === task.id"
                             [class.is-dragging]="draggedTask()?.id === task.id"
                             (dragstart)="onDragStart(task, $event)"
                             (dragend)="onDragEnd()"

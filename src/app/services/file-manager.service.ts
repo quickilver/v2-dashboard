@@ -43,9 +43,4 @@ export class FileManagerService {
             this.http.post<FileManagerUploadResponse>(`${this.apiUrl}/upload`, formData),
         );
     }
-
-    publicUrl(path: string): string {
-        const baseUrl = environment.apiUrl.replace(/\/api\/?$/, '');
-        return `${baseUrl}/storage/${path.replace(/^\/+/, '')}`;
-    }
 }

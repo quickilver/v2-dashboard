@@ -120,6 +120,29 @@
         min-height: 120px;
         padding: 15px;
 
+        position: relative;
+
+        app-task-card {
+            position: relative;
+        }
+
+        .drop-before::before,
+        &.drop-at-end::after {
+            position: absolute;
+            content: '';
+            height: 2px;
+            background: $primary-color;
+            pointer-events: none;
+        }
+
+        .drop-before::before {
+            inset: -6px 0 auto;
+        }
+
+        &.drop-at-end::after {
+            inset: auto 15px 8px;
+        }
+
         .board-column-empty {
             padding: 20px 0;
             text-align: center;

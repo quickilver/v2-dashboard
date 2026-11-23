@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { FileManagerInitComponent } from '../file-manager-init/file-manager-init';
 import { FileManagerFileEntry } from '../../../models/responses/file-manager/file-manager-file-entry.model';
 import { PopupService } from '../../../services/popup.service';
@@ -9,7 +9,7 @@ import { PopupService } from '../../../services/popup.service';
     imports: [FileManagerInitComponent],
     template: `
         <app-file-manager-init
-            path=""
+            [path]="path()"
             [selectable]="true"
             (fileSelected)="onFileSelected($event)"
         />
@@ -23,6 +23,8 @@ import { PopupService } from '../../../services/popup.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileManagerPopupComponent {
+    readonly path = input<string>('');
+
     private readonly popupService = inject(PopupService);
 
     onFileSelected(file: FileManagerFileEntry): void {

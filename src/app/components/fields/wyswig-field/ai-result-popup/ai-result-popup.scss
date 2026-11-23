@@ -1,21 +1,29 @@
 @use 'variables' as *;
 
+:host {
+    display: block;
+    height: 100%;
+}
+
 .ai-result-popup {
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
 .ai-result-body {
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     padding: 20px;
     background: white;
 }
 
-.ai-result-actions {
-    position: sticky;
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
+.editor-actions {
+    position: static;
+    flex: 0 0 auto;
+    border-top: 1px solid $input-border-color;
+    background: white;
 }
 
 .skeleton-text {
