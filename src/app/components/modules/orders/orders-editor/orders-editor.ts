@@ -61,8 +61,16 @@ export class OrdersEditorComponent implements OnInit {
     contactMiddleName = model<string>('');
     comment = model<string>('');
     statusId = model<number | null>(null);
+    paymentId = model<number | null>(null);
 
     statusOptions = signal<SelectOption[]>([]);
+    private readonly availablePaymentOptions = signal<SelectOption[] | null>(null);
+    readonly paymentOptionsReady = computed<boolean>(() => this.availablePaymentOptions() !== null);
+    readonly paymentOptions = computed<SelectOption[]>(() => {
+        const options: SelectOption[] | null = this.availablePaymentOptions();
+        const payment = this.order()?.payment;
+        return options ?? (payment ? [{ value: payment.id, label: payment.title }] : []);
+    });
 
     products = signal<ProductIndex[]>([]);
     counts = signal<Record<number, number>>({});
@@ -85,12 +93,24 @@ export class OrdersEditorComponent implements OnInit {
 
     ngOnInit(): void {
         const orderId = this.id();
+        this.loadPaymentOptions();
 
         if (orderId) {
             this.isEditMode.set(true);
             this.loadOrder(orderId);
         } else {
             this.loadStatuses();
+        }
+    }
+
+    private async loadPaymentOptions(): Promise<void> {
+        try {
+            const response = await this.orderService.paymentOptions();
+            this.availablePaymentOptions.set(
+                response.data.map((payment) => ({ label: payment.title, value: payment.id })),
+            );
+        } catch {
+            this.notificationService.error('Не удалось загрузить способы оплаты');
         }
     }
 
@@ -117,6 +137,7 @@ export class OrdersEditorComponent implements OnInit {
             this.selectedAccount.set(order.account);
             this.accountSearch.set(this.accountName());
             this.statusId.set(order.status?.id ?? null);
+            this.paymentId.set(order.payment?.id ?? null);
             this.contactPhone.set(
                 order.contact_phone ? PhoneHelper.format(order.contact_phone) : '',
             );
@@ -156,6 +177,7 @@ export class OrdersEditorComponent implements OnInit {
         const payload = {
             account_id: this.selectedAccount()?.id ?? null,
             status_id: this.statusId(),
+            ...(this.paymentOptionsReady() ? { payment_id: this.paymentId() } : {}),
             contact_phone: PhoneHelper.toNumber(this.contactPhone()),
             contact_email: this.contactEmail().trim() || null,
             contact_first_name: this.contactFirstName().trim() || null,

@@ -1,3 +1,4 @@
+import { PaymentModel } from '../models/payment.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -34,6 +35,14 @@ export class OrderService {
 
         return firstValueFrom(
             this.http.get<OrdersIndexResponse>(this.apiUrl, { params: httpParams }),
+        );
+    }
+
+    async paymentOptions(): Promise<{ data: Pick<PaymentModel, 'id' | 'title'>[] }> {
+        return firstValueFrom(
+            this.http.get<{ data: Pick<PaymentModel, 'id' | 'title'>[] }>(
+                `${environment.apiUrl}/orders/payment-options`,
+            ),
         );
     }
 

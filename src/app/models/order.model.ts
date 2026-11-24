@@ -1,3 +1,4 @@
+import { PaymentModel } from './payment.model';
 import { AccountModel } from './account.model';
 import { StatusModel } from './status.model';
 
@@ -19,6 +20,7 @@ export interface OrderModel {
     number: string;
     account: AccountModel | null;
     status: StatusModel | null;
+    payment?: PaymentModel | null;
     contact_phone: number | null;
     contact_email: string | null;
     contact_first_name: string | null;

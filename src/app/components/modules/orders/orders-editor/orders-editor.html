@@ -48,6 +48,13 @@
                         [options]="statusOptions()"
                         [(value)]="statusId"
                     />
+                    <app-select-field
+                        label="Способ оплаты"
+                        placeholder="Выберите способ оплаты"
+                        [options]="paymentOptions()"
+                        [disabled]="!paymentOptionsReady()"
+                        [(value)]="paymentId"
+                    />
                     <app-textarea-field
                         label="Комментарий"
                         placeholder="Комментарий к заказу"

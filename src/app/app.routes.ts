@@ -16,6 +16,7 @@ import { UsersListingComponent } from './components/modules/users/users-listing/
 import { SettingsListingComponent } from './components/modules/settings/settings-listing/settings-listing';
 import { PagesListingComponent } from './components/modules/pages/pages-listing/pages-listing';
 import { LogListingComponent } from './components/modules/logs/log-listing/log-listing';
+import { PaymentsListingComponent } from './components/modules/payments/payments-listing/payments-listing';
 import { StatusesListingComponent } from './components/modules/statuses/statuses-listing/statuses-listing';
 import { SuppliersListingComponent } from './components/modules/suppliers/suppliers-listing/suppliers-listing';
 import { ReceivesListingComponent } from './components/modules/receives/receives-listing/receives-listing';
@@ -49,6 +50,7 @@ export const routes: Routes = [
     { path: 'suppliers', component: SuppliersListingComponent, title: 'Контрагенты' },
     { path: 'content/pages', component: PagesListingComponent, title: 'Страницы' },
     { path: 'orders/statuses', component: StatusesListingComponent, title: 'Статусы' },
+    { path: 'orders/payments', component: PaymentsListingComponent, title: 'Способы оплаты' },
     { path: 'logs', component: LogListingComponent, title: 'Журнал' },
     { path: 'backups', component: BackupListingComponent, title: 'Резервные копии' },
     { path: 'accounts', component: AccountsListingComponent, title: 'Клиенты' },
