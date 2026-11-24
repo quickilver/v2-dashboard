@@ -127,9 +127,9 @@ export class ProductsListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
+    createClick(duplicateFromId: number | null = null): void {
         this.popupService
-            .open('Создание товара', ProductsEditorComponent, {}, 'with-tabs')
+            .open('Создание товара', ProductsEditorComponent, { duplicateFromId }, 'with-tabs')
             .then(() => {
                 this.loadProducts();
             });

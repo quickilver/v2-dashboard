@@ -37,6 +37,7 @@ export class AttributesEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -51,9 +52,9 @@ export class AttributesEditorComponent implements OnInit {
     values = signal<AttributeValuesStoreModel[]>([]);
 
     ngOnInit(): void {
-        const attributeId = this.id();
-        if (attributeId) {
-            this.isEditMode.set(true);
+        const attributeId: number | null = this.id() ?? this.duplicateFromId();
+        if (attributeId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadAttribute(attributeId);
         }
     }
@@ -63,11 +64,16 @@ export class AttributesEditorComponent implements OnInit {
         try {
             const response = await this.attributeService.show(id);
             const attribute = response.data;
-            this.guid.set(attribute.guid);
+            this.guid.set(this.isEditMode() ? attribute.guid : '');
             this.title.set(attribute.title);
             this.isDisplay.set(attribute.is_display);
             this.isFilter.set(attribute.is_filter);
-            this.values.set(attribute.values.map((v) => ({ id: v.id, value: v.value })));
+            this.values.set(
+                attribute.values.map((value) => ({
+                    id: this.isEditMode() ? value.id : null,
+                    value: value.value,
+                })),
+            );
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные характеристики');
         } finally {

@@ -27,6 +27,7 @@ export class PricesEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -37,9 +38,9 @@ export class PricesEditorComponent implements OnInit {
     currency = model<string>('');
 
     ngOnInit(): void {
-        const priceId = this.id();
-        if (priceId) {
-            this.isEditMode.set(true);
+        const priceId: number | null = this.id() ?? this.duplicateFromId();
+        if (priceId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadPrice(priceId);
         }
     }
@@ -49,7 +50,7 @@ export class PricesEditorComponent implements OnInit {
         try {
             const response = await this.priceService.show(id);
             const price = response.data;
-            this.guid.set(price.guid);
+            this.guid.set(this.isEditMode() ? price.guid : '');
             this.title.set(price.title);
             this.currency.set(price.currency);
         } catch (err) {

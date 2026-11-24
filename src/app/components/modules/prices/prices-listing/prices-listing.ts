@@ -39,6 +39,7 @@ export class PricesListingComponent implements OnInit {
     pageSize = signal<number>(50);
     page = signal<number>(1);
 
+    private currentSearch: string = '';
     private currentSort: string = '';
     private currentDirection: 'asc' | 'desc' = 'asc';
 
@@ -52,6 +53,7 @@ export class PricesListingComponent implements OnInit {
             const params: PriceIndexParams = {
                 page: this.page(),
                 per_page: this.pageSize(),
+                query: this.currentSearch,
                 sort: this.currentSort,
                 direction: this.currentDirection,
             };
@@ -97,15 +99,23 @@ export class PricesListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
-        this.popupService.open('Создание цены', PricesEditorComponent).then(() => {
-            this.loadPrices();
-        });
+    createClick(duplicateFromId: number | null = null): void {
+        this.popupService
+            .open('Создание цены', PricesEditorComponent, { duplicateFromId })
+            .then(() => {
+                this.loadPrices();
+            });
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
         this.currentSort = sort.key;
         this.currentDirection = sort.direction;
+        this.page.set(1);
+        this.loadPrices();
+    }
+
+    onSearch(query: string): void {
+        this.currentSearch = query;
         this.page.set(1);
         this.loadPrices();
     }

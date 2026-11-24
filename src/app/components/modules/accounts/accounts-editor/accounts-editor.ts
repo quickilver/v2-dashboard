@@ -31,6 +31,7 @@ export class AccountsEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -50,10 +51,9 @@ export class AccountsEditorComponent implements OnInit {
     ordersCount = computed<number>(() => this.orders().length);
 
     ngOnInit(): void {
-        const accountId = this.id();
-
-        if (accountId) {
-            this.isEditMode.set(true);
+        const accountId: number | null = this.id() ?? this.duplicateFromId();
+        if (accountId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadAccount(accountId);
         }
     }
@@ -69,7 +69,7 @@ export class AccountsEditorComponent implements OnInit {
             this.lastName.set(account.last_name ?? '');
             this.middleName.set(account.middle_name ?? '');
             this.phone.set(PhoneHelper.format(account.phone ?? ''));
-            this.email.set(account.email ?? '');
+            this.email.set(this.isEditMode() ? (account.email ?? '') : '');
             this.isBlocked.set(account.is_blocked);
         } catch {
             this.notificationService.error('Не удалось загрузить данные клиента');

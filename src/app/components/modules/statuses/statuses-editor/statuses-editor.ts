@@ -27,6 +27,7 @@ export class StatusesEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -36,9 +37,9 @@ export class StatusesEditorComponent implements OnInit {
     position = model<number>(0);
 
     ngOnInit(): void {
-        const statusId = this.id();
-        if (statusId) {
-            this.isEditMode.set(true);
+        const statusId: number | null = this.id() ?? this.duplicateFromId();
+        if (statusId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadStatus(statusId);
         }
     }

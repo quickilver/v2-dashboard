@@ -9,6 +9,7 @@
     [page]="page()"
     title="Клиенты"
     [actionsColumn]="true"
+    [duplicable]="true"
     [sizable]="true"
     searchPlaceholder="Поиск по имени, email или телефону"
     (rowClick)="onRowClick($event)"
@@ -19,4 +20,13 @@
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (createClick)="createClick()"
-/>
+    (duplicateClick)="createClick($event.id)"
+>
+    <app-select-field
+        filter-actions
+        placeholder="Все статусы"
+        [options]="blockedOptions"
+        [value]="blocked()"
+        (valueChange)="onBlockedChange($event)"
+    />
+</app-listing>

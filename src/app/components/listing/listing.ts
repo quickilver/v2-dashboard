@@ -67,6 +67,7 @@ export class ListingComponent {
     sortable = input<boolean>(true);
     title = input<string>('');
     actionsColumn = input<boolean>(false);
+    duplicable = input<boolean>(false);
     rowActionsTemplate = input<TemplateRef<{ $implicit: unknown }> | null>(null);
 
     sortChange = output<SortState>();
@@ -76,6 +77,7 @@ export class ListingComponent {
     rowClick = output<any>();
     cellClick = output<{ row: any; column: ListingColumn }>();
     editClick = output<any>();
+    duplicateClick = output<{ id: number }>();
     deleteClick = output<any>();
     createClick = output();
 
@@ -237,17 +239,28 @@ export class ListingComponent {
         return typeof value === 'string' ? value : '';
     }
 
-    getRowActions(item: any): DropdownOption[] {
-        return [
+    getRowActions(item: { id?: number }): DropdownOption[] {
+        const actions: DropdownOption[] = [
             {
                 label: 'Редактировать',
                 action: () => this.onEditClick(item),
             },
-            {
-                label: 'Удалить',
-                action: () => this.onDeleteClick(item),
-            },
         ];
+
+        const id: number | undefined = item?.id;
+        if (this.duplicable() && typeof id === 'number') {
+            actions.push({
+                label: 'Дублировать',
+                action: () => this.duplicateClick.emit({ id }),
+            });
+        }
+
+        actions.push({
+            label: 'Удалить',
+            action: () => this.onDeleteClick(item),
+        });
+
+        return actions;
     }
 
     trackByFn(index: number, item: any): any {

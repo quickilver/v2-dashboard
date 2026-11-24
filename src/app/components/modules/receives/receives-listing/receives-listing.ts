@@ -19,12 +19,14 @@ import { NotificationService } from '../../../../services/notification.service';
 import { ReceivesEditorComponent } from '../receives-editor/receives-editor';
 import { SuppliersEditorComponent } from '../../suppliers/suppliers-editor/suppliers-editor';
 import { UsersEditorComponent } from '../../users/users-editor/users-editor';
+import { ReceiveReportsFiltersComponent } from '../../reports/receive-reports-filters/receive-reports-filters';
+import { ReceiveReportFilters } from '../../../../models/reports/receive-report-filters.model';
 import { ReceiveRow } from './receive-row.model';
 
 @Component({
     selector: 'app-receives-listing',
     standalone: true,
-    imports: [ListingComponent],
+    imports: [ListingComponent, ReceiveReportsFiltersComponent],
     templateUrl: './receives-listing.html',
     styleUrl: './receives-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,6 +71,15 @@ export class ReceivesListingComponent implements OnInit {
 
     rows = computed<ReceiveRow[]>(() => this.receives().map((receive) => this.toRow(receive)));
 
+    filters = signal<ReceiveReportFilters>({
+        date_from: '',
+        date_to: '',
+        store_id: null,
+        supplier_id: null,
+        user_id: null,
+    });
+
+    private currentSearch: string = '';
     private currentSort: string = '';
     private currentDirection: 'asc' | 'desc' = 'asc';
 
@@ -82,6 +93,8 @@ export class ReceivesListingComponent implements OnInit {
             const params: ReceiveIndexParams = {
                 page: this.page(),
                 per_page: this.pageSize(),
+                query: this.currentSearch,
+                ...this.filters(),
                 sort: this.currentSort,
                 direction: this.currentDirection,
             };
@@ -147,15 +160,27 @@ export class ReceivesListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
+    createClick(duplicateFromId: number | null = null): void {
         this.popupService
-            .open('Создание поступления', ReceivesEditorComponent, {}, 'with-tabs')
+            .open('Создание поступления', ReceivesEditorComponent, { duplicateFromId }, 'with-tabs')
             .then(() => this.loadReceives());
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
         this.currentSort = sort.key;
         this.currentDirection = sort.direction;
+        this.page.set(1);
+        this.loadReceives();
+    }
+
+    onFiltersChange(filters: ReceiveReportFilters): void {
+        this.filters.set(filters);
+        this.page.set(1);
+        this.loadReceives();
+    }
+
+    onSearch(query: string): void {
+        this.currentSearch = query;
         this.page.set(1);
         this.loadReceives();
     }

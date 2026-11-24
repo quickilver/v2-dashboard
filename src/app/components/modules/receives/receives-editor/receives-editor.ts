@@ -38,6 +38,7 @@ export class ReceivesEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -65,9 +66,9 @@ export class ReceivesEditorComponent implements OnInit {
     );
 
     ngOnInit(): void {
-        const receiveId = this.id();
-        if (receiveId) {
-            this.isEditMode.set(true);
+        const receiveId: number | null = this.id() ?? this.duplicateFromId();
+        if (receiveId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadReceive(receiveId);
         }
     }
@@ -80,7 +81,7 @@ export class ReceivesEditorComponent implements OnInit {
 
             this.storeId.set(receive.store?.id ?? null);
             this.supplier.set(receive.supplier);
-            this.payed.set(receive.payed);
+            this.payed.set(this.isEditMode() ? receive.payed : 0);
             this.comment.set(receive.comment ?? '');
 
             const products: ProductIndex[] = [];

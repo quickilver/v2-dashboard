@@ -18,6 +18,7 @@ export class LogService {
         let httpParams = new HttpParams();
         if (params) {
             if (params.page) httpParams = httpParams.set('page', params.page);
+            if (params.query) httpParams = httpParams.set('query', params.query);
             if (params.per_page) httpParams = httpParams.set('per_page', params.per_page);
             if (params.event) httpParams = httpParams.set('event', params.event);
             if (params.model_type) httpParams = httpParams.set('model_type', params.model_type);

@@ -9,8 +9,10 @@
     [page]="page()"
     title="Магазины"
     [actionsColumn]="true"
+    [duplicable]="true"
     [sizable]="true"
-    [searchable]="false"
+    searchPlaceholder="Название, адрес или GUID"
+    (searchChange)="onSearch($event.toString())"
     (rowClick)="onRowClick($event)"
     (sortChange)="onSort($event)"
     (pageChange)="onPageChange($event)"
@@ -18,4 +20,5 @@
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (createClick)="createClick()"
+    (duplicateClick)="createClick($event.id)"
 />

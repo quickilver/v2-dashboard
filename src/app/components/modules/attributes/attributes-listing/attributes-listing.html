@@ -9,6 +9,7 @@
     [page]="page()"
     title="Характеристики"
     [actionsColumn]="true"
+    [duplicable]="true"
     [searchable]="true"
     [sizable]="true"
     (rowClick)="onRowClick($event)"
@@ -19,4 +20,5 @@
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (createClick)="createClick()"
+    (duplicateClick)="createClick($event.id)"
 />

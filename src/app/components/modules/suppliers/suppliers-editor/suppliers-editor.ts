@@ -28,6 +28,7 @@ export class SuppliersEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -37,9 +38,9 @@ export class SuppliersEditorComponent implements OnInit {
     description = model<string>('');
 
     ngOnInit(): void {
-        const supplierId = this.id();
-        if (supplierId) {
-            this.isEditMode.set(true);
+        const supplierId: number | null = this.id() ?? this.duplicateFromId();
+        if (supplierId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadSupplier(supplierId);
         }
     }

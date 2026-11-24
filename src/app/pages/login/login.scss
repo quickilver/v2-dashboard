@@ -3,8 +3,7 @@
 .login-wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background: #bfc1c4 url('/images/map.png') center / cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: right;

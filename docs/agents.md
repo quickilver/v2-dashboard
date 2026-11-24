@@ -244,6 +244,7 @@ export class <Entity>EditorComponent implements OnInit {
 | `sortable`          | `boolean`           | Показывать иконки сортировки                 |
 | `title`             | `string`            | Заголовок                                    |
 | `actionsColumn`     | `boolean`           | Колонка «Действия» (dropdown)                |
+| `duplicable`        | `boolean`           | Пункт «Дублировать» в стандартном меню строки |
 | `sizable`           | `boolean`           | Кнопка «Размеры» (крупный/обычный/мелкий)    |
 | `pageSizable`       | `boolean`           | Кнопка «Строк на странице» (20/50/100)       |
 
@@ -252,6 +253,7 @@ export class <Entity>EditorComponent implements OnInit {
 | `rowClick`                 | строка               |
 | `cellClick`                | `{ row, column }`    |
 | `editClick`, `deleteClick` | строка               |
+| `duplicateClick`          | `{ id: number }`     |
 | `createClick`              | —                    |
 | `searchChange`             | `string \| number`   |
 | `sortChange`               | `{ key, direction }` |

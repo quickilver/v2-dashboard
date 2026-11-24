@@ -56,6 +56,7 @@ export class ProductsEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -95,9 +96,9 @@ export class ProductsEditorComponent implements OnInit {
     categoriesCount = computed<number>(() => this.getCategoryIds().length);
 
     ngOnInit(): void {
-        const productId = this.id();
-        if (productId) {
-            this.isEditMode.set(true);
+        const productId: number | null = this.id() ?? this.duplicateFromId();
+        if (productId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadProduct(productId);
         }
 
@@ -111,7 +112,7 @@ export class ProductsEditorComponent implements OnInit {
             const response = await this.productService.show(id);
             const product = response.data;
             this.title.set(product.title);
-            this.sku.set(product.sku);
+            this.sku.set(this.isEditMode() ? product.sku : '');
             this.description.set(product.description ?? '');
 
             if (product.categories && product.categories.length > 0) {
@@ -125,13 +126,15 @@ export class ProductsEditorComponent implements OnInit {
             this.priceAmounts.set(priceAmounts);
 
             const storeCounts: Record<number, number | undefined> = {};
-            for (const store of product.stores) {
-                storeCounts[store.id] = store.count;
+            if (this.isEditMode()) {
+                for (const store of product.stores) {
+                    storeCounts[store.id] = store.count;
+                }
+                this.pictures.set(this.mapPictures(product.pictures ?? []));
             }
 
             this.attributes.set(product.attribute ?? []);
             this.storeCounts.set(storeCounts);
-            this.pictures.set(this.mapPictures(product.pictures ?? []));
         } catch (err) {
             this.notificationService.error('Не удалось загрузить данные товара');
         } finally {

@@ -28,6 +28,7 @@ export class StoreEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -39,9 +40,9 @@ export class StoreEditorComponent implements OnInit {
     display = model<boolean>(true);
 
     ngOnInit(): void {
-        const storeId = this.id();
-        if (storeId) {
-            this.isEditMode.set(true);
+        const storeId: number | null = this.id() ?? this.duplicateFromId();
+        if (storeId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadStore(storeId);
         }
     }
@@ -51,7 +52,7 @@ export class StoreEditorComponent implements OnInit {
         try {
             const response = await this.storeService.show(id);
             const store = response.data;
-            this.guid.set(store.guid);
+            this.guid.set(this.isEditMode() ? store.guid : '');
             this.title.set(store.title);
             this.address.set(store.address);
             this.display.set(store.display);

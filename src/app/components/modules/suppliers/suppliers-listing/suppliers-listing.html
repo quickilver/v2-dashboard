@@ -9,6 +9,7 @@
     [page]="page()"
     title="Контрагенты"
     [actionsColumn]="true"
+    [duplicable]="true"
     [sizable]="true"
     (rowClick)="onRowClick($event)"
     (searchChange)="onSearch($event.toString())"
@@ -18,4 +19,5 @@
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
     (createClick)="createClick()"
+    (duplicateClick)="createClick($event.id)"
 />

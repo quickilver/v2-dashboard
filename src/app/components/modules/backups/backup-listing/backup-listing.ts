@@ -57,7 +57,14 @@ export class BackupListingComponent implements OnInit {
     pageSize = signal<number>(50);
     page = signal<number>(1);
 
-    rows = computed<BackupRow[]>(() => this.backups().map((backup) => this.toRow(backup)));
+    private search = signal<string>('');
+
+    rows = computed<BackupRow[]>(() => {
+        const query: string = this.search().trim().toLowerCase();
+        return this.backups()
+            .filter((backup) => backup.name.toLowerCase().includes(query))
+            .map((backup) => this.toRow(backup));
+    });
 
     pagedRows = computed<BackupRow[]>(() => {
         const start = (this.page() - 1) * this.pageSize();
@@ -91,7 +98,7 @@ export class BackupListingComponent implements OnInit {
             const response: BackupsIndexResponse = await this.backupService.index();
             this.backups.set(response.data);
 
-            const lastPage = Math.max(1, Math.ceil(response.data.length / this.pageSize()));
+            const lastPage = Math.max(1, Math.ceil(this.rows().length / this.pageSize()));
 
             if (this.page() > lastPage) {
                 this.page.set(lastPage);
@@ -125,6 +132,11 @@ export class BackupListingComponent implements OnInit {
         } finally {
             this.creating.set(false);
         }
+    }
+
+    onSearch(query: string): void {
+        this.search.set(query);
+        this.page.set(1);
     }
 
     onPageChange(page: number): void {

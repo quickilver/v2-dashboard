@@ -34,6 +34,7 @@ export class UsersEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -63,9 +64,9 @@ export class UsersEditorComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadModules();
-        const userId = this.id();
-        if (userId) {
-            this.isEditMode.set(true);
+        const userId: number | null = this.id() ?? this.duplicateFromId();
+        if (userId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadUser(userId);
         }
     }
@@ -85,7 +86,7 @@ export class UsersEditorComponent implements OnInit {
             const response = await this.userService.show(id);
             const user = response.data;
             this.name.set(user.name);
-            this.email.set(user.email);
+            this.email.set(this.isEditMode() ? user.email : '');
             this.fullAccess.set(user.full_access);
             this.permissions.set(this.normalizePermissions(user.permissions));
         } catch {

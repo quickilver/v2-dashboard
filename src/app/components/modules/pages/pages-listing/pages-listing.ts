@@ -69,8 +69,13 @@ export class PagesListingComponent implements OnInit {
         }
     }
 
-    async onCreate(): Promise<void> {
-        await this.popupService.open('Создание страницы', PagesEditorComponent, {}, 'with-tabs');
+    async onCreate(duplicateFromId: number | null = null): Promise<void> {
+        await this.popupService.open(
+            'Создание страницы',
+            PagesEditorComponent,
+            { duplicateFromId },
+            'with-tabs',
+        );
         this.loadPages();
     }
 

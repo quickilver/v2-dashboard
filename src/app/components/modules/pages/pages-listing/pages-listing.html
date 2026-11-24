@@ -9,6 +9,7 @@
     [page]="page()"
     title="Страницы"
     [actionsColumn]="true"
+    [duplicable]="true"
     [sizable]="true"
     (rowClick)="onRowClick($event)"
     (searchChange)="onSearch($event.toString())"
@@ -16,6 +17,7 @@
     (pageChange)="onPageChange($event)"
     (pageSizeChange)="onPageSizeChange($event)"
     (createClick)="onCreate()"
+    (duplicateClick)="onCreate($event.id)"
     (editClick)="onEdit($event)"
     (deleteClick)="onDelete($event)"
 />

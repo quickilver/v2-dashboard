@@ -98,10 +98,12 @@ export class SuppliersListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
-        this.popupService.open('Создание контрагента', SuppliersEditorComponent).then(() => {
-            this.loadSuppliers();
-        });
+    createClick(duplicateFromId: number | null = null): void {
+        this.popupService
+            .open('Создание контрагента', SuppliersEditorComponent, { duplicateFromId })
+            .then(() => {
+                this.loadSuppliers();
+            });
     }
 
     onSearch(query: string): void {

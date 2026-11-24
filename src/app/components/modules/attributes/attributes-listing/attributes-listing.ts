@@ -119,9 +119,14 @@ export class AttributesListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
+    createClick(duplicateFromId: number | null = null): void {
         this.popupService
-            .open('Создание характеристики', AttributesEditorComponent, {}, 'with-tabs')
+            .open(
+                'Создание характеристики',
+                AttributesEditorComponent,
+                { duplicateFromId },
+                'with-tabs',
+            )
             .then(() => {
                 this.loadAttributes();
             });

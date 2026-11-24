@@ -51,7 +51,8 @@
                 <app-autocomplete-products-field
                     placeholder="Поиск товара"
                     [(search)]="productSearch"
-                    [(value)]="selectedProduct"
+                    [value]="selectedProduct()"
+                    (valueChange)="onProductChange($event)"
                 />
             </div>
         }

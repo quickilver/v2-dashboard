@@ -76,10 +76,12 @@ export class UsersListingComponent implements OnInit {
             });
     }
 
-    createClick(): void {
-        this.popupService.open('Создание пользователя', UsersEditorComponent).then(() => {
-            this.loadUsers();
-        });
+    createClick(duplicateFromId: number | null = null): void {
+        this.popupService
+            .open('Создание пользователя', UsersEditorComponent, { duplicateFromId })
+            .then(() => {
+                this.loadUsers();
+            });
     }
 
     async onDelete(user: UserShort): Promise<void> {
@@ -98,6 +100,12 @@ export class UsersListingComponent implements OnInit {
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {
         this.currentSort = sort.key;
         this.currentDirection = sort.direction;
+        this.page.set(1);
+        this.loadUsers();
+    }
+
+    onSearch(query: string): void {
+        this.currentSearch = query;
         this.page.set(1);
         this.loadUsers();
     }

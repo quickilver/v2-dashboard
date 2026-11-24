@@ -30,6 +30,7 @@ export class PagesEditorComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
+    duplicateFromId = input<number | null>(null);
 
     isEditMode = signal<boolean>(false);
     loading = signal<boolean>(false);
@@ -48,9 +49,9 @@ export class PagesEditorComponent implements OnInit {
     content = model<string>('');
 
     ngOnInit(): void {
-        const pageId = this.id();
-        if (pageId) {
-            this.isEditMode.set(true);
+        const pageId: number | null = this.id() ?? this.duplicateFromId();
+        if (pageId !== null) {
+            this.isEditMode.set(this.id() !== null);
             this.loadPage(pageId);
         }
     }
@@ -61,7 +62,7 @@ export class PagesEditorComponent implements OnInit {
             const response = await this.pageService.show(id);
             const page = response.data;
             this.title.set(page.title);
-            this.alias.set(page.alias);
+            this.alias.set(this.isEditMode() ? page.alias : '');
             this.h1.set(page.h1 ?? '');
             this.display.set(page.display);
             this.seoTitle.set(page.seo_title ?? '');

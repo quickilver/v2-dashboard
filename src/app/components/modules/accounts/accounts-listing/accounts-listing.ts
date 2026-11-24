@@ -1,4 +1,5 @@
 import { Component, signal, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { AccountService } from '../../../../services/account.service';
@@ -14,7 +15,7 @@ import { AccountsEditorComponent } from '../accounts-editor/accounts-editor';
 @Component({
     selector: 'app-accounts-listing',
     standalone: true,
-    imports: [ListingComponent],
+    imports: [ListingComponent, SelectFieldComponent],
     templateUrl: './accounts-listing.html',
     styleUrl: './accounts-listing.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +52,12 @@ export class AccountsListingComponent implements OnInit {
     pageSize = signal<number>(50);
     page = signal<number>(1);
 
+    blocked = signal<number | null>(null);
+    readonly blockedOptions: SelectOption[] = [
+        { label: 'Активные', value: 0 },
+        { label: 'Заблокированные', value: 1 },
+    ];
+
     private search: string = '';
     private sort: string = '';
     private direction: 'asc' | 'desc' = 'asc';
@@ -67,6 +74,7 @@ export class AccountsListingComponent implements OnInit {
                 page: this.page(),
                 per_page: this.pageSize(),
                 query: this.search,
+                is_blocked: this.blocked() === null ? null : this.blocked() === 1,
                 sort: this.sort,
                 direction: this.direction,
             };
@@ -79,6 +87,12 @@ export class AccountsListingComponent implements OnInit {
         } finally {
             this.loading.set(false);
         }
+    }
+
+    onBlockedChange(value: string | number | null): void {
+        this.blocked.set(value === null ? null : Number(value));
+        this.page.set(1);
+        this.loadAccounts();
     }
 
     onSearch(query: string): void {
@@ -102,9 +116,9 @@ export class AccountsListingComponent implements OnInit {
             .then(() => this.loadAccounts());
     }
 
-    createClick(): void {
+    createClick(duplicateFromId: number | null = null): void {
         this.popupService
-            .open('Создание клиента', AccountsEditorComponent, {}, 'with-tabs')
+            .open('Создание клиента', AccountsEditorComponent, { duplicateFromId }, 'with-tabs')
             .then(() => this.loadAccounts());
     }
 

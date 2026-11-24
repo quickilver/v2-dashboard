@@ -6,6 +6,9 @@ import {
     OnInit,
     inject,
 } from '@angular/core';
+import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { AutocompleteUsersFieldComponent } from '../../../fields/autocomplete-users-field/autocomplete-users-field';
+import { UserShort } from '../../../../models/users/user-short.model';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { LogService } from '../../../../services/log.service';
@@ -22,8 +25,9 @@ import { LogRow } from './log-row.model';
 @Component({
     selector: 'app-log-listing',
     standalone: true,
-    imports: [ListingComponent],
+    imports: [ListingComponent, SelectFieldComponent, AutocompleteUsersFieldComponent],
     templateUrl: './log-listing.html',
+    styles: '.log-filters { display: flex; flex-wrap: wrap; gap: 8px; }',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogListingComponent implements OnInit {
@@ -50,6 +54,16 @@ export class LogListingComponent implements OnInit {
 
     rows = computed<LogRow[]>(() => this.logs().map((log) => this.toRow(log)));
 
+    event = signal<NonNullable<LogIndexParams['event']> | null>(null);
+    user = signal<UserShort | null>(null);
+    readonly eventOptions: SelectOption[] = [
+        { label: 'Создание', value: 'created' },
+        { label: 'Изменение', value: 'updated' },
+        { label: 'Удаление', value: 'deleted' },
+        { label: 'Восстановление', value: 'restored' },
+    ];
+
+    private search: string = '';
     private currentSort: string = '';
     private currentDirection: 'asc' | 'desc' = 'asc';
 
@@ -63,6 +77,9 @@ export class LogListingComponent implements OnInit {
             const params: LogIndexParams = {
                 page: this.page(),
                 per_page: this.pageSize(),
+                query: this.search,
+                event: this.event() ?? undefined,
+                user_id: this.user()?.id,
                 sort: this.currentSort,
                 direction: this.currentDirection,
             };
@@ -99,6 +116,24 @@ export class LogListingComponent implements OnInit {
 
     onDetails(log: LogModel): void {
         this.popupService.open('Просмотр лога', LogDetailsComponent, { id: log.id }, 'with-tabs');
+    }
+
+    onSearch(query: string): void {
+        this.search = query;
+        this.page.set(1);
+        this.loadLogs();
+    }
+
+    onEventChange(value: string | number | null): void {
+        this.event.set(value as LogIndexParams['event'] ?? null);
+        this.page.set(1);
+        this.loadLogs();
+    }
+
+    onUserChange(user: UserShort | null): void {
+        this.user.set(user);
+        this.page.set(1);
+        this.loadLogs();
     }
 
     onSort(sort: { key: string; direction: 'asc' | 'desc' }): void {

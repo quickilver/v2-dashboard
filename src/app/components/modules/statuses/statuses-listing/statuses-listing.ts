@@ -98,10 +98,12 @@ export class StatusesListingComponent implements OnInit {
         }
     }
 
-    createClick(): void {
-        this.popupService.open('Создание статуса', StatusesEditorComponent).then(() => {
-            this.loadStatuses();
-        });
+    createClick(duplicateFromId: number | null = null): void {
+        this.popupService
+            .open('Создание статуса', StatusesEditorComponent, { duplicateFromId })
+            .then(() => {
+                this.loadStatuses();
+            });
     }
 
     onSearch(query: string): void {
