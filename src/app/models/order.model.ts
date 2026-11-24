@@ -1,4 +1,5 @@
 import { PaymentModel } from './payment.model';
+import { DeliveryModel } from './delivery.model';
 import { AccountModel } from './account.model';
 import { StatusModel } from './status.model';
 
@@ -21,6 +22,7 @@ export interface OrderModel {
     account: AccountModel | null;
     status: StatusModel | null;
     payment?: PaymentModel | null;
+    delivery?: DeliveryModel | null;
     contact_phone: number | null;
     contact_email: string | null;
     contact_first_name: string | null;

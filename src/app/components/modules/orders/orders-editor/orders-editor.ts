@@ -62,6 +62,7 @@ export class OrdersEditorComponent implements OnInit {
     comment = model<string>('');
     statusId = model<number | null>(null);
     paymentId = model<number | null>(null);
+    deliveryId = model<number | null>(null);
 
     statusOptions = signal<SelectOption[]>([]);
     private readonly availablePaymentOptions = signal<SelectOption[] | null>(null);
@@ -70,6 +71,14 @@ export class OrdersEditorComponent implements OnInit {
         const options: SelectOption[] | null = this.availablePaymentOptions();
         const payment = this.order()?.payment;
         return options ?? (payment ? [{ value: payment.id, label: payment.title }] : []);
+    });
+
+    private readonly availableDeliveryOptions = signal<SelectOption[] | null>(null);
+    readonly deliveryOptionsReady = computed<boolean>(() => this.availableDeliveryOptions() !== null);
+    readonly deliveryOptions = computed<SelectOption[]>(() => {
+        const options: SelectOption[] | null = this.availableDeliveryOptions();
+        const delivery = this.order()?.delivery;
+        return options ?? (delivery ? [{ value: delivery.id, label: delivery.title }] : []);
     });
 
     products = signal<ProductIndex[]>([]);
@@ -94,6 +103,7 @@ export class OrdersEditorComponent implements OnInit {
     ngOnInit(): void {
         const orderId = this.id();
         this.loadPaymentOptions();
+        this.loadDeliveryOptions();
 
         if (orderId) {
             this.isEditMode.set(true);
@@ -111,6 +121,17 @@ export class OrdersEditorComponent implements OnInit {
             );
         } catch {
             this.notificationService.error('Не удалось загрузить способы оплаты');
+        }
+    }
+
+    private async loadDeliveryOptions(): Promise<void> {
+        try {
+            const response = await this.orderService.deliveryOptions();
+            this.availableDeliveryOptions.set(
+                response.data.map((delivery) => ({ label: delivery.title, value: delivery.id })),
+            );
+        } catch {
+            this.notificationService.error('Не удалось загрузить способы доставки');
         }
     }
 
@@ -138,6 +159,7 @@ export class OrdersEditorComponent implements OnInit {
             this.accountSearch.set(this.accountName());
             this.statusId.set(order.status?.id ?? null);
             this.paymentId.set(order.payment?.id ?? null);
+            this.deliveryId.set(order.delivery?.id ?? null);
             this.contactPhone.set(
                 order.contact_phone ? PhoneHelper.format(order.contact_phone) : '',
             );
@@ -178,6 +200,7 @@ export class OrdersEditorComponent implements OnInit {
             account_id: this.selectedAccount()?.id ?? null,
             status_id: this.statusId(),
             ...(this.paymentOptionsReady() ? { payment_id: this.paymentId() } : {}),
+            ...(this.deliveryOptionsReady() ? { delivery_id: this.deliveryId() } : {}),
             contact_phone: PhoneHelper.toNumber(this.contactPhone()),
             contact_email: this.contactEmail().trim() || null,
             contact_first_name: this.contactFirstName().trim() || null,

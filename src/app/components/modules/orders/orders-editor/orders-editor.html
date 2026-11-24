@@ -55,6 +55,13 @@
                         [disabled]="!paymentOptionsReady()"
                         [(value)]="paymentId"
                     />
+                    <app-select-field
+                        label="Способ доставки"
+                        placeholder="Выберите способ доставки"
+                        [options]="deliveryOptions()"
+                        [disabled]="!deliveryOptionsReady()"
+                        [(value)]="deliveryId"
+                    />
                     <app-textarea-field
                         label="Комментарий"
                         placeholder="Комментарий к заказу"

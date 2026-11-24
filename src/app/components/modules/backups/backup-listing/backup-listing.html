@@ -39,7 +39,7 @@
             <input
                 #dumpFile
                 type="file"
-                accept=".sql,.sql.gz"
+                accept=".sql,.gz,application/gzip,application/x-gzip"
                 hidden
                 (change)="onUpload(dumpFile)"
             />

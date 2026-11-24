@@ -1,5 +1,3 @@
-<app-receive-reports-filters [filters]="filters()" (filtersChange)="onFiltersChange($event)" />
-
 <app-listing
     [columns]="columns()"
     [availableColumns]="columns()"
@@ -13,8 +11,7 @@
     [actionsColumn]="true"
     [duplicable]="true"
     [sizable]="true"
-    searchPlaceholder="Номер или комментарий"
-    (searchChange)="onSearch($event.toString())"
+    [searchable]="false"
     (rowClick)="onRowClick($event)"
     (cellClick)="onCellClick($event)"
     (sortChange)="onSort($event)"
