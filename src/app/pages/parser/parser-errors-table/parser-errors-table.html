@@ -1,0 +1,65 @@
+@if (run().status === 'failed' && run().message) {
+    <p class="error">Причина остановки — {{ run().message }}</p>
+}
+@if (errorsPage(); as errors) {
+    @if (errors.data.length) {
+        <table class="errors-table" [attr.aria-label]="'Ошибки запуска №' + run().id">
+            <thead>
+                <tr>
+                    <th scope="col">Время</th>
+                    <th scope="col">Путь</th>
+                    <th scope="col">Ошибка</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (error of errors.data; track error.id) {
+                    <tr>
+                        <td>
+                            {{ error.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
+                        </td>
+                        <td [attr.title]="error.path">{{ error.path }}</td>
+                        <td [attr.title]="error.message">{{ error.message }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="errors-footer">
+            @if (errors.last_page > 1) {
+                <nav class="actions" aria-label="Страницы ошибок">
+                    <button
+                        type="button"
+                        [disabled]="errors.current_page === 1"
+                        (click)="pageChange.emit(errors.current_page - 1)"
+                    >
+                        Назад
+                    </button>
+                    <span>{{ errors.current_page }} из {{ errors.last_page }}</span>
+                    <button
+                        type="button"
+                        [disabled]="errors.current_page >= errors.last_page"
+                        (click)="pageChange.emit(errors.current_page + 1)"
+                    >
+                        Далее
+                    </button>
+                </nav>
+            }
+            <button
+                type="button"
+                class="primary"
+                [disabled]="retryDisabled()"
+                (click)="retry.emit()"
+            >
+                Повторить ошибочные товары
+            </button>
+        </div>
+    } @else if (run().status !== 'failed' && run().message) {
+        <p>{{ run().message }}</p>
+    } @else if (!run().message) {
+        <p>Записей об ошибках нет.</p>
+    }
+} @else if (errorsLoadFailed()) {
+    <p class="error" role="alert">Не удалось загрузить ошибки запуска.</p>
+    <button type="button" (click)="pageChange.emit(1)">Повторить</button>
+} @else {
+    <p role="status">Загрузка ошибок…</p>
+}

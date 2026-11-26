@@ -1,0 +1,169 @@
+<section class="parser">
+    <header>
+        <h1>Парсер</h1>
+        <div class="actions">
+            <button
+                type="button"
+                class="primary"
+                [disabled]="loading() || starting() || !!active()"
+                (click)="start('full')"
+            >
+                Синхронизировать каталог
+            </button>
+            <button
+                type="button"
+                class="primary"
+                [disabled]="loading() || starting() || !!active()"
+                (click)="start('quick')"
+            >
+                Обновить цены и наличие
+            </button>
+        </div>
+    </header>
+
+    @if (startError() || loadError()) {
+        <p class="error" role="alert">{{ startError() || loadError() }}</p>
+    }
+
+    @if (active(); as run) {
+        <app-parser-status
+            [run]="run"
+            [current]="true"
+            [controlsDisabled]="changingStatus()"
+            (pause)="changeStatus(run.id, 'pause')"
+            (resume)="changeStatus(run.id, 'resume')"
+        />
+    }
+
+    <h2>История запусков</h2>
+    @if (history(); as result) {
+        @if (result.data.length) {
+            <div class="listing">
+                <div class="table-scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Начало</th>
+                                <th>Завершён</th>
+                                <th>Режим</th>
+                                <th>Статус</th>
+                                <th>Обработано</th>
+                                <th>Результат</th>
+                                <th>Ошибки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (run of result.data; track run.id) {
+                                <tr>
+                                    <td>{{ run.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}</td>
+                                    <td>
+                                        {{ (run.finished_at | date: 'dd.MM.yyyy HH:mm:ss') ?? '—' }}
+                                    </td>
+                                    <td>{{ run.mode === 'full' ? 'Полный' : 'Быстрый' }}</td>
+                                    <td>
+                                        <app-parser-status [run]="run" />
+                                    </td>
+                                    <td class="run-progress">
+                                        <span>{{ run.processed }} / {{ run.total }}</span>
+                                        @if (run.total > 0) {
+                                            <progress
+                                                [value]="run.processed"
+                                                [max]="run.total"
+                                                [attr.aria-label]="
+                                                    'Обработано товаров в запуске №' + run.id
+                                                "
+                                            ></progress>
+                                        }
+                                    </td>
+                                    <td class="run-result">
+                                        @if (run.added > 0) {
+                                            <span class="result-badge added" title="Добавлено"
+                                                >+{{ run.added }}</span
+                                            >
+                                        }
+                                        @if (run.updated > 0) {
+                                            <span class="result-badge updated" title="Обновлено"
+                                                >Обновлено: {{ run.updated }}</span
+                                            >
+                                        }
+                                        @if (run.unchanged > 0) {
+                                            <span
+                                                class="result-badge unchanged"
+                                                title="Без изменений"
+                                                >Без изменений: {{ run.unchanged }}</span
+                                            >
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (errorCount(run) > 0) {
+                                            <button
+                                                type="button"
+                                                class="toggle-errors"
+                                                [attr.aria-expanded]="expandedRun() === run.id"
+                                                [attr.aria-controls]="'parser-errors-' + run.id"
+                                                [attr.aria-label]="
+                                                    'Ошибки запуска №' +
+                                                    run.id +
+                                                    ': ' +
+                                                    errorCount(run)
+                                                "
+                                                (click)="toggleErrors(run.id)"
+                                            >
+                                                {{ errorCount(run) }}
+                                                <app-icon
+                                                    [name]="
+                                                        expandedRun() === run.id
+                                                            ? 'chevron-up'
+                                                            : 'chevron-down'
+                                                    "
+                                                    [size]="14"
+                                                />
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                                @if (expandedRun() === run.id) {
+                                    <tr class="errors-row" [id]="'parser-errors-' + run.id">
+                                        <td colspan="8" class="error-td">
+                                            <app-parser-errors-table
+                                                [run]="run"
+                                                [errorsPage]="errorsPage()"
+                                                [errorsLoadFailed]="errorsLoadFailed()"
+                                                [retryDisabled]="starting() || !!active()"
+                                                (retry)="retryErrors(run.id)"
+                                                (pageChange)="loadErrors(run.id, $event)"
+                                            />
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @if (result.last_page > 1) {
+                <nav class="actions" aria-label="Страницы истории">
+                    <button
+                        type="button"
+                        [disabled]="page() === 1"
+                        (click)="selectPage(page() - 1)"
+                    >
+                        Назад
+                    </button>
+                    <span>{{ page() }} из {{ result.last_page }}</span>
+                    <button
+                        type="button"
+                        [disabled]="page() >= result.last_page"
+                        (click)="selectPage(page() + 1)"
+                    >
+                        Далее
+                    </button>
+                </nav>
+            }
+        } @else {
+            <p>Запусков пока нет.</p>
+        }
+    } @else if (loading()) {
+        <p>Загрузка истории…</p>
+    }
+</section>

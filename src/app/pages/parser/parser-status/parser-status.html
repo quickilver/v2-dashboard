@@ -1,0 +1,38 @@
+@if (current()) {
+    <section class="current" aria-label="Текущий запуск">
+        <strong>Запуск №{{ run().id }} · {{ labels[run().status] }}</strong>
+        @if (run().total > 0) {
+            <progress
+                [value]="run().processed"
+                [max]="run().total"
+                aria-label="Обработано товаров"
+            ></progress>
+            <span>Обработано {{ run().processed }} из {{ run().total }}</span>
+        }
+        @if (run().current_path) {
+            <small>{{ run().current_path }}</small>
+        }
+        @if (run().status === 'paused') {
+            <button
+                type="button"
+                class="primary"
+                [disabled]="controlsDisabled()"
+                (click)="resume.emit()"
+            >
+                Возобновить
+            </button>
+        } @else if (
+            run().status === 'queued' || run().status === 'running' || run().status === 'pausing'
+        ) {
+            <button
+                type="button"
+                [disabled]="controlsDisabled() || run().status === 'pausing'"
+                (click)="pause.emit()"
+            >
+                Приостановить
+            </button>
+        }
+    </section>
+} @else {
+    <span [class]="'status-badge ' + run().status">{{ labels[run().status] }}</span>
+}

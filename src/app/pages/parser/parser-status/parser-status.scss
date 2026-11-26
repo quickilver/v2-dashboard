@@ -1,0 +1,57 @@
+@use 'variables' as *;
+@use 'progress-bar';
+
+.current {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 0.4rem;
+    overflow-wrap: anywhere;
+    box-shadow: $shadow;
+
+    button {
+        justify-self: start;
+    }
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid;
+    border-radius: $input-radius;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.status-badge.completed {
+    background: $badge-success-background;
+    border-color: $badge-success-border;
+    color: $badge-success-text;
+}
+
+.status-badge.running {
+    background: $badge-info-background;
+    border-color: $badge-info-border;
+    color: $badge-info-text;
+}
+
+.status-badge.completed_with_errors,
+.status-badge.pausing,
+.status-badge.paused {
+    background: $badge-warning-background;
+    border-color: $badge-warning-border;
+    color: $badge-warning-text;
+}
+
+.status-badge.failed {
+    background: $badge-error-background;
+    border-color: $badge-error-border;
+    color: $badge-error-text;
+}
+
+.status-badge.queued {
+    background: $grey-light;
+    border-color: $grey-light-2;
+    color: $main-font-color;
+}

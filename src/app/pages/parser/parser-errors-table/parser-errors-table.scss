@@ -1,0 +1,67 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.errors-table {
+    width: 100%;
+    table-layout: fixed;
+    background: #ffffff;
+    border-spacing: 0;
+
+    th,
+    td {
+        padding: 10px;
+        font-size: 14px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        background: $grey-light;
+        padding-top: 0;
+        white-space: nowrap;
+    }
+
+    th:first-child {
+        width: 165px;
+    }
+
+    th:nth-child(2) {
+        width: 35%;
+    }
+
+    tbody td {
+        border-bottom: 1px solid $grey-light;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    tbody tr:hover {
+        background: $grey-light;
+    }
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.error {
+    color: $badge-error-text;
+}
+
+.errors-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

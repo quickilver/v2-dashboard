@@ -1,0 +1,130 @@
+@use 'variables' as *;
+@use 'listing';
+@use 'progress-bar';
+
+.parser {
+    header {
+        h1 {
+            margin: 0 0 20px 0;
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-block: 1rem;
+}
+
+button {
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.run-progress {
+    min-width: 90px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+
+    progress {
+        height: 5px;
+        margin-top: 4px;
+    }
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.table {
+    th,
+    td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    th {
+        white-space: nowrap;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background: $grey-light;
+    }
+}
+
+.run-result {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+
+    .result-badge + .result-badge {
+        margin-inline-start: 4px;
+    }
+}
+
+.result-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid;
+    border-radius: $input-radius;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.result-badge.added {
+    background: $badge-success-background;
+    border-color: $badge-success-border;
+    color: $badge-success-text;
+}
+
+.result-badge.updated {
+    background: $badge-info-background;
+    border-color: $badge-info-border;
+    color: $badge-info-text;
+}
+
+.result-badge.unchanged {
+    background: $badge-warning-background;
+    border-color: $badge-warning-border;
+    color: $badge-warning-text;
+}
+
+.toggle-errors {
+    display: inline-flex;
+    min-width: 60px;
+    align-items: center;
+    justify-content: end;
+    gap: 4px;
+    border: 1px solid $primary-color;
+    background: $primary-light-color;
+    border-radius: $input-radius;
+    padding: 1px 4px;
+    color: $primary-color;
+    font: inherit;
+
+    &[aria-expanded='true'] {
+        background: $primary-color;
+        color: #ffffff;
+    }
+}
+
+.errors-row > td {
+    background: $grey-light;
+    overflow-wrap: anywhere;
+}
+
+.error {
+    color: #b91c1c;
+}
+
+.error-td {
+    padding-left: 10px !important;
+}
