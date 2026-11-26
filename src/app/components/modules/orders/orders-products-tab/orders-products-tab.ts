@@ -4,6 +4,7 @@ import {
     OnInit,
     computed,
     inject,
+    input,
     model,
     signal,
 } from '@angular/core';
@@ -29,9 +30,13 @@ export class OrdersProductsTabComponent implements OnInit {
     private readonly settingService = inject(SettingService);
     private readonly productService = inject(ProductService);
 
+    readonly inStockOnly = input<boolean>(false);
+    readonly showProductPicture = input<boolean>(false);
+
     products = model.required<ProductIndex[]>();
     counts = model<Record<number, number>>({});
     amounts = model<Record<number, number>>({});
+    pendingPrices = model<number>(0);
 
     defaultPriceId = signal<number | null>(null);
 
@@ -75,13 +80,16 @@ export class OrdersProductsTabComponent implements OnInit {
         this.counts.update((counts) => ({ ...counts, [product.id]: 1 }));
         this.amounts.update((amounts) => ({ ...amounts, [product.id]: 0 }));
 
-        const amount = await this.resolveDefaultAmount(product.id);
+        this.pendingPrices.update((pending) => pending + 1);
+        try {
+            const amount: number | null = await this.resolveDefaultAmount(product.id);
 
-        if (amount === null || !this.products().some((item) => item.id === product.id)) {
-            return;
+            if (amount !== null && this.products().some((item) => item.id === product.id)) {
+                this.amounts.update((amounts) => ({ ...amounts, [product.id]: amount }));
+            }
+        } finally {
+            this.pendingPrices.update((pending) => pending - 1);
         }
-
-        this.amounts.update((amounts) => ({ ...amounts, [product.id]: amount }));
     }
 
     /**

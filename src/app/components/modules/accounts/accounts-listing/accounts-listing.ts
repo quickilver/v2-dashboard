@@ -1,5 +1,6 @@
 import { Component, signal, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
-import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { SelectFieldComponent } from '../../../fields/select-field/select-field';
+import type { SelectOption } from '../../../../models/fields/select-option.model';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
 import { AccountService } from '../../../../services/account.service';

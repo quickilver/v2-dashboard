@@ -22,11 +22,7 @@ import { ListingSizesService } from '../../services/listing-sizes.service';
 import { ListingColumnsSettingsComponent } from './listing-columns-settings/listing-columns-settings';
 import { ListingPageSizesComponent } from './listing-page-sizes/listing-page-sizes';
 import { ListingSizesComponent } from './listing-sizes/listing-sizes';
-
-export interface SortState {
-    key: string;
-    direction: 'asc' | 'desc';
-}
+import type { SortState } from '../../models/listing/sort-state.model';
 
 @Component({
     selector: 'app-listing',

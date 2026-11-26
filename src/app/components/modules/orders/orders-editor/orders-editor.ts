@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field';
-import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { SelectFieldComponent } from '../../../fields/select-field/select-field';
+import type { SelectOption } from '../../../../models/fields/select-option.model';
 import { OrderService } from '../../../../services/order.service';
 import { StatusService } from '../../../../services/status.service';
 import { PopupService } from '../../../../services/popup.service';

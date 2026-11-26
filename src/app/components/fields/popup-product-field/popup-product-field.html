@@ -31,18 +31,22 @@
                         <th class="col-id">ID</th>
                         <th>Название</th>
                         <th class="col-sku">Артикул</th>
+                        <th class="col-stock">Кол-во</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for (product of products(); track product.id) {
+                        @let stock = product.total_count ?? 0;
                         <tr
                             [class.is-selected]="isSelected(product.id)"
+                            [class.is-unavailable]="!canSelect(product)"
                             (click)="toggleProduct(product)"
                         >
                             <td class="col-check">
                                 <input
                                     type="checkbox"
                                     [checked]="isSelected(product.id)"
+                                    [disabled]="!canSelect(product)"
                                     (click)="$event.stopPropagation()"
                                     (change)="toggleProduct(product)"
                                 />
@@ -50,6 +54,13 @@
                             <td class="col-id">{{ product.id }}</td>
                             <td>{{ product.title }}</td>
                             <td class="col-sku">{{ product.sku }}</td>
+                            <td
+                                class="col-stock"
+                                [class.stock-positive]="stock > 0"
+                                [class.stock-non-positive]="stock <= 0"
+                            >
+                                {{ stock }}
+                            </td>
                         </tr>
                     }
                 </tbody>

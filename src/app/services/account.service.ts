@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import {
-    AccountsIndexResponse,
-    AccountsShowResponse,
-} from '../models/responses/accounts/accounts-index.response';
+import { AccountsIndexResponse } from '../models/responses/accounts/accounts-index.response';
+import type { AccountsShowResponse } from '../models/responses/accounts/accounts-show.response';
 import { AccountModel } from '../models/account.model';
 import { AccountIndexParams } from '../models/params/account-index.params';
 

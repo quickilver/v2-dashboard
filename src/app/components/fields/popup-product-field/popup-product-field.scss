@@ -41,6 +41,10 @@
         tr {
             cursor: pointer;
 
+            &.is-unavailable {
+                cursor: not-allowed;
+            }
+
             &.is-selected {
                 background-color: $primary-light-color;
             }
@@ -54,11 +58,29 @@
             height: 16px;
             cursor: pointer;
             accent-color: $primary-color;
+
+            &:disabled {
+                cursor: not-allowed;
+            }
         }
     }
 
     .col-id {
         width: 70px;
+    }
+
+    .col-stock {
+        width: 65px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .stock-positive {
+        color: #187744;
+    }
+
+    .stock-non-positive {
+        color: #b42318;
     }
 
     .col-sku {

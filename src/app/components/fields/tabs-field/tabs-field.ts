@@ -1,14 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
 import { IconComponent } from '../../icon/icon';
-
-export interface TabsFieldOption {
-    label: string;
-    value: string | number;
-    /** Иконка из `assets/icons` (необязательно). */
-    icon?: string;
-    /** Отключить таб. */
-    disabled?: boolean;
-}
+import type { TabsFieldOption } from '../../../models/fields/tabs-field-option.model';
 
 /**
  * Табы в стиле iOS (segmented control).

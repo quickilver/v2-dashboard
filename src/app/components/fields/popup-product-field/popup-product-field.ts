@@ -28,6 +28,7 @@ export class PopupProductFieldComponent {
     private readonly notificationService = inject(NotificationService);
 
     multiple = input<boolean>(true);
+    inStockOnly = input<boolean>(false);
 
     categoryId = model<number | number[] | null>(null);
     selectedProducts = signal<ProductIndex[]>([]);
@@ -79,7 +80,14 @@ export class PopupProductFieldComponent {
         return this.selectedIds().includes(productId);
     }
 
+    canSelect(product: ProductIndex): boolean {
+        return !this.inStockOnly() || (product.total_count ?? 0) > 0;
+    }
+
     toggleProduct(product: ProductIndex): void {
+        if (!this.canSelect(product)) return;
+
+
         if (!this.multiple()) {
             this.selectedProducts.set([product]);
             return;

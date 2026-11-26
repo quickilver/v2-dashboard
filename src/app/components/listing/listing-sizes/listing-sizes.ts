@@ -9,11 +9,7 @@ import {
 } from '@angular/core';
 import { IconComponent } from '../../icon/icon';
 import { ListingSize } from '../../../models/listing.model';
-
-export interface ListingSizeOption {
-    value: ListingSize;
-    title: string;
-}
+import type { ListingSizeOption } from '../../../models/listing/listing-size-option.model';
 
 @Component({
     selector: 'app-listing-sizes',

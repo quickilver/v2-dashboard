@@ -1,15 +1,8 @@
 import { Injectable, inject, signal, WritableSignal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import type { PopupEntry } from '../models/popup/popup-entry.model';
 
 type PopupResolver = (result?: unknown) => void;
-
-export interface PopupEntry {
-    id: number;
-    title: string;
-    component: any;
-    inputs: Record<string, unknown>;
-    dialogClass: string;
-}
 
 @Injectable({
     providedIn: 'root',

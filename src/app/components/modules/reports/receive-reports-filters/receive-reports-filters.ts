@@ -8,7 +8,8 @@ import {
     signal,
 } from '@angular/core';
 import { CalendarFieldComponent } from '../../../fields/calendar-field/calendar-field';
-import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { SelectFieldComponent } from '../../../fields/select-field/select-field';
+import type { SelectOption } from '../../../../models/fields/select-option.model';
 import { AutocompleteUsersFieldComponent } from '../../../fields/autocomplete-users-field/autocomplete-users-field';
 import { AutocompleteSuppliersFieldComponent } from '../../../fields/autocomplete-suppliers-field/autocomplete-suppliers-field';
 import { StoreService } from '../../../../services/store.service';

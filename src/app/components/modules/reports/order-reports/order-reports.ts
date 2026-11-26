@@ -4,11 +4,13 @@ import {
     OnInit,
     computed,
     inject,
+    input,
     signal,
 } from '@angular/core';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { IconComponent } from '../../../icon/icon';
 import { OrderReportsFiltersComponent } from '../order-reports-filters/order-reports-filters';
+import { AccountsEditorComponent } from '../../accounts/accounts-editor/accounts-editor';
 import { OrdersEditorComponent } from '../../orders/orders-editor/orders-editor';
 import { OrderService } from '../../../../services/order.service';
 import { ReportService } from '../../../../services/report.service';
@@ -32,10 +34,12 @@ export class OrderReportsComponent implements OnInit {
     private readonly popupService = inject(PopupService);
     private readonly notificationService = inject(NotificationService);
 
+    readonly todayOnly = input<boolean>(false);
     readonly filters = signal<OrderReportFilters>(this.defaultFilters());
 
     readonly orders = signal<OrderModel[]>([]);
     readonly loading = signal<boolean>(false);
+    readonly loadError = signal<boolean>(false);
     readonly exporting = signal<boolean>(false);
     readonly collapsedDays = signal<Record<string, boolean>>({});
     readonly expandedProducts = signal<Record<number, boolean>>({});
@@ -56,8 +60,14 @@ export class OrderReportsComponent implements OnInit {
 
     async loadOrders(): Promise<void> {
         this.loading.set(true);
+        this.loadError.set(false);
 
         try {
+            if (this.todayOnly()) {
+                this.orders.set(await this.loadTodayOrders());
+                return;
+            }
+
             const filters = this.filters();
             const response = await this.orderService.index({
                 per_page: 100,
@@ -71,10 +81,46 @@ export class OrderReportsComponent implements OnInit {
             this.orders.set(response.data);
         } catch {
             this.orders.set([]);
-            this.notificationService.error('Не удалось загрузить заказы для отчёта');
+            this.loadError.set(true);
+            if (!this.todayOnly()) {
+                this.notificationService.error('Не удалось загрузить заказы для отчёта');
+            }
         } finally {
             this.loading.set(false);
         }
+    }
+
+    private async loadTodayOrders(): Promise<OrderModel[]> {
+        const start: Date = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        const end: Date = new Date(start);
+        end.setDate(end.getDate() + 1);
+        const lastMoment: Date = new Date(end.getTime() - 1);
+        const orders: OrderModel[] = [];
+        let page: number = 1;
+        let lastPage: number;
+
+        do {
+            const response = await this.orderService.index({
+                page,
+                per_page: 100,
+                sort: 'id',
+                direction: 'desc',
+                date_from: start.toISOString().slice(0, 10),
+                date_to: lastMoment.toISOString().slice(0, 10),
+            });
+            orders.push(...response.data);
+            lastPage = response.meta.last_page;
+            page++;
+        } while (page <= lastPage);
+
+        return orders
+            .filter((order) => {
+                const createdAt: number = Date.parse(order.created_at);
+                return createdAt >= start.getTime() && createdAt < end.getTime();
+            })
+            .sort((left, right) => Date.parse(right.created_at) - Date.parse(left.created_at));
     }
 
     onFiltersChange(filters: OrderReportFilters): void {
@@ -85,6 +131,12 @@ export class OrderReportsComponent implements OnInit {
     openOrder(order: OrderModel): void {
         this.popupService
             .open(`Заказ ${order.number}`, OrdersEditorComponent, { id: order.id }, 'with-tabs')
+            .then(() => this.loadOrders());
+    }
+
+    openBuyer(accountId: number): void {
+        void this.popupService
+            .open('Редактирование клиента', AccountsEditorComponent, { id: accountId }, 'with-tabs')
             .then(() => this.loadOrders());
     }
 
@@ -151,8 +203,18 @@ export class OrderReportsComponent implements OnInit {
     }
 
     accountName(order: OrderModel): string {
-        return [order.contact_last_name, order.contact_first_name, order.contact_middle_name]
-            .filter((part) => !!part)
+        const contactName: string = [
+            order.contact_last_name,
+            order.contact_first_name,
+            order.contact_middle_name,
+        ].filter(Boolean).join(' ');
+
+        if (contactName || !order.account) {
+            return contactName;
+        }
+
+        return [order.account.last_name, order.account.first_name, order.account.middle_name]
+            .filter(Boolean)
             .join(' ');
     }
 

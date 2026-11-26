@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field';
-import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { SelectFieldComponent } from '../../../fields/select-field/select-field';
+import type { SelectOption } from '../../../../models/fields/select-option.model';
 import { CalendarFieldComponent } from '../../../fields/calendar-field/calendar-field';
 import { SkeletonComponent } from '../../../skeleton/skeleton';
 import { TaskService } from '../../../../services/task.service';

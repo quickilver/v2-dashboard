@@ -5,7 +5,3 @@ export interface AccountsIndexResponse {
     data: AccountModel[];
     meta: MetaModel;
 }
-
-export interface AccountsShowResponse {
-    data: AccountModel;
-}

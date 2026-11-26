@@ -1,5 +1,6 @@
 <div class="editor-body">
     <app-products-list-field
+        [inStockOnly]="inStockOnly()"
         searchLabel="Добавьте товар в заказ через поиск"
         (productSelected)="onProductSelected($event)"
     />
@@ -8,7 +9,7 @@
         <table class="products-table">
             <thead>
                 <tr>
-                    <th class="col-id">ID</th>
+                    <th class="col-id">{{ showProductPicture() ? 'Фото' : 'ID' }}</th>
                     <th>Товар</th>
                     <th class="col-amount">Цена</th>
                     <th class="col-count">Кол-во</th>
@@ -19,10 +20,26 @@
             <tbody>
                 @for (product of products(); track product.id) {
                     <tr>
-                        <td>{{ product.id }}</td>
+                        <td>
+                            @if (showProductPicture()) {
+                                <span class="product-picture" aria-hidden="true">
+                                    @if (product.picture?.preview_url || product.picture?.url; as pictureUrl) {
+                                        <img #picture [src]="pictureUrl" alt="" (error)="picture.hidden = true" />
+                                    }
+                                </span>
+                            } @else {
+                                {{ product.id }}
+                            }
+                        </td>
                         <td>
                             <div>{{ product.title }}</div>
                             <div class="product-sku">{{ product.sku }}</div>
+                            @if (inStockOnly()) {
+                                @let stock = product.total_count ?? 0;
+                                <div class="product-stock" [class.is-unavailable]="stock <= 0">
+                                    В наличии: {{ stock }}
+                                </div>
+                            }
                         </td>
                         <td>
                             <app-input-field
@@ -37,6 +54,7 @@
                             <app-counter-field
                                 size="small"
                                 [min]="1"
+                                [max]="inStockOnly() ? (product.total_count ?? 0) : null"
                                 [value]="getCount(product.id)"
                                 (valueChange)="onCountChange(product.id, $event)"
                             />

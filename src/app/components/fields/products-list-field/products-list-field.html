@@ -4,6 +4,7 @@
         <app-autocomplete-products-field
             [placeholder]="placeholder()"
             [showSelected]="false"
+            [inStockOnly]="inStockOnly()"
             (valueChange)="onValueChange($event)"
         />
     </div>

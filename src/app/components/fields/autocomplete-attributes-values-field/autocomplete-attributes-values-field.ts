@@ -14,13 +14,7 @@ import {
 import { AttributeService } from '../../../services/attribute.service';
 import { AttributeShortModel } from '../../../models/attributes/attribute-short.model';
 import { AttributeValueModel } from '../../../models/attributes/attribute-value.model';
-
-export interface AttributeFieldValue {
-    attribute_id: number | null;
-    attribute_title: string;
-    value_id: number | null;
-    value: string;
-}
+import type { AttributeFieldValue } from '../../../models/fields/attribute-field-value.model';
 
 @Component({
     selector: 'app-autocomplete-attributes-values-field',

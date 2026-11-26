@@ -1,41 +1,49 @@
-<div class="header">
-    <div class="title">Отчёт по продажам</div>
-    <div class="actions"></div>
-</div>
-
-<div class="order-reports-container">
-    <div class="order-reports-header">
-        <app-order-reports-filters
-            [filters]="filters()"
-            (filtersChange)="onFiltersChange($event)"
-        />
+@if (!todayOnly()) {
+    <div class="header">
+        <div class="title">Отчёт по продажам</div>
+        <div class="actions"></div>
     </div>
+}
+
+<div class="order-reports-container" [class.is-embedded]="todayOnly()">
+    @if (!todayOnly()) {
+        <div class="order-reports-header">
+            <app-order-reports-filters
+                [filters]="filters()"
+                (filtersChange)="onFiltersChange($event)"
+            />
+        </div>
+    }
 
     <div class="order-reports-content">
         @if (loading()) {
             <app-skeleton [count]="6" width="100%" [height]="48" [gap]="12" />
+        } @else if (todayOnly() && loadError()) {
+            <div class="order-reports-placeholder" role="alert">Не удалось загрузить продажи за сегодня</div>
         } @else if (days().length > 0) {
-            <div class="report-summary">
-                <div class="report-summary-stats">
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">Заказов</span>
-                        <span class="report-summary-value">{{ orders().length }}</span>
+            @if (!todayOnly()) {
+                <div class="report-summary">
+                    <div class="report-summary-stats">
+                        <div class="report-summary-item">
+                            <span class="report-summary-label">Заказов</span>
+                            <span class="report-summary-value">{{ orders().length }}</span>
+                        </div>
+                        <div class="report-summary-item">
+                            <span class="report-summary-label">Товаров</span>
+                            <span class="report-summary-value">{{ totalCount() }}</span>
+                        </div>
+                        <div class="report-summary-item">
+                            <span class="report-summary-label">Сумма</span>
+                            <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                        </div>
                     </div>
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">Товаров</span>
-                        <span class="report-summary-value">{{ totalCount() }}</span>
-                    </div>
-                    <div class="report-summary-item">
-                        <span class="report-summary-label">Сумма</span>
-                        <span class="report-summary-value">{{ formatPrice(totalPrice()) }} ₽</span>
+                    <div class="reports-summary-actions">
+                        <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
+                            <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
+                        </button>
                     </div>
                 </div>
-                <div class="reports-summary-actions">
-                    <button class="primary" [disabled]="exporting()" (click)="exportToExcel()">
-                        <span>{{ exporting() ? 'Выгрузка...' : 'Экспорт в Excel' }}</span>
-                    </button>
-                </div>
-            </div>
+            }
             <div class="report-days">
                 @for (day of days(); track day.date) {
                     <div class="report-day" [class.is-collapsed]="isCollapsed(day.date)">
@@ -58,6 +66,7 @@
                                             <th class="col-time">Время</th>
                                             <th class="col-number">Номер</th>
                                             <th class="col-account">Покупатель</th>
+                                            <th>Менеджер</th>
                                             <th class="col-status">Статус</th>
                                             <th class="col-count align-right">Товаров</th>
                                             <th class="col-total align-right">Сумма</th>
@@ -76,7 +85,20 @@
                                                         {{ order.number }}
                                                     </button>
                                                 </td>
-                                                <td>{{ accountName(order) || '—' }}</td>
+                                                <td>
+                                                    @if (order.account; as buyer) {
+                                                        <button
+                                                            type="button"
+                                                            class="report-order-link"
+                                                            (click)="openBuyer(buyer.id)"
+                                                        >
+                                                            {{ accountName(order) || 'Клиент №' + buyer.id }}
+                                                        </button>
+                                                    } @else {
+                                                        {{ accountName(order) || '—' }}
+                                                    }
+                                                </td>
+                                                <td>{{ order.manager?.name ?? '—' }}</td>
                                                 <td>{{ order.status?.title ?? '—' }}</td>
                                                 <td class="align-right">
                                                     <button
@@ -107,7 +129,7 @@
 
                                             @if (isProductsExpanded(order.id)) {
                                                 <tr class="report-products-row">
-                                                    <td colspan="6">
+                                                    <td colspan="7">
                                                         <div class="report-products">
                                                             @for (
                                                                 product of order.products;
@@ -159,7 +181,9 @@
                 }
             </div>
         } @else {
-            <div class="order-reports-placeholder">Заказов по выбранным фильтрам нет</div>
+            <div class="order-reports-placeholder">
+                {{ todayOnly() ? 'За сегодня заказов нет' : 'Заказов по выбранным фильтрам нет' }}
+            </div>
         }
     </div>
 </div>

@@ -1,9 +1,4 @@
-export interface OrderProductRequest {
-    product_id: number | null;
-    title: string;
-    amount: number;
-    count: number;
-}
+import type { OrderProductRequest } from './order-product-request.model';
 
 export interface OrderCreateRequest {
     number?: string | null;

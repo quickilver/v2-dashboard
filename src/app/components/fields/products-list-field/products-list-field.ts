@@ -19,6 +19,8 @@ export class ProductsListFieldComponent {
     searchLabel = input<string>('Добавьте товар через поиск');
     catalogLabel = input<string>('или выберите товар из каталога');
 
+    inStockOnly = input<boolean>(false);
+
     productSelected = output<ProductIndex>();
 
     onValueChange(product: ProductIndex | null): void {
@@ -31,7 +33,7 @@ export class ProductsListFieldComponent {
         const products = await this.popupService.open<ProductIndex[]>(
             'Выбор товаров',
             PopupProductFieldComponent,
-            { multiple: true },
+            { multiple: true, inStockOnly: this.inStockOnly() },
         );
 
         products?.forEach((product) => this.productSelected.emit(product));

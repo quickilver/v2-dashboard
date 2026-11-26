@@ -42,8 +42,10 @@ export class CounterFieldComponent {
             next = this.min();
         }
         next = Math.max(this.min(), next);
-        if (this.max() !== null) {
-            next = Math.min(this.max()!, next);
+        const max: number | null = this.max();
+        if (max !== null && next > max) {
+            next = max;
+            input.value = String(max);
         }
         this.value.set(next);
     }

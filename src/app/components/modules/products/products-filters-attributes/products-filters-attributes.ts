@@ -3,16 +3,9 @@ import { IconComponent } from '../../../icon/icon';
 import { AttributeService } from '../../../../services/attribute.service';
 import { AttributeShortModel } from '../../../../models/attributes/attribute-short.model';
 import { AttributeValueModel } from '../../../../models/attributes/attribute-value.model';
-import { ProductAttributeFilter } from '../../../../models/products/product-filters.model';
+import type { ProductAttributeFilter } from '../../../../models/products/product-attribute-filter.model';
 import { AutocompleteAttributesFieldComponent } from '../../../fields/autocomplete-attributes-field/autocomplete-attributes-field';
-
-interface AttributeFilterView {
-    id: number;
-    title: string;
-    values: AttributeValueModel[];
-    selectedValues: number[];
-    loading: boolean;
-}
+import type { AttributeFilterView } from './attribute-filter-view.model';
 
 @Component({
     selector: 'app-products-filters-attributes',

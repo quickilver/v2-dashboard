@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Signal, computed, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject, input, model } from '@angular/core';
 import { AutocompleteBaseComponent } from '../autocomplete-field/autocomplete-field';
 import { ProductService } from '../../../services/product.service';
 import { ProductIndex } from '../../../models/products/product-short.model';
@@ -15,6 +15,7 @@ export class AutocompleteProductsFieldComponent extends AutocompleteBaseComponen
     private readonly productService = inject(ProductService);
 
     value = model<ProductIndex | null>(null);
+    inStockOnly = input<boolean>(false);
 
     readonly filteredItems: Signal<ProductIndex[]> = computed<ProductIndex[]>(() => {
         const query: string = this.search().toLowerCase().trim();
@@ -25,8 +26,9 @@ export class AutocompleteProductsFieldComponent extends AutocompleteBaseComponen
 
         return this.items().filter(
             (product) =>
-                product.title.toLowerCase().includes(query) ||
-                product.sku.toLowerCase().includes(query),
+                (!this.inStockOnly() || (product.total_count ?? 0) > 0) &&
+                (product.title.toLowerCase().includes(query) ||
+                    product.sku.toLowerCase().includes(query)),
         );
     });
 
@@ -35,6 +37,9 @@ export class AutocompleteProductsFieldComponent extends AutocompleteBaseComponen
     );
 
     selectItem(product: ProductIndex): void {
+        if (this.inStockOnly() && (product.total_count ?? 0) <= 0) return;
+
+
         this.value.set(product);
         this.search.set('');
         this.items.set([]);

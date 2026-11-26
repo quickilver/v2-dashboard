@@ -7,7 +7,8 @@ import {
     OnInit,
     signal,
 } from '@angular/core';
-import { SelectFieldComponent, SelectOption } from '../../../fields/select-field/select-field';
+import { SelectFieldComponent } from '../../../fields/select-field/select-field';
+import type { SelectOption } from '../../../../models/fields/select-option.model';
 import { AutocompleteSuppliersFieldComponent } from '../../../fields/autocomplete-suppliers-field/autocomplete-suppliers-field';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field';

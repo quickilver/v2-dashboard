@@ -1,14 +1,11 @@
 import { Component, computed, inject, input, model, OnInit, signal } from '@angular/core';
 import { InputFieldComponent } from '../input-field/input-field';
 import { CheckboxFieldComponent } from '../checkbox-field/checkbox-field';
-import { SelectFieldComponent, SelectOption } from '../select-field/select-field';
+import { SelectFieldComponent } from '../select-field/select-field';
+import type { SelectOption } from '../../../models/fields/select-option.model';
 import { PriceService } from '../../../services/price.service';
 import { StatusService } from '../../../services/status.service';
-
-export interface SettingOptions {
-    source?: string;
-    items?: SelectOption[];
-}
+import type { SettingOptions } from '../../../models/settings/setting-options.model';
 
 @Component({
     selector: 'app-setting-field',

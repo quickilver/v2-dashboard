@@ -4,10 +4,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import {
-    OrdersIndexResponse,
-    OrdersShowResponse,
-} from '../models/responses/orders/orders-index.response';
+import { OrdersIndexResponse } from '../models/responses/orders/orders-index.response';
+import type { OrdersShowResponse } from '../models/responses/orders/orders-show.response';
 import { OrderIndexParams } from '../models/params/order-index.params';
 import { OrderCreateRequest } from '../models/orders/order-create-request.model';
 

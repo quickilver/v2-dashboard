@@ -8,14 +8,7 @@ import {
     signal,
     computed,
 } from '@angular/core';
-
-interface DayInfo {
-    day: number;
-    isDisabled: boolean;
-    isToday: boolean;
-    isSelected: boolean;
-    date: Date;
-}
+import type { DayInfo } from './day-info.model';
 
 @Component({
     selector: 'app-calendar-field',

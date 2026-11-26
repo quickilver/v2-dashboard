@@ -1,9 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-
-export interface SelectOption {
-    label: string;
-    value: string | number;
-}
+import type { SelectOption } from '../../../models/fields/select-option.model';
 
 @Component({
     selector: 'app-select-field',

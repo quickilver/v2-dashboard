@@ -15,11 +15,9 @@ import { PriceService } from '../../../../services/price.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { StoreModel } from '../../../../models/store.model';
 import { PriceModel } from '../../../../models/price.model';
-import {
-    ProductAttributeFilter,
-    ProductFilters,
-    ProductPriceFilter,
-} from '../../../../models/products/product-filters.model';
+import { ProductFilters } from '../../../../models/products/product-filters.model';
+import type { ProductAttributeFilter } from '../../../../models/products/product-attribute-filter.model';
+import type { ProductPriceFilter } from '../../../../models/products/product-price-filter.model';
 import { ProductsFiltersAttributesComponent } from '../products-filters-attributes/products-filters-attributes';
 
 @Component({

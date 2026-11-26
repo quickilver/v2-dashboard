@@ -7,22 +7,7 @@ import { ProductsShowResponse } from '../models/responses/products/products-show
 import { ProductsStoreResponse } from '../models/responses/products/products-store.response';
 import { ProductCreateRequest } from '../models/products/product-create-request.model';
 import { ProductPictureItem } from '../models/products/product-picture-item.model';
-import {
-    ProductAttributeFilter,
-    ProductPriceFilter,
-} from '../models/products/product-filters.model';
-
-export interface ProductIndexParams {
-    page?: number;
-    per_page?: number;
-    query?: string;
-    sort?: string;
-    direction?: 'asc' | 'desc';
-    categories?: number[];
-    stores?: number[];
-    prices?: ProductPriceFilter[];
-    attributes?: ProductAttributeFilter[];
-}
+import type { ProductIndexParams } from '../models/params/product-index.params';
 
 @Injectable({
     providedIn: 'root',

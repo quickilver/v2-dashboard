@@ -1,15 +1,6 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-
-export type NotificationType = 'success' | 'error' | 'info' | 'warning';
-
-export interface NotificationItem {
-    id: string;
-    type: NotificationType;
-    title: string;
-    description?: string;
-    progress: WritableSignal<number>;
-    dismiss: () => void;
-}
+import type { NotificationItem } from '../models/notifications/notification-item.model';
+import type { NotificationType } from '../models/notifications/notification-type.model';
 
 @Injectable({
     providedIn: 'root',

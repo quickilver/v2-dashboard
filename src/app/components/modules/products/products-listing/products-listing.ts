@@ -1,7 +1,8 @@
 import { Component, signal, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { ListingComponent } from '../../../listing/listing';
 import { ListingColumn } from '../../../../models/listing.model';
-import { ProductService, ProductIndexParams } from '../../../../services/product.service';
+import { ProductService } from '../../../../services/product.service';
+import type { ProductIndexParams } from '../../../../models/params/product-index.params';
 import { ProductIndex } from '../../../../models/products/product-short.model';
 import { ProductsIndexResponse } from '../../../../models/responses/products/products-index.response';
 import { MetaModel } from '../../../../models/meta.model';

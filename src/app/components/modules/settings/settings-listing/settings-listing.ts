@@ -15,12 +15,7 @@ import { SettingGroupService } from '../../../../services/setting-group.service'
 import { SettingModel } from '../../../../models/setting.model';
 import { SettingGroupModel } from '../../../../models/setting-group.model';
 import { NotificationService } from '../../../../services/notification.service';
-
-interface SettingsGroup {
-    key: string;
-    title: string;
-    settings: SettingModel[];
-}
+import type { SettingsGroup } from './settings-group.model';
 
 @Component({
     selector: 'app-settings-listing',

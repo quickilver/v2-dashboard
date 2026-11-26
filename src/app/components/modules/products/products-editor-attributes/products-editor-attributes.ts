@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, model, signal } from '@angular/core';
 import { ProductAttribute } from '../../../../models/products/product-attribute.model';
-import {
-    AutocompleteAttributesValuesFieldComponent,
-    AttributeFieldValue,
-} from '../../../fields/autocomplete-attributes-values-field/autocomplete-attributes-values-field';
+import { AutocompleteAttributesValuesFieldComponent } from '../../../fields/autocomplete-attributes-values-field/autocomplete-attributes-values-field';
+import type { AttributeFieldValue } from '../../../../models/fields/attribute-field-value.model';
 
 @Component({
     selector: 'app-products-editor-attributes',

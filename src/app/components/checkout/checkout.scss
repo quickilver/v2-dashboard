@@ -1,0 +1,88 @@
+@use 'variables' as *;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.checkout {
+    display: grid;
+    align-content: start;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    gap: 20px;
+    padding: 20px;
+}
+
+.resume-draft {
+    justify-self: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+
+}
+
+.checkout-actions {
+    position: static;
+    flex: 0 0 auto;
+    border-top: 1px solid $input-border-color;
+    background: white;
+}
+
+.checkout-section {
+    min-width: 0;
+}
+
+.section-title {
+    display: inline-block;
+    margin: 25px 0 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.payment-fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.payment-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.payment-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid $grey-light-2;
+    border-radius: $input-radius;
+    cursor: pointer;
+
+    input {
+        margin: 0;
+        accent-color: $primary-color;
+    }
+
+    &:has(input:checked) {
+        border-color: $primary-color;
+        background: $primary-light-color;
+    }
+}
+
+app-orders-products-tab {
+    --products-table-margin-top: 20px !important;
+}

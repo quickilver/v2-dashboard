@@ -1,12 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-export interface IconConfig {
-    name: string;
-    size?: number | string;
-    color?: string;
-}
-
 @Injectable({
     providedIn: 'root',
 })

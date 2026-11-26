@@ -1,13 +1,5 @@
-export interface ProductPriceFilter {
-    id: number;
-    min: number | null;
-    max: number | null;
-}
-
-export interface ProductAttributeFilter {
-    id: number;
-    values: number[];
-}
+import type { ProductAttributeFilter } from './product-attribute-filter.model';
+import type { ProductPriceFilter } from './product-price-filter.model';
 
 export interface ProductFilters {
     query: string;

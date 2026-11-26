@@ -40,6 +40,11 @@
         width: 100%;
     }
 
+    &.is-embedded .order-reports-content {
+        padding: 0;
+        box-shadow: none;
+    }
+
     .order-reports-placeholder {
         padding: 60px 20px;
         text-align: center;

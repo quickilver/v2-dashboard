@@ -1,10 +1,4 @@
-export interface FileManagerUploadData {
-    name: string;
-    path: string;
-    url: string;
-    size: number;
-    mime_type: string;
-}
+import type { FileManagerUploadData } from './file-manager-upload-data.model';
 
 export interface FileManagerUploadResponse {
     message: string;

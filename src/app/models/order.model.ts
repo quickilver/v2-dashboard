@@ -2,24 +2,13 @@ import { PaymentModel } from './payment.model';
 import { DeliveryModel } from './delivery.model';
 import { AccountModel } from './account.model';
 import { StatusModel } from './status.model';
-
-export interface OrderProductModel {
-    id: number;
-    product: {
-        id: number;
-        title: string;
-        sku: string;
-    } | null;
-    title: string;
-    amount: number;
-    count: number;
-    total: number;
-}
+import type { OrderProductModel } from './orders/order-product.model';
 
 export interface OrderModel {
     id: number;
     number: string;
     account: AccountModel | null;
+    manager?: { id: number; name: string } | null;
     status: StatusModel | null;
     payment?: PaymentModel | null;
     delivery?: DeliveryModel | null;

@@ -84,6 +84,7 @@
 
             @if (isActiveTab('products')) {
                 <app-orders-products-tab
+                    [showProductPicture]="!isEditMode()"
                     [(products)]="products"
                     [(counts)]="counts"
                     [(amounts)]="amounts"

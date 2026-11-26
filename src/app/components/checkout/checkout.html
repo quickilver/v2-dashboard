@@ -1,0 +1,65 @@
+<div class="checkout" [attr.inert]="saving() ? '' : null">
+    @if (canResumeDraft()) {
+        <button type="button" class="resume-draft primary" (click)="resumeDraft()">
+            Продолжить оформление
+        </button>
+    }
+
+    <section class="checkout-section">
+        <h2 id="checkout-payment-heading" class="section-title">Способ оплаты</h2>
+        <fieldset class="payment-fieldset" aria-labelledby="checkout-payment-heading">
+            @if (paymentsLoading()) {
+                <p role="status">Загрузка способов оплаты…</p>
+            } @else if (paymentsError()) {
+                <p role="alert">Не удалось загрузить способы оплаты.</p>
+            } @else {
+                <div class="payment-options">
+                    @for (payment of payments(); track payment.id) {
+                        <label class="payment-option">
+                            <input
+                                type="radio"
+                                name="checkout-payment"
+                                [value]="payment.id"
+                                [checked]="paymentId() === payment.id"
+                                (change)="paymentId.set(payment.id)"
+                            />
+                            {{ payment.title }}
+                        </label>
+                    } @empty {
+                        <p>Способы оплаты не настроены.</p>
+                    }
+                </div>
+            }
+        </fieldset>
+    </section>
+
+    <section class="checkout-section">
+        <h2 class="section-title">Покупатель</h2>
+        <app-autocomplete-accounts-field
+            placeholder="Поиск покупателя"
+            [(search)]="buyerSearch"
+            [(value)]="buyer"
+        />
+    </section>
+
+    <section class="checkout-section">
+        <h2 class="section-title">Товары</h2>
+        <app-orders-products-tab
+            [inStockOnly]="true"
+            [showProductPicture]="true"
+            [(products)]="products"
+            [(counts)]="counts"
+            [(amounts)]="amounts"
+            [(pendingPrices)]="pendingPrices"
+        />
+    </section>
+
+    <app-order-reports [todayOnly]="true" />
+</div>
+
+<div class="editor-actions checkout-actions">
+    <button type="button" [disabled]="saving()" (click)="cancel()">Отмена</button>
+    <button type="button" class="primary" [disabled]="!canSubmit()" (click)="submit()">
+        {{ saving() ? 'Оформление…' : 'Оформить' }}
+    </button>
+</div>
