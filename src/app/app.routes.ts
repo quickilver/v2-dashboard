@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
 import { HomepageComponent } from './pages/homepage/homepage';
+import { ParserPageComponent } from './pages/parser/parser';
 import { CatalogPageComponent } from './pages/catalog/catalog';
 import { PurchasingPageComponent } from './pages/purchasing/purchasing';
 import { ContentPageComponent } from './pages/content/content';
@@ -53,6 +54,7 @@ export const routes: Routes = [
     { path: 'orders/statuses', component: StatusesListingComponent, title: 'Статусы' },
     { path: 'orders/payments', component: PaymentsListingComponent, title: 'Способы оплаты' },
     { path: 'orders/deliveries', component: DeliveriesListingComponent, title: 'Способы доставки' },
+    { path: 'parser', component: ParserPageComponent, title: 'Парсер' },
     { path: 'logs', component: LogListingComponent, title: 'Журнал' },
     { path: 'backups', component: BackupListingComponent, title: 'Резервные копии' },
     { path: 'accounts', component: AccountsListingComponent, title: 'Клиенты' },

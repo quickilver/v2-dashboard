@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    DestroyRef,
     computed,
     inject,
     input,
@@ -15,6 +16,9 @@ import { WyswigFieldComponent } from '../../../fields/wyswig-field/wyswig-field'
 import { CategoriesTreeComponent } from '../../../categories-tree/categories-tree';
 import { ProductsEditorAttributesComponent } from '../products-editor-attributes/products-editor-attributes';
 import { ProductsEditorMediaComponent } from '../products-editor-media/products-editor-media';
+import { ProductsMetadataPopupComponent } from '../products-metadata-popup/products-metadata-popup';
+import type { GeneratedProductMetadata } from '../../../../models/products/generated-product-metadata.model';
+import { OpenRouterService } from '../../../../services/open-router.service';
 import { ProductService } from '../../../../services/product.service';
 import { PriceService } from '../../../../services/price.service';
 import { StoreService } from '../../../../services/store.service';
@@ -49,10 +53,14 @@ import { SkeletonComponent } from '../../../skeleton/skeleton';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsEditorComponent implements OnInit {
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly openRouter = inject(OpenRouterService);
     private readonly productService = inject(ProductService);
     private readonly priceService = inject(PriceService);
     private readonly storeService = inject(StoreService);
     private readonly popupService = inject(PopupService);
+    readonly generatingDescription = signal<boolean>(false);
+
     private readonly notificationService = inject(NotificationService);
 
     id = input<number | null>(null);
@@ -87,6 +95,16 @@ export class ProductsEditorComponent implements OnInit {
     storesTotal = computed<number>(() => {
         const counts = this.storeCounts();
         return this.stores().reduce((total, store) => total + (counts[store.id] ?? 0), 0);
+    });
+
+    hasDescription = computed<boolean>(() => {
+        const description: string = this.description();
+        const text: string = description
+            .replace(/<[^>]*>/g, '')
+            .replace(/&(?:nbsp|#160|#x0*a0);|\u200b/gi, '')
+            .trim();
+
+        return text.length > 0 || /<(?:img|video|audio|iframe)\b/i.test(description);
     });
 
     attributesCount = computed<number>(() => this.attributes().length);
@@ -160,7 +178,119 @@ export class ProductsEditorComponent implements OnInit {
         }
     }
 
+    async fillDescription(): Promise<void> {
+        const title: string = this.title().trim();
+        if (!title || this.generatingDescription()) return;
+
+        const previousDescription: string = this.description();
+        this.generatingDescription.set(true);
+        try {
+            const result: GeneratedProductMetadata | undefined =
+                await this.popupService.open<GeneratedProductMetadata>(
+                    'Заполнить описание',
+                    ProductsMetadataPopupComponent,
+                    { title, replaceDescription: previousDescription.trim() !== '' },
+                    'with-tabs',
+                );
+            if (!result) return;
+
+            if (this.title().trim() !== title || this.description() !== previousDescription) {
+                this.notificationService.info('Название или описание изменилось. Запустите заполнение снова.');
+                return;
+            }
+
+            const paragraph: HTMLDivElement = document.createElement('div');
+            paragraph.textContent = result.description;
+            this.description.set(paragraph.innerHTML.replace(/\r?\n/g, '<br>'));
+
+            const attributes: ProductAttribute[] = [...this.attributes()];
+            const attributeKey = (name: string): string =>
+                name.trim().replace(/\s+/g, ' ').toLowerCase().replaceAll('ё', 'е');
+            const knownTitles = new Set<string>(
+                attributes.map((attribute) => attributeKey(attribute.title)),
+            );
+            const knownIds = new Set<number>(attributes.map((attribute) => attribute.id));
+            let position: number = Math.max(0, ...attributes.map((attribute) => attribute.position));
+            for (const attribute of result.attributes) {
+                const id: number = attribute.attribute_id ?? 0;
+                const name: string = attribute.title.trim();
+                const value: string = attribute.value.trim();
+                const key: string = attributeKey(name);
+                if (!name || !value || knownTitles.has(key) || (id > 0 && knownIds.has(id))) {
+                    continue;
+                }
+
+                knownTitles.add(key);
+                if (id > 0) knownIds.add(id);
+                attributes.push({ id, value_id: 0, title: name, value, position: ++position });
+            }
+            this.attributes.set(attributes);
+            this.changeTab('description');
+            this.notificationService.success('Описание и характеристики добавлены в форму');
+            if (result.image_urls?.length) {
+                await this.addSuggestedPictures(result.image_urls);
+            }
+        } finally {
+            this.generatingDescription.set(false);
+        }
+    }
+
+    private async addSuggestedPictures(urls: string[]): Promise<void> {
+        const extensions: Readonly<Record<string, string>> = {
+            'image/jpeg': 'jpg',
+            'image/png': 'png',
+            'image/gif': 'gif',
+            'image/webp': 'webp',
+            'image/bmp': 'bmp',
+            'image/x-ms-bmp': 'bmp',
+        };
+        const existingUrls: Set<string | undefined> = new Set(this.pictures().map((picture) => picture.sourceUrl));
+        const pendingUrls: string[] = [...new Set(urls)].filter((url) => !existingUrls.has(url));
+        const downloads: PromiseSettledResult<{ file: File; sourceUrl: string }>[] = await Promise.allSettled(
+            pendingUrls.map(async (url: string, index: number) => {
+                const blob: Blob = await this.openRouter.productPhoto(url);
+                const extension: string | undefined = Object.hasOwn(extensions, blob.type) ? extensions[blob.type] : undefined;
+                if (!extension || !blob.size) throw new Error('Недоступное изображение');
+
+                return {
+                    file: new File([blob], `product-photo-${index + 1}.${extension}`, { type: blob.type }),
+                    sourceUrl: url,
+                };
+            }),
+        );
+        if (this.destroyRef.destroyed) return;
+
+        const photos: { file: File; sourceUrl: string }[] = downloads.flatMap((download) =>
+            download.status === 'fulfilled' ? [download.value] : [],
+        );
+
+        if (photos.length) {
+            this.pictures.update((pictures) => {
+                const hasMain: boolean = pictures.some((picture) => picture.is_main);
+                return [...pictures, ...photos.map(({ file, sourceUrl }, index: number): ProductPictureItem => ({
+                    id: null,
+                    file,
+                    sourceUrl,
+                    previewUrl: URL.createObjectURL(file),
+                    is_main: !hasMain && index === 0,
+                    position: pictures.length + index + 1,
+                }))];
+            });
+            this.changeTab('media');
+        }
+
+        const failedCount: number = downloads.length - photos.length;
+        if (failedCount) {
+            this.notificationService.warning(
+                `Не удалось добавить фото: ${failedCount}`,
+                'Проверьте, что ссылки ведут напрямую на доступные изображения размером до 8 МБ.',
+            );
+        }
+    }
+
     async onSave(): Promise<void> {
+        if (this.saving()) return;
+
         this.saving.set(true);
 
         try {

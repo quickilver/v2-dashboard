@@ -6,6 +6,7 @@ export interface ProductPictureItem {
     id: number | null;
     file: File | null;
     previewUrl: string;
+    sourceUrl?: string;
     is_main: boolean;
     position: number;
 }

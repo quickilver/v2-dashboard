@@ -485,6 +485,10 @@ pictures[1][is_main]=0
 | ----- | -------------------------- | --------------------- | -------------------- |
 | POST  | `/open-router/formatting`  | Форматирование текста | `{ "data": string }` |
 | POST  | `/open-router/refactoring` | Рефакторинг текста    | `{ "data": string }` |
+| POST | `/open-router/product-metadata` | Описание и характеристики по названию товара (`title`) | `{ data: { description, attributes, image_urls } }` |
+| POST | `/open-router/product-metadata/jobs` | Запуск фонового поиска по `title` | HTTP 202 и `{ id }` |
+| POST | `/open-router/product-metadata/photo` | Получить фото по HTTPS-ссылке `url` | Бинарное изображение |
+| GET | `/open-router/product-metadata/jobs/{id}` | Состояние поиска | `{ status: "pending" }`, `{ status: "completed", data }` или `{ status: "failed", message }` |
 
 - **Тело запроса:** `{ "text": "..." }`.
 
@@ -564,3 +568,18 @@ pictures[1][is_main]=0
 ## Локальные ресурсы (не API)
 
 - **Иконки:** `IconService` загружает SVG из `/assets/icons/{name}.svg` (не через API).
+
+## Парсер
+
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| GET | `/parser/runs?page=1` | История запусков в порядке от новых к старым, 25 записей на страницу |
+| GET | `/parser/runs/{run}/errors?page=1` | Ошибки запуска в порядке от новых к старым, 25 записей на страницу |
+| POST | `/parser/runs/{run}/retry-errors` | Запустить повторную обработку карточек товаров с ошибками |
+| POST | `/parser/runs/{run}/pause` | Приостановить запуск после текущей записи |
+| POST | `/parser/runs/{run}/resume` | Возобновить тот же запуск |
+| POST | `/parser/runs` | Поставить запуск в очередь, ответ 202 с записью запуска |
+
+Доступ регулируется правом модуля «Парсер». В POST передаётся `{"mode":"full"}` или `{"mode":"quick"}`. При уже активном запуске API возвращает 409.
+
+История возвращает `data`, `current_page` и `last_page`. Записи содержат режим, статус, текущий путь, даты и счётчики товаров `total`, `processed`, `added`, `updated`, `unchanged`, `errors`. Статусы: `queued`, `running`, `pausing`, `paused`, `completed`, `completed_with_errors`, `failed`.

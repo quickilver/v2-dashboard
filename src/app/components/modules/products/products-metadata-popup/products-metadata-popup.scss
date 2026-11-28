@@ -1,0 +1,94 @@
+@use 'variables' as *;
+
+.editor-form h2 {
+    font-size: 18px;
+}
+
+.metadata-tabs {
+    flex: 0 0 auto;
+    overflow-x: auto;
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0;
+        height: 100%;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+}
+
+.description {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th,
+    td {
+        padding: 10px 12px;
+        border-bottom: 1px solid $grey-light-2;
+        text-align: left;
+        overflow-wrap: anywhere;
+    }
+
+    th {
+        background: $grey-light;
+    }
+}
+
+table .attribute-actions {
+    width: 95px;
+    text-align: right;
+}
+
+.product-photo {
+    position: relative;
+
+    a {
+        display: block;
+    }
+}
+
+.photo-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .photo-remove {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .product-photo:hover .photo-remove,
+    .product-photo:focus-within .photo-remove {
+        opacity: 1;
+    }
+}
+
+.product-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+
+    img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+        border: 1px solid $grey-light-2;
+        border-radius: 6px;
+    }
+}
+

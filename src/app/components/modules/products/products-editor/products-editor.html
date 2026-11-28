@@ -10,6 +10,9 @@
             </div>
             <div [class.is-active]="isActiveTab('description')" (click)="changeTab('description')">
                 Описание
+                @if (hasDescription()) {
+                    <span class="tag" role="img" aria-label="Описание заполнено">✓</span>
+                }
             </div>
             <div [class.is-active]="isActiveTab('categories')" (click)="changeTab('categories')">
                 Категории <span class="tag">{{ categoriesCount() }}</span>
@@ -39,6 +42,15 @@
                         placeholder="Введите название товара"
                         [(value)]="title"
                     />
+                    <div>
+                        <button
+                            type="button"
+                            [disabled]="!title().trim() || generatingDescription() || saving()"
+                            (click)="fillDescription()"
+                        >
+                            {{ generatingDescription() ? 'Поиск товара…' : 'Заполнить описание' }}
+                        </button>
+                    </div>
                     <app-input-field
                         label="Артикул (SKU)"
                         placeholder="Введите артикул"
@@ -119,7 +131,7 @@
 
         <div class="editor-actions">
             <button (click)="onCancel()">Отмена</button>
-            <button class="primary" (click)="onSave()" [disabled]="saving()">
+            <button class="primary" (click)="onSave()" [disabled]="saving() || generatingDescription()">
                 {{ saving() ? 'Сохранение...' : isEditMode() ? 'Сохранить' : 'Создать' }}
             </button>
         </div>

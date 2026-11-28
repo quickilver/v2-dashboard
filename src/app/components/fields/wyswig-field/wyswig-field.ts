@@ -2,6 +2,7 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
+    effect,
     HostListener,
     inject,
     input,
@@ -57,6 +58,17 @@ export class WyswigFieldComponent implements AfterViewInit {
     readonly imageHeight = signal<number | null>(null);
     readonly lockRatio = signal<boolean>(true);
     readonly imageRatio = signal<number | null>(null);
+
+    constructor() {
+        effect(() => {
+            const html: string = this.value() || '';
+            const editor: HTMLDivElement | undefined = this.editorRef?.nativeElement;
+
+            if (editor && editor.innerHTML !== html) {
+                editor.innerHTML = html;
+            }
+        });
+    }
 
     ngAfterViewInit(): void {
         this.editorRef.nativeElement.innerHTML = this.value() || '';
